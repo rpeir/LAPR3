@@ -1,6 +1,7 @@
 package java.examples.matrix;
 
 import org.junit.jupiter.api.Test;
+import pi.sem3.esinf.examples.matrix.LabyrinthCheater;
 
 import java.util.ArrayList;
 import java.util.Arrays;

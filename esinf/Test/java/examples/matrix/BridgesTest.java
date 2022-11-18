@@ -1,6 +1,7 @@
 
 package java.examples.matrix;
 
+import pi.sem3.esinf.examples.matrix.Bridges;
 import pi.sem3.esinf.graph.Edge;
 import pi.sem3.esinf.graph.Graph;
 import pi.sem3.esinf.graph.matrix.MatrixGraph;

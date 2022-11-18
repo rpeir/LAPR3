@@ -5,7 +5,7 @@ import pi.sem3.esinf.graph.Graph;
 import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
 
-class Bridges {
+public class Bridges {
    /**
     * Minimum spanning tree - PRIM Algorithm 
     * @return minimum spanning tree

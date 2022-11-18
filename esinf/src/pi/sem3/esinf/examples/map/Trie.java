@@ -1,7 +1,7 @@
 package pi.sem3.esinf.examples.map;
 
 import pi.sem3.esinf.graph.Graph;
-import esinf_sem3_pi.graph.*;
+import pi.sem3.esinf.graph.*;
 
 /**
  *
