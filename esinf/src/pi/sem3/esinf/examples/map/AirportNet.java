@@ -1,6 +1,7 @@
-package esinf_sem3_pi.examples.map;
+package pi.sem3.esinf.examples.map;
 
 import esinf_sem3_pi.graph.*;
+import pi.sem3.esinf.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package java.graph.matrix;
 
-import esinf_sem3_pi.graph.Edge;
-import esinf_sem3_pi.graph.Graph;
-import esinf_sem3_pi.graph.matrix.MatrixGraph;
+import pi.sem3.esinf.graph.Edge;
+import pi.sem3.esinf.graph.Graph;
+import pi.sem3.esinf.graph.matrix.MatrixGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

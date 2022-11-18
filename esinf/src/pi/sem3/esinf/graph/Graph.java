@@ -1,4 +1,4 @@
-package esinf_sem3_pi.graph;
+package pi.sem3.esinf.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,6 +1,6 @@
-package esinf_sem3_pi.examples.map;
+package pi.sem3.esinf.examples.map;
 
-import esinf_sem3_pi.graph.Graph;
+import pi.sem3.esinf.graph.Graph;
 import esinf_sem3_pi.graph.*;
 
 /**

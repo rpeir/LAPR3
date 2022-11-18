@@ -1,10 +1,10 @@
-package esinf_sem3_pi.graph.matrix;
+package pi.sem3.esinf.graph.matrix;
 
 
 
-import esinf_sem3_pi.graph.CommonGraph;
-import esinf_sem3_pi.graph.Edge;
-import esinf_sem3_pi.graph.Graph;
+import pi.sem3.esinf.graph.CommonGraph;
+import pi.sem3.esinf.graph.Edge;
+import pi.sem3.esinf.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class MatrixGraph<V,E> extends CommonGraph<V,E> {
         this(directed, INITIAL_CAPACITY);
     }
 
-    public MatrixGraph(Graph <V,E> g) {
+    public MatrixGraph(Graph<V,E> g) {
         this(g.isDirected(), g.numVertices());
         copy(g, this);
     }

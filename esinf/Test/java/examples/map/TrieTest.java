@@ -1,8 +1,8 @@
 package java.examples.map;
 
-import esinf_sem3_pi.examples.map.Trie;
-import esinf_sem3_pi.graph.Graph;
-import esinf_sem3_pi.graph.map.MapGraph;
+import pi.sem3.esinf.examples.map.Trie;
+import pi.sem3.esinf.graph.Graph;
+import pi.sem3.esinf.graph.map.MapGraph;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
