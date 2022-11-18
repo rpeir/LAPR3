@@ -91,7 +91,7 @@ public class Algorithms {
         visited[g.key(vOrig)] = true;
         path.addFirst(vOrig);
         if (vOrig.equals(vDest)) {
-            paths.add((LinkedList<V>) path.clone());
+            paths.add(path);
         } else {
             for (V v : g.vertices()) {
                 if (g.edge(vOrig, v) != null && !visited[g.key(v)]) {
