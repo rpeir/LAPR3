@@ -1,11 +1,11 @@
-package esinf_sem3_pi.graph.map;
+package pi.sem3.esinf.graph.map;
 
 
 
 
-import esinf_sem3_pi.graph.Edge;
-import esinf_sem3_pi.graph.CommonGraph;
-import esinf_sem3_pi.graph.Graph;
+import pi.sem3.esinf.graph.Edge;
+import pi.sem3.esinf.graph.CommonGraph;
+import pi.sem3.esinf.graph.Graph;
 
 import java.util.*;
 

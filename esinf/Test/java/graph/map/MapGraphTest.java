@@ -1,8 +1,8 @@
 package java.graph.map;
 
-import esinf_sem3_pi.graph.map.MapGraph;
-import esinf_sem3_pi.graph.Edge;
-import esinf_sem3_pi.graph.Graph;
+import pi.sem3.esinf.graph.map.MapGraph;
+import pi.sem3.esinf.graph.Edge;
+import pi.sem3.esinf.graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

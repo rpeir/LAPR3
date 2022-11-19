@@ -91,7 +91,7 @@ public class Algorithms {
         visited[g.key(vOrig)] = true;
         path.addFirst(vOrig);
         if (vOrig.equals(vDest)) {
-            paths.add((LinkedList<V>) path.clone());
+            paths.add(path);
         } else {
             for (V v : g.vertices()) {
                 if (g.edge(vOrig, v) != null && !visited[g.key(v)]) {
@@ -131,10 +131,39 @@ public class Algorithms {
     private static <V, E> void shortestPathDijkstra(Graph<V, E> g, V vOrig,
                                                     Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                     boolean[] visited, V [] pathKeys, E [] dist) {
-
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dist[g.key(vOrig)] = zero;
+        while (g.key(vOrig) != -1) {
+            int vOrigKey = g.key(vOrig);
+            visited[vOrigKey] = true;
+            for (V vAdj : g.adjVertices(vOrig)) {
+                Edge<V, E> edge = g.edge(vOrig, vAdj);
+                int vAdjKey = g.key(vAdj);
+                if (!visited[vAdjKey] && ce.compare(dist[vAdjKey], dist[vOrigKey]) > 0) {
+                    dist[vAdjKey] = sum.apply(dist[vOrigKey], edge.getWeight());
+                    pathKeys[vAdjKey] = vOrig;
+                }
+            }
+            vOrig = getVertMinDist(pathKeys, dist, visited, ce);
+        }
     }
 
+    private static <V, E> V getVertMinDist(V[] pathKeys, E[] dist, boolean[] visited, Comparator<E> ce) {
+        int shortest = 0;
+        for (int i = 0; i < visited.length; i++) {
+            if (!visited[i]) {
+                shortest = i;
+                break;
+            }
+        }
+        for (int i = 0; i < dist.length; i++) {
+            if (!visited[i]) {
+                if (ce.compare(dist[i], dist[shortest]) < 0) {
+                    shortest = i;
+                }
+            }
+        }
+        return pathKeys[shortest];
+    }
 
     /** Shortest-path between two vertices
      *

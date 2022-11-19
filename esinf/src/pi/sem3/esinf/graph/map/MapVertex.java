@@ -1,7 +1,7 @@
-package esinf_sem3_pi.graph.map;
+package pi.sem3.esinf.graph.map;
 
 
-import esinf_sem3_pi.graph.Edge;
+import pi.sem3.esinf.graph.Edge;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package esinf_sem3_pi.examples.map;
+package pi.sem3.esinf.examples.map;
 
 /**
  *

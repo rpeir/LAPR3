@@ -1,11 +1,11 @@
 
-package esinf_sem3_pi.examples.matrix;
+package pi.sem3.esinf.examples.matrix;
 
-import graph.Graph;
-import graph.matrix.MatrixGraph;
+import pi.sem3.esinf.graph.Graph;
+import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
 
-class Bridges {
+public class Bridges {
    /**
     * Minimum spanning tree - PRIM Algorithm 
     * @return minimum spanning tree
