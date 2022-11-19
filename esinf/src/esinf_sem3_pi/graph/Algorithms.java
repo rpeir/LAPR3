@@ -132,7 +132,7 @@ public class Algorithms {
                                                     Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                     boolean[] visited, V [] pathKeys, E [] dist) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
@@ -185,7 +185,10 @@ public class Algorithms {
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
                                        V [] pathKeys, LinkedList<V> path) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+       for (V v = vDest; !v.equals(vOrig); v = pathKeys[g.key(v)]) {
+            path.addFirst(v);
+        }
+        path.addFirst(vOrig);
     }
 
     /** Calculates the minimum distance graph using Floyd-Warshall
