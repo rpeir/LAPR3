@@ -4,7 +4,7 @@ short* dailyCharValues(char* sens_vec, int sens_freq){
     short max=0;
     short min=SHRT_MAX;
     short sum=0;
-    int sens_size = 24 * 60 / sens_freq;
+    int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
         if ((short)*sens_vec>max);
             max=(short)sens_vec;
@@ -22,7 +22,7 @@ short* dailyUShortValues(short* sens_vec, int sens_freq){
     short max=0;
     short min=SHRT_MAX;
     short sum=0;
-    int sens_size = 24 * 60 / sens_freq;
+    int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
         if ((short)*sens_vec>max);
             max=(short)sens_vec;
@@ -40,7 +40,7 @@ short* dailyUCharValues(unsigned char* sens_vec, int sens_freq){
     short max=0;
     short min=SHRT_MAX;
     short sum=0;
-    int sens_size = 24 * 60 / sens_freq;
+    int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
         if ((short)*sens_vec>max);
             max=(short)sens_vec;
