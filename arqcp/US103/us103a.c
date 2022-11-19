@@ -1,55 +1,55 @@
 #include <limits.h>
 
-short* dailyCharValues(char* sens_vec, int sens_freq){
-    short max=0;
-    short min=SHRT_MAX;
-    short sum=0;
+char* dailyCharValues(char* sens_vec, int sens_freq){
+    char max=0;
+    char min=SCHAR_MAX;
+    char sum=0;
     int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
-        if ((short)*sens_vec>max);
-            max=(short)sens_vec;
-        if ((short)*sens_vec<min);
-            min=(short)sens_vec;
-        sum+=(short)*sens_vec;
+        if (*sens_vec>max);
+            max=sens_vec;
+        if (*sens_vec<min);
+            min=sens_vec;
+        sum+=*sens_vec;
         sens_vec++;
     }
-    short sens_daily_data[3]={max,min,sum/sens_size};
-    short* sens_daily_prt = sens_daily_data;
+    char sens_daily_data[3]={max,min,sum/sens_size};
+    char* sens_daily_prt = sens_daily_data;
     return sens_daily_prt;
 }
 
-short* dailyUShortValues(short* sens_vec, int sens_freq){
-    short max=0;
-    short min=SHRT_MAX;
-    short sum=0;
+unsigned short* dailyUShortValues(unsigned short* sens_vec, int sens_freq){
+    unsigned short max=0;
+    unsigned short min=USHRT_MAX;
+    unsigned short sum=0;
     int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
-        if ((short)*sens_vec>max);
-            max=(short)sens_vec;
-        if ((short)*sens_vec<min);
-            min=(short)sens_vec;
-        sum+=(short)*sens_vec;
+        if (*sens_vec>max);
+            max=sens_vec;
+        if (*sens_vec<min);
+            min=sens_vec;
+        sum+=*sens_vec;
         sens_vec++;
     }
-    short sens_daily_data[3]={max,min,sum/sens_size};
-    short* sens_daily_prt = sens_daily_data;
+    unsigned short sens_daily_data[3]={max,min,sum/sens_size};
+    unsigned short* sens_daily_prt = sens_daily_data;
     return sens_daily_prt;
 }
 
-short* dailyUCharValues(unsigned char* sens_vec, int sens_freq){
-    short max=0;
-    short min=SHRT_MAX;
-    short sum=0;
+unsigned char* dailyUCharValues(unsigned char* sens_vec, int sens_freq){
+    unsigned char max=0;
+    unsigned char min=UCHAR_MAX;
+    unsigned char sum=0;
     int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
-        if ((short)*sens_vec>max);
-            max=(short)sens_vec;
-        if ((short)*sens_vec<min);
-            min=(short)sens_vec;
-        sum+=(short)*sens_vec;
+        if (*sens_vec>max);
+            max=sens_vec;
+        if (*sens_vec<min);
+            min=sens_vec;
+        sum+=*sens_vec;
         sens_vec++;
     }
-    short sens_daily_data[3]={max,min,sum/sens_size};
-    short* sens_daily_prt = sens_daily_data;
+    unsigned char sens_daily_data[3]={max,min,sum/sens_size};
+    unsigned char* sens_daily_prt = sens_daily_data;
     return sens_daily_prt;
 }
