@@ -52,5 +52,6 @@ begin
 
     -- retornar o código do cliente
     return codCliente;
+
 end;
 /
