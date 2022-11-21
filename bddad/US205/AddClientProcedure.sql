@@ -35,6 +35,7 @@ CREATE OR REPLACE PROCEDURE adicionarNovoCliente (
     u_password IN Utilizador.password%type
 ) IS
     isAdded INTEGER;
+    ex EXCEPTION;
     codCliente Cliente.codCliente%type;
     codUtilizador Utilizador.codUtilizador%type;
 
@@ -51,7 +52,7 @@ BEGIN
     RETURNING codUtilizador INTO codUtilizador;
 
     IF isAdded IS NULL THEN
-            naoAdicionadoErro(-20010, 'Cliente Nao Adicionado!');
+            raise_application_error(20000, 'Cliente nao foi adicionado!');
     END IF;
 
 end;
