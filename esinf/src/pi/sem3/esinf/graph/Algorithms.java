@@ -1,8 +1,8 @@
-package pi.sem3.esinf.graph;
+package esinf_sem3_pi.graph;
 
 
 
-import pi.sem3.esinf.graph.matrix.MatrixGraph;
+import esinf_sem3_pi.graph.matrix.MatrixGraph;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -214,7 +214,10 @@ public class Algorithms {
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
                                        V [] pathKeys, LinkedList<V> path) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+       for (V v = vDest; !v.equals(vOrig); v = pathKeys[g.key(v)]) {
+            path.addFirst(v);
+        }
+        path.addFirst(vOrig);
     }
 
     /** Calculates the minimum distance graph using Floyd-Warshall
