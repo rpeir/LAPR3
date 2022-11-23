@@ -1,8 +1,8 @@
-package esinf_sem3_pi.graph;
+package pi.sem3.esinf.graph;
 
 
 
-import esinf_sem3_pi.graph.matrix.MatrixGraph;
+import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
 import java.util.ArrayList;
 import java.util.Comparator;
