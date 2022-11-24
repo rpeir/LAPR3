@@ -1,4 +1,4 @@
-package java.examples.map;
+package esinf.examples.map;
 
 import pi.sem3.esinf.examples.map.Trie;
 import pi.sem3.esinf.graph.Graph;

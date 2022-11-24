@@ -1,8 +1,8 @@
-package java.graph.matrix;
+package esinf.graph.map;
 
-import pi.sem3.esinf.graph.matrix.MatrixGraph;
 import pi.sem3.esinf.graph.Algorithms;
 import pi.sem3.esinf.graph.Graph;
+import pi.sem3.esinf.graph.map.MapGraph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +11,12 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MatrixAlgorithmsTest {
+class MapAlgorithmsTest {
 
-    final Graph<String,Integer> completeMap = new MatrixGraph<>(false);
-    Graph<String,Integer> incompleteMap = new MatrixGraph<>(false);
+    final Graph<String, Integer> completeMap = new MapGraph<>(false);
+    Graph<String, Integer> incompleteMap = new MapGraph<>(false);
 
-    public MatrixAlgorithmsTest() {
+    public MapAlgorithmsTest() {
     }
 
     @BeforeEach
@@ -208,7 +208,4 @@ class MatrixAlgorithmsTest {
         throw new UnsupportedOperationException("Not supported yet.");
         
     }
-    
-    
-    
 }

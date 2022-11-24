@@ -1,22 +1,22 @@
-package java.graph.map;
+package esinf.graph.matrix;
 
 import pi.sem3.esinf.graph.Algorithms;
 import pi.sem3.esinf.graph.Graph;
-import pi.sem3.esinf.graph.map.MapGraph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MapAlgorithmsTest {
+class MatrixAlgorithmsTest {
 
-    final Graph<String, Integer> completeMap = new MapGraph<>(false);
-    Graph<String, Integer> incompleteMap = new MapGraph<>(false);
+    final Graph<String,Integer> completeMap = new MatrixGraph<>(false);
+    Graph<String,Integer> incompleteMap = new MatrixGraph<>(false);
 
-    public MapAlgorithmsTest() {
+    public MatrixAlgorithmsTest() {
     }
 
     @BeforeEach
@@ -205,7 +205,26 @@ class MapAlgorithmsTest {
     @Test
     public void testminDistGraph() {
     
-        throw new UnsupportedOperationException("Not supported yet.");
-        
+        System.out.println("Test of minimum distance graph");
+
+        //Testing with complete graph
+        MatrixGraph<String, Integer> minDistGraph = Algorithms.minDistGraph(completeMap, Integer::compare, Integer::sum);
+
+        //Testing with complete graph
+
+        assertEquals(195, minDistGraph.edge("Porto", "Leiria").getWeight(), "Minimum distance between Porto and Leiria should be 365 Km");
+        assertEquals(195, minDistGraph.edge("Leiria", "Porto").getWeight(), "Minimum distance between Leiria and Porto should be 365 Km");
+        assertEquals(170, minDistGraph.edge("Leiria", "Castelo Branco").getWeight(), "Minimum distance between Leiria and Castelo Branco should be 170 Km");
+        assertEquals(170, minDistGraph.edge("Castelo Branco", "Leiria").getWeight(), "Minimum distance between Castelo Branco and Leiria should be 170 Km");
+
+        //Testing with incomplete graph
+        minDistGraph = Algorithms.minDistGraph(incompleteMap, Integer::compare, Integer::sum);
+        assertEquals(335, minDistGraph.edge("Porto", "Lisboa").getWeight(), "Minimum distance between Porto and Lisboa should be 335 Km");
+        assertEquals(335, minDistGraph.edge("Lisboa", "Porto").getWeight(), "Minimum distance between Lisboa and Porto should be 335 Km");
+        assertEquals(255, minDistGraph.edge("Braga", "Leiria").getWeight(), "Minimum distance between Braga and Leiria should be 255 Km");
+        assertEquals(255, minDistGraph.edge("Leiria", "Braga").getWeight(), "Minimum distance between Leiria and Braga should be 255 Km");
     }
+    
+    
+    
 }

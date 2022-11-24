@@ -1,5 +1,5 @@
 
-package java.examples.matrix;
+package esinf.examples.matrix;
 
 import pi.sem3.esinf.examples.matrix.Bridges;
 import pi.sem3.esinf.graph.Edge;

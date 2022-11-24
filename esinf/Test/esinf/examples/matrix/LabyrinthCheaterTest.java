@@ -1,4 +1,4 @@
-package java.examples.matrix;
+package esinf.examples.matrix;
 
 import org.junit.jupiter.api.Test;
 import pi.sem3.esinf.examples.matrix.LabyrinthCheater;
