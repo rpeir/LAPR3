@@ -179,8 +179,7 @@ public class Algorithms {
     public static <V, E> E shortestPath(Graph<V, E> g, V vOrig, V vDest,
                                         Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                         LinkedList<V> shortPath) {
-
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     /** Shortest-path between a vertex and all other vertices
@@ -197,8 +196,17 @@ public class Algorithms {
     public static <V, E> boolean shortestPaths(Graph<V, E> g, V vOrig,
                                                Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                ArrayList<LinkedList<V>> paths, ArrayList<E> dists) {
-
-        throw new UnsupportedOperationException("Not supported yet.");
+        int numVertices = g.numVertices();
+        boolean[] visited = new boolean[numVertices];
+        V[] pathKeys = (V[]) new Object[numVertices];
+        E[] dist = (E[]) new Object[numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+            //
+            // dist[i] =;
+        }
+        shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     /**
@@ -228,8 +236,20 @@ public class Algorithms {
      * @return the minimum distance graph
      */
     public static <V,E> MatrixGraph <V,E> minDistGraph(Graph <V,E> g, Comparator<E> ce, BinaryOperator<E> sum) {
-
-        throw new UnsupportedOperationException("Not supported yet.");
+        MatrixGraph<V,E> matrix = new MatrixGraph<>(g);
+        int n = matrix.numVertices();
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                if (i != k && matrix.edge(i,k) != null) {
+                    for (int j = 0; j < n; j++) {
+                        if (i != j && k != j && matrix.edge(k,j) != null) {
+                            matrix.addEdge(matrix.vertex(i), matrix.vertex(j), sum.apply(matrix.edge(i,k).getWeight(),matrix.edge(k,j).getWeight()));
+                        }
+                    }
+                }
+            }
+        }
+        return matrix;
     }
 
 }
