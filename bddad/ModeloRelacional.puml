@@ -22,8 +22,6 @@ table( Morada ) {
     column( codPostal ): INTEGER
     column( localidade ): VARCHAR
     column( pais ): VARCHAR
-    column( moradaEntrega ): VARCHAR
-    column( moradaCorrespondencia ): VARCHAR
 }
 
 table( Nivel ) {
