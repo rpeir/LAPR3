@@ -9,6 +9,7 @@
 ' Zero or Many	}o--
 ' One or Many	}|--
 
+' Entidades com atributos proprios
 table( Cliente ) {
     primary_key( codClient ): INTEGER
     column( tipo ): VARCHAR
@@ -32,12 +33,6 @@ table( Morada ) {
 table( Nivel ) {
     primary_key( codNivel ): INTEGER
     column( designacaoNivel ): VARCHAR
-}
-
-table( Cliente_nivel ) {
-    primary_key( codClienteNivel ): INTEGER
-    foreign_key( codClient ): INTEGER
-    foreign_key( codNivel ): INTEGER
 }
 
 table( Incidente ) {
@@ -80,12 +75,6 @@ table( Cultura ) {
     column( designacaoCultura ): VARCHAR
     column( tipoCultura ): VARCHAR
     column( objetivoCultura ): VARCHAR
-}
-
-table( Produto_Cultura ) {
-    primary_key( codProdutoCultura ): INTEGER
-    foreign_key( codProduto ): INTEGER
-    foreign_key( codCultura ): INTEGER
 }
 
 table( SetorAgricola ) {
@@ -164,6 +153,20 @@ table( Armazem ) {
 
 table( Garagem ) {
     primary_key( codGaragem ): INTEGER
+}
+
+' Tabelas que surgiram de relacoes
+table( Produto_Cultura ) {
+    primary_key( codProdutoCultura ): INTEGER
+    foreign_key( codProduto ): INTEGER
+    foreign_key( codCultura ): INTEGER
+}
+
+
+table( Cliente_nivel ) {
+    primary_key( codClienteNivel ): INTEGER
+    foreign_key( codClient ): INTEGER
+    foreign_key( codNivel ): INTEGER
 }
 
 @enduml
