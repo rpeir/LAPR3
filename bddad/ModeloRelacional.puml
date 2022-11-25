@@ -4,6 +4,11 @@
 !define column(x) <color:#efefef><&media-record></color> x
 !define table(x) entity x << (T, white) >>
 
+' Zero or One	|o--
+' Exactly One	||--
+' Zero or Many	}o--
+' One or Many	}|--
+
 table( Cliente ) {
     primary_key( codClient ): INTEGER
     column( tipo ): VARCHAR
