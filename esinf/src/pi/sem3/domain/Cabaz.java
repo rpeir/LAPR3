@@ -1,5 +1,3 @@
-package pi.sem3.domain;
-
 import java.util.List;
 
 public class Cabaz {

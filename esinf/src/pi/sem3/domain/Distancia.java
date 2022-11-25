@@ -1,5 +1,3 @@
-package pi.sem3.domain;
-
 public class Distancia {
 
     private ClienteProdutorEmpresa LocID1;
