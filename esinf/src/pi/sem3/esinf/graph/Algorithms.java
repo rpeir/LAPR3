@@ -5,6 +5,7 @@ package pi.sem3.esinf.graph;
 import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.function.BinaryOperator;
@@ -137,38 +138,50 @@ public class Algorithms {
     private static <V, E> void shortestPathDijkstra(Graph<V, E> g, V vOrig,
                                                     Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                     boolean[] visited, V [] pathKeys, E [] dist) {
+        for (V vertices : g.vertices()) {
+            dist[g.key(vertices)] = null;
+            pathKeys[g.key(vertices)] = null;
+            visited[g.key(vertices)] = false;
+        }
         dist[g.key(vOrig)] = zero;
-        while (g.key(vOrig) != -1) {
-            int vOrigKey = g.key(vOrig);
-            visited[vOrigKey] = true;
+        while (vOrig != null) {
+            visited[g.key(vOrig)] = true;
             for (V vAdj : g.adjVertices(vOrig)) {
                 Edge<V, E> edge = g.edge(vOrig, vAdj);
-                int vAdjKey = g.key(vAdj);
-                if (!visited[vAdjKey] && ce.compare(dist[vAdjKey], dist[vOrigKey]) > 0) {
-                    dist[vAdjKey] = sum.apply(dist[vOrigKey], edge.getWeight());
-                    pathKeys[vAdjKey] = vOrig;
+                if (!visited[g.key(vAdj)]) {
+                    if (dist[g.key(vAdj)] != null) {
+                        if (ce.compare(dist[g.key(vAdj)], sum.apply(dist[g.key(vOrig)], edge.getWeight())) > 0) {
+                            dist[g.key(vAdj)] = sum.apply(dist[g.key(vOrig)], edge.getWeight());
+                            pathKeys[g.key(vAdj)] = vOrig;
+                        }
+                    } else {
+                        dist[g.key(vAdj)] = edge.getWeight();
+                        pathKeys[g.key(vAdj)] = vOrig;
+                    }
                 }
             }
-            vOrig = getVertMinDist(pathKeys, dist, visited, ce);
+            vOrig = getVertMinDist(g, dist, visited, ce, zero);
         }
+
     }
 
-    private static <V, E> V getVertMinDist(V[] pathKeys, E[] dist, boolean[] visited, Comparator<E> ce) {
-        int shortest = 0;
+    private static <V, E> V getVertMinDist(Graph<V, E> g, E[] dist, boolean[] visited, Comparator<E> ce, E zero) {
+        E menorDistancia = zero;
+        V vMenor = null;
         for (int i = 0; i < visited.length; i++) {
             if (!visited[i]) {
-                shortest = i;
-                break;
-            }
-        }
-        for (int i = 0; i < dist.length; i++) {
-            if (!visited[i]) {
-                if (ce.compare(dist[i], dist[shortest]) < 0) {
-                    shortest = i;
+                if (dist[i] != null) {
+                    if (menorDistancia == zero) {
+                        menorDistancia = dist[i];
+                        vMenor = g.vertex(i);
+                    } else if (ce.compare(menorDistancia, dist[i]) > 0) {
+                        menorDistancia = dist[i];
+                        vMenor = g.vertex(i);
+                    }
                 }
             }
         }
-        return pathKeys[shortest];
+        return vMenor;
     }
 
     /** Shortest-path between two vertices
@@ -184,8 +197,30 @@ public class Algorithms {
      */
     public static <V, E> E shortestPath(Graph<V, E> g, V vOrig, V vDest,
                                         Comparator<E> ce, BinaryOperator<E> sum, E zero,
-                                        LinkedList<V> shortPath) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+                                        LinkedList<V> shortPath) {       E result = zero;
+        E dist[] = (E[]) new Object[g.numVertices()];
+        V[] pathKeys = (V[]) new Object[g.numVertices()];
+        if (!g.validVertex(vOrig))
+            return null;
+        if (!g.validVertex(vDest))
+            return null;
+        boolean[] visited = new boolean[g.numVertices()];
+        for (int i = 0; i < g.numVertices(); i++) {
+            visited[i] = false;
+        }
+
+        shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
+        getPath(g, vOrig, vDest, pathKeys, shortPath);
+        if (shortPath.contains(vDest)) {
+            for (int i = 0; i < shortPath.size() -1; i++) {
+                Edge<V, E> edge = g.edge(shortPath.get(i), shortPath.get(i + 1));
+                result = sum.apply(result, edge.getWeight());
+            }
+        } else {
+            result = null;
+            shortPath.removeAll(shortPath);
+        }
+        return result;
     }
 
     /** Shortest-path between a vertex and all other vertices
@@ -227,11 +262,13 @@ public class Algorithms {
      */
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
                                        V [] pathKeys, LinkedList<V> path) {
-
-       for (V v = vDest; !v.equals(vOrig); v = pathKeys[g.key(v)]) {
-            path.addFirst(v);
+        V vert = vDest;
+        while (pathKeys[g.key(vert)] != null && !vert.equals(vOrig)) {
+            path.add(vert);
+            vert = pathKeys[g.key(vert)];
         }
-        path.addFirst(vOrig);
+        path.add(vOrig);
+        Collections.reverse(path);
     }
 
     /** Calculates the minimum distance graph using Floyd-Warshall
