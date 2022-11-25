@@ -1,3 +1,5 @@
+package pi.sem3.esinf.domain;
+
 public class ClienteProdutorEmpresa {
 
     private String LocID;

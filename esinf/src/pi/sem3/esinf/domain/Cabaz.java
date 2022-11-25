@@ -1,3 +1,5 @@
+package pi.sem3.esinf.domain;
+
 import java.util.List;
 
 public class Cabaz {
