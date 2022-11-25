@@ -23,24 +23,27 @@ public class Algorithms {
      * @return a LinkedList with the vertices of breadth-first search
      */
     public static <V, E> LinkedList<V> BreadthFirstSearch(Graph<V, E> g, V vert) {
-        LinkedList<V> result = new LinkedList<>();
-        LinkedList<V> queue = new LinkedList<>();
-        ArrayList<V> visited = new ArrayList<>();
-        queue.add(vert);
-        while (!queue.isEmpty()) {
-            V v = queue.removeFirst();
-            if (!visited.contains(v)) {
-                visited.add(v);
-                result.add(v);
-                for (V w : g.vertices()) {
-                    if (g.edge(v, w) != null) {
-                        queue.add(w);
-                    }
+        if (!g.validVertex(vert))
+            return null;
+        boolean[] visited = new boolean[g.numVertices()];
+        LinkedList<V> qbfs = new LinkedList<>();
+        LinkedList<V> qaux = new LinkedList<>();
+        qbfs.add(vert);
+        qaux.add(vert);
+        visited[g.key(vert)] = true;
+
+        while (!qaux.isEmpty()) {
+            vert = qaux.element();
+            qaux.remove();
+            for (V vAdj : g.adjVertices(vert)) {
+                if (!visited[g.key(vAdj)]) {
+                    qbfs.add(vAdj);
+                    qaux.add(vAdj);
+                    visited[g.key(vAdj)] = true;
                 }
             }
         }
-        return result;
-
+        return qbfs;
     }
 
     /** Performs depth-first search starting in a vertex
@@ -51,7 +54,9 @@ public class Algorithms {
      * @param qdfs return LinkedList with vertices of depth-first search
      */
     private static <V, E> void DepthFirstSearch(Graph<V, E> g, V vOrig, boolean[] visited, LinkedList<V> qdfs) {
-
+        if (visited[g.key(vOrig)]) {
+            return;
+        }
         visited[g.key(vOrig)] = true;
         qdfs.add(vOrig);
         for (V v : g.vertices()) {
@@ -69,7 +74,8 @@ public class Algorithms {
      * @return a LinkedList with the vertices of depth-first search
      */
     public static <V, E> LinkedList<V> DepthFirstSearch(Graph<V, E> g, V vert) {
-
+        if (!g.validVertex(vert))
+            return null;
         LinkedList<V> result = new LinkedList<>();
         boolean[] visited = new boolean[g.numVertices()];
         DepthFirstSearch(g, vert, visited, result);
