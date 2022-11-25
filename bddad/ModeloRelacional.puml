@@ -1,0 +1,166 @@
+@startuml
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table( Cliente ) {
+    primary_key( codClient ): INTEGER
+    column( tipo ): VARCHAR
+    column( codInterno ): INTEGER
+    column( nome ): VARCHAR
+    column( emailCliente ): VARCHAR
+    column( plafond ): INTEGER
+    column( nrFiscal ): INTEGER
+}
+
+table( Morada ) {
+    primary_key( codMorada ): INTEGER
+    column( rua ): VARCHAR
+    column( andar ): INTEGER
+    column( nrPorta ): INTEGER
+    column( codPostal ): INTEGER
+    column( localidade ): VARCHAR
+    column( pais ): VARCHAR
+    column( moradaEntrega ): VARCHAR
+    column( moradaCorrespondencia ): VARCHAR
+}
+
+table( Nivel ) {
+    primary_key( codNivel ): INTEGER
+    column( designacaoNivel ): VARCHAR
+}
+
+table( Cliente_nivel ) {
+    primary_key( codClienteNivel ): INTEGER
+    foreign_key( codClient ): INTEGER
+    foreign_key( codNivel ): INTEGER
+}
+
+table( Incidente ) {
+    primary_key( codIncidente ): INTEGER
+    column( dataOcorrencia ): DATE
+}
+
+table( Pedido ) {
+    primary_key( codPedido ): INTEGER
+    column( valorTotal ): INTEGER
+    column( dataPedido ): DATE
+    column( dataVencimento ): DATE
+}
+
+table( Pagamento ) {
+    primary_key( codPagamento ): INTEGER
+    column( dataPagamento ): DATE
+}
+
+table( Entrega ) {
+    primary_key( codEntrega ): INTEGER
+    column( dataEntrega ): DATE
+}
+
+table( Colheita ) {
+    primary_key( codColheita ): INTEGER
+    column( anoColheita ): INTEGER
+}
+
+table( Produto ) {
+    primary_key( codProduto ): INTEGER
+    column( preco/kg ): INTEGER
+    column( stock/kg ): INTEGER
+    column( codProduto ): INTEGER
+    column( designacao ): VARCHAR
+}
+
+table( Cultura ) {
+    primary_key( codCultura ): INTEGER
+    column( designacaoCultura ): VARCHAR
+    column( tipoCultura ): VARCHAR
+    column( objetivoCultura ): VARCHAR
+}
+
+table( Produto_Cultura ) {
+    primary_key( codProdutoCultura ): INTEGER
+    foreign_key( codProduto ): INTEGER
+    foreign_key( codCultura ): INTEGER
+}
+
+table( SetorAgricola ) {
+    primary_key( codSetorAgricola ): INTEGER
+    column( designacaoSetorAgricola ): VARCHAR
+    column( areaSetorAgricola ): INTEGER
+}
+
+table( Rega ) {
+    primary_key( codRega ): INTEGER
+    column( tempoRega ): INTEGER
+}
+
+table( Operacao ) {
+    primary_key( codOperacao ): INTEGER
+    column( dataOperacao ): DATE
+    column( formaAplicacao ): VARCHAR
+    column( estadoOperacao ): VARCHAR
+}
+
+table( PlanoAnual ) {
+    primary_key( codPlanoAnual ): INTEGER
+    column( anoPlanoAnual ): INTEGER
+}
+
+table( ZonaGeografica ) {
+    primary_key( codZonaGeografica ): INTEGER
+    column( designacaoZonaGeografica ): VARCHAR
+}
+
+table( FatoresProducao ) {
+    primary_key( codFatoresProducao ): INTEGER
+    column( tipoFatorProducao ): VARCHAR
+    column( preco/kg ): INTEGER
+    column( nomeComercial ): VARCHAR
+    column( formulacao ): VARCHAR
+    column( fichaTecnica ): VARCHAR
+}
+
+table( EstacaoMeteorologica ) {
+    primary_key( codEstacaoMeteorologica ): INTEGER
+}
+
+table( Sensor ) {
+    primary_key( codSensor ): INTEGER
+    column( valorReferencia ): INTEGER
+}
+
+table( TipoSensor ) {
+    primary_key( codTipoSensor ): INTEGER
+}
+
+table( Leitura ) {
+    primary_key( codLeitura ): INTEGER
+    column( hora ): INTEGER
+    column( data ): DATE
+    column( minuto ): INTEGER
+    column( valorLido ): INTEGER
+}
+
+table( InstalacaoAgricola ) {
+    primary_key( codInstalacaoAgricola ): INTEGER
+}
+
+table( Edificio ) {
+    primary_key( codEdificio ): INTEGER
+}
+
+table( Estabulo ) {
+    primary_key( codEstabulo ): INTEGER
+}
+
+table( Armazem ) {
+    primary_key( codArmazem ): INTEGER
+}
+
+table( Garagem ) {
+    primary_key( codGaragem ): INTEGER
+}
+
+@enduml
