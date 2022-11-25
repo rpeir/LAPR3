@@ -18,7 +18,7 @@ movq -8(%rbp), %rax #oldstate to rax
 movq $6364136223846793005ULL, %rbx
 mulq %rbx
 
-orq $1, inc(%rip) 
+orq $00000001, inc(%rip) 
 
 addq inc(%rip), %rax
 movq %rax, state(%rip) 
@@ -40,14 +40,14 @@ movb -16(%rbp), %cl
 shrl %cl, %eax
 
 
-movl -12(%rbp), %ecx
+movl -12(%rbp), %edx
 movl -16(%rbp), %ebx
 negl %ebx
 andl $31, %ebx
 movb %bl, %cl
-shll %cl, %ecx
+shll %cl, %edx
 
-orl %ecx, %eax
+orl %edx, %eax
 
 movq %rbp, %rsp
 popq %rbp
