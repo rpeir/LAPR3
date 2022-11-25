@@ -208,4 +208,17 @@ class MapAlgorithmsTest {
         throw new UnsupportedOperationException("Not supported yet.");
         
     }
+
+
+    @Test
+    public <V> void  testminConnections() {
+        System.out.println("Test of min connections");
+
+        int result = Algorithms.minConnections(completeMap, Integer::compare, Integer::sum, 0);
+        assertEquals(6,result);
+
+
+        result = Algorithms.minConnections(incompleteMap,Integer::compare, Integer::sum, 0);
+        assertEquals(-1,result);
+    }
 }
