@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package pi.sem3.domain;
+
+import java.util.List;
 
 public class Cabaz {
 
@@ -6,15 +8,15 @@ public class Cabaz {
 
     private String diaDeProducao;
 
-    private ArrayList<Produto> produtos;
+    private List<Produto> produtos;
 
-    public Cabaz(ClienteProdutorEmpresa clienteProdutorEmpresa, String diaDeProducao, ArrayList<Produto> produtos) {
+    public Cabaz(ClienteProdutorEmpresa clienteProdutorEmpresa, String diaDeProducao, List<Produto> produtos) {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
         this.produtos = produtos;
     }
 
-    private ArrayList<Produto> getProdutos() {
+    private List<Produto> getProdutos() {
         return produtos;
     }
 

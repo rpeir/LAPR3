@@ -1,3 +1,5 @@
+package pi.sem3.domain;
+
 public class Produto {
 
     int id;
