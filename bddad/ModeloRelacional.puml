@@ -175,7 +175,7 @@ table( Sensor_Leitura) {
     foreign_key( codLeitura ): INTEGER
 }
 
-table( Restricao_FatoresProducao_ZonaGeografica ) {
+table( Restricao ) {
     primary_key( codRestricaoFatoresProducaoZonaGeografica ): INTEGER
     column( periodo ): INTEGER
     foreign_key( codFatoresProducao ): INTEGER
@@ -218,6 +218,12 @@ table( Rega_SetorAgricula ) {
     foreign_key( codSetorAgricola ): INTEGER
 }
 
+table( FatoresProducao_SetorAgricola ) {
+    primary_key( codFatoresProducaoSetorAgricola ): INTEGER
+    foreign_key( codFatoresProducao ): INTEGER
+    foreign_key( codSetorAgricola ): INTEGER
+}
+
 
 
 ' cardinalidades
@@ -246,13 +252,15 @@ Pedido ||--|| Entrega
 Produto }|--|| Cultura
 Operacao ||--|| Rega
 CalendarioOperacoes ||--|{ Operacao
-FatoresProducao ||--|{ Restricao_FatoresProducao_ZonaGeografica
-Restricao_FatoresProducao_ZonaGeografica }|--|| ZonaGeografica
+FatoresProducao ||--|{ Restricao
+Restricao }|--|| ZonaGeografica
 Incidente ||--|| Pagamento
 SetorAgricola }|--|| ZonaGeografica
 PlanoAnual ||--|{ PlanoAnual_Operacao
 PlanoAnual_Operacao }|--|| Operacao
 Rega ||--|{ Rega_SetorAgricula
 Rega_SetorAgricula }|--|| SetorAgricola
+FatoresProducao ||--|{ FatoresProducao_SetorAgricola
+FatoresProducao_SetorAgricola }|--|| SetorAgricola
 
 @enduml
