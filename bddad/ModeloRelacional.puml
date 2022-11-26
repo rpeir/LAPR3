@@ -163,13 +163,6 @@ table( Garagem ) {
 }
 
 ' Tabelas que surgiram de relacoes
-table( Produto_Cultura ) {
-    primary_key( codProdutoCultura ): INTEGER
-    foreign_key( codProduto ): INTEGER
-    foreign_key( codCultura ): INTEGER
-}
-
-
 table( Cliente_nivel ) {
     primary_key( codClienteNivel ): INTEGER
     foreign_key( codClient ): INTEGER
@@ -196,12 +189,6 @@ table( SetorAgricola_Cultura ) {
     foreign_key( codCultura ): INTEGER
 }
 
-table( AplicacaoRega_Rega_SetorAgricula ) {
-    primary_key( codAplicacaoRegaRegaSetorAgricula ): INTEGER
-    foreign_key( codRega ): INTEGER
-    foreign_key( codSetorAgricola ): INTEGER
-}
-
 table( Pedido_Produto ) {
     primary_key( codPedidoProduto ): INTEGER
     column( quantidadeProduto ): INTEGER
@@ -210,44 +197,25 @@ table( Pedido_Produto ) {
     foreign_key( codProduto ): INTEGER
 }
 
-table( Cliente_Incidente ) {
-    primary_key( codClienteIncidente ): INTEGER
-    foreign_key( codClient ): INTEGER
-    foreign_key( codIncidente ): INTEGER
-}
-
-table( AplicacaoFatorProducao_FatorProducao_SetorAgricola ) {
-    primary_key( codAplicacaoFatorProducaoFatorProducaoSetorAgricola ): INTEGER
-    column( quantidadeAplicada ): INTEGER
-    foreign_key( codFatoresProducao ): INTEGER
-    foreign_key( codSetorAgricola ): INTEGER
-}
-
-table( Pedido_Pagamento ) {
+table( Pedido_Pagamento_Entrega ) {
     primary_key( codPedidoPagamento ): INTEGER
     column( estadoAtual ): VARCHAR
     foreign_key( codPedido ): INTEGER
     foreign_key( codPagamento ): INTEGER
+    foreign_key( codEntrega ): INTEGER
 }
 
-table( Colheita_Produto_Cultura_SetorAgricola ) {
-    primary_key( codColheitaProdutoCulturaSetorAgricola ): INTEGER
-    column( valor ): INTEGER
-    foreign_key( codColheita ): INTEGER
-    foreign_key( codProdutoCultura ): INTEGER
-    foreign_key( codSetorAgricola ): INTEGER
+table( PlanoAnual_Operacao ) {
+    primary_key( codPlanoAnualOperacao ): INTEGER
+    column( dataPrevista ): DATE
+    foreign_key( codPlanoAnual ): INTEGER
+    foreign_key( codOperacao ): INTEGER
 }
 
-table( PlanoAtual_Rega_SetorAgricula_Cultura ) {
-    primary_key( codPlanoAtualRegaSetorAgriculaCultura ): INTEGER
-    column( periodicidadeRega ): INTEGER
-    column( tipoDeDistribuição ): VARCHAR
-    column( ordem ): VARCHAR
-    column( tipoRega ): VARCHAR
-    foreign_key( codPlanoAtual ): INTEGER
+table( Rega_SetorAgricula ) {
+    primary_key( codRegaSetorAgricula ): INTEGER
     foreign_key( codRega ): INTEGER
     foreign_key( codSetorAgricola ): INTEGER
-    foreign_key( codCultura ): INTEGER
 }
 
 
@@ -267,6 +235,24 @@ Cultura ||--|{ SetorAgricola_Cultura
 SetorAgricola_Cultura }|--|| SetorAgricola
 Pedido ||--|{ Pedido_Produto
 Pedido_Produto }|--|| Produto
-
+EstacaoMeteorologica ||--|| ZonaGeografica
+EstacaoMeteorologica ||--|{ Sensor
+TipoSensor ||--|{ Sensor
+Sensor ||--|{ Sensor_Leitura
+Sensor_Leitura }|--|| Leitura
+Pedido ||--|| Incidente
+Morada ||--|| Entrega
+Pedido ||--|| Entrega
+Produto }|--|| Cultura
+Operacao ||--|| Rega
+CalendarioOperacoes ||--|{ Operacao
+FatoresProducao ||--|{ Restricao_FatoresProducao_ZonaGeografica
+Restricao_FatoresProducao_ZonaGeografica }|--|| ZonaGeografica
+Incidente ||--|| Pagamento
+SetorAgricola }|--|| ZonaGeografica
+PlanoAnual ||--|{ PlanoAnual_Operacao
+PlanoAnual_Operacao }|--|| Operacao
+Rega ||--|{ Rega_SetorAgricula
+Rega_SetorAgricula }|--|| SetorAgricola
 
 @enduml
