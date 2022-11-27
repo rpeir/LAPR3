@@ -20,6 +20,18 @@ table( Cliente ) {
     column( nrFiscal ): INTEGER
     column( moradaEntrega ): VARCHAR
     column( moradaCorrespondencia ): VARCHAR
+    foreign_key( codMoradaEntrega ): INTEGER
+    foreign_key( codMoradaCorrespondencia ): INTEGER
+}
+
+table( MoradaEntrega ) {
+    primary_key( codMoradaEntrega ): INTEGER
+    foreign_key( codMorada ): INTEGER
+}
+
+table( MoradaCorrespondencia ) {
+    primary_key( codMoradaCorrespondencia ): INTEGER
+    foreign_key( codMorada ): INTEGER
 }
 
 table( Morada ) {
@@ -262,5 +274,7 @@ Rega ||--|{ Rega_SetorAgricula
 Rega_SetorAgricula }|--|| SetorAgricola
 FatoresProducao ||--|{ FatoresProducao_SetorAgricola
 FatoresProducao_SetorAgricola }|--|| SetorAgricola
+Morada ||--|{ MoradaEntrega
+Entrega ||--|| MoradaEntrega
 
 @enduml

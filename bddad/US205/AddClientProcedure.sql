@@ -1,7 +1,12 @@
-set serveroutput on;
-set verify off;
-
+DROP TABLE Utilizador CASCADE CONSTRAINTS;
 DROP TABLE Cliente CASCADE CONSTRAINTS;
+
+CREATE TABLE Utilizador (
+    codUtilizador number(10) GENERATED AS IDENTITY,
+    email varchar2(250) NOT NULL UNIQUE,
+    password varchar2(250) NOT NULL,
+    PRIMARY KEY (codUtilizador)
+);
 
 CREATE TABLE Cliente (
     codCliente number(10) GENERATED AS IDENTITY,
@@ -9,107 +14,163 @@ CREATE TABLE Cliente (
     nome varchar2(250) NOT NULL,
     nrFiscal number(9) NOT NULL UNIQUE,
     email VARCHAR2(250) NOT NULL UNIQUE,
+    moradaCor VARCHAR2(250) NOT NULL,
+    moradaEnt VARCHAR2(250) NOT NULL,
     plafond number(10) NOT NULL,
-    codMoradaCor number(10) NOT NULL,
-    codMoradaEnt number(10) NOT NULL,
-    PRIMARY KEY (codCliente),
-    FOREIGN KEY (codMoradaCor) REFERENCES Morada(codMorada),
-    FOREIGN KEY (codMoradaEnt) REFERENCES Morada(codMorada)
+    PRIMARY KEY (codCliente)
 );
 
-CREATE TABLE Morada (
-    codMorada number(10) GENERATED AS IDENTITY,
-    codCliente number(10) NOT NULL,
-    codPostal number(8) NOT NULL,
-    rua varchar2(250) NOT NULL,
-    pais varchar2(250) NOT NULL,
-    andar number(10) NOT NULL,
-    nrPorta number(10) NOT NULL,
-    localidade varchar2(250) NOT NULL,
-    PRIMARY KEY (codMorada),
-    FOREIGN KEY (codCliente) REFERENCES Cliente(codCliente)
-);
+CREATE OR REPLACE FUNCTION adicionarNovoCliente (
+    -- atributos do cliente
+    c_codInt IN Cliente.codInt%type,
+    c_nome IN Cliente.nome%type,
+    c_nrFiscal IN Cliente.nrFiscal%type,
+    c_email IN Cliente.email%type,
+    c_moradaCor IN Cliente.moradaCor%type,
+    c_moradaEnt IN Cliente.moradaEnt%type,
+    c_plafond IN Cliente.plafond%type,
 
-CREATE OR REPLACE FUNCTION adicionarMorada (
-    m_codPostal IN Morada.codPostal%TYPE,
-    m_rua IN Morada.rua%TYPE,
-    m_pais IN Morada.pais%TYPE,
-    m_andar IN Morada.andar%TYPE,
-    m_nrPorta IN Morada.nrPorta%TYPE,
-    m_localidade IN Morada.localidade%TYPE
-)   RETURN Morada.codMorada%TYPE
+    -- atributos do utilizador
+    u_email IN Utilizador.email%type,
+    u_password IN Utilizador.password%type
+) return Cliente.codCliente%type
+
+is
+    codCliente Cliente.codCliente%type;
+    codUtilizador Utilizador.codUtilizador%type;
+
+begin
+    -- inserir cliente
+    INSERT INTO Cliente (codInt, nome, nrFiscal, email, moradaCor, moradaEnt, plafond)
+    VALUES (c_codInt, c_nome, c_nrFiscal, c_email, c_moradaCor, c_moradaEnt, c_plafond)
+    RETURNING codCliente INTO codCliente;
+
+    -- inserir utilizador
+    INSERT INTO Utilizador (email, password)
+    VALUES (u_email, u_password)
+    RETURNING codUtilizador INTO codUtilizador;
+
+    -- retornar o código do cliente
+    return codCliente;
+end;
+/
+
+CREATE OR REPLACE PROCEDURE checkNome (nome IN Cliente.nome%type)
+is
+begin
+    if (nome is NULL) THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Nome não pode ser nulo!');
+    end if;
+end;
+/
+
+--CREATE OR REPLACE PROCEDURE checkNrFiscal (nrFiscal IN Cliente.nrFiscal%type)
+--is
+--begin
+--    if (nrFiscal is NULL) THEN
+--        RAISE_APPLICATION_ERROR(-20000, 'nrFiscal não pode ser nulo!');
+--    elsif (REGEXP_LIKE(nrFiscal, '[0-9]{9}')) THEN
+--        RAISE_APPLICATION_ERROR(-20000, 'nrFiscal deve conter 9 digitos!');
+--    end if;
+--end;
+--/
+
+CREATE OR REPLACE PROCEDURE checkEmail (email IN Cliente.email%type)
+is
+begin
+    if (email is NULL) THEN
+        RAISE_APPLICATION_ERROR(-20000, 'email não pode ser nulo!');
+    elsif (REGEXP_LIKE(email, '^[a-zA-Z0-9][a-zA-Z0-9._-]*@[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,4}$')) THEN
+        RAISE_APPLICATION_ERROR(-20000, 'email invalido!');
+    end if;
+end;
+/
+
+CREATE OR REPLACE PROCEDURE checkPlafond (plafond IN Cliente.Plafond%TYPE)
 
 IS
-    m_codMorada Morada.codMorada%TYPE;
-    morada_nao_criada_exception EXCEPTION;
 
 BEGIN
-    SELECT codMorada INTO m_codMorada
-    FROM Morada m
-    WHERE m.codPostal = m_codPostal AND m.rua = m_rua AND m.pais = m_pais AND m.andar = m_andar AND m.nrPorta = m_nrPorta AND m.localidade = m_localidade;
-    RETURN m_codMorada;
+    IF (plafond IS NULL) THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Plafond não pode ser nulo!');
+    ELSIF (plafond < 0) THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Plafond inválido!');
+    END IF;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE checkNrFiscalJaExiste (c_nrFiscal IN Cliente.nrFiscal%TYPE)
+
+IS
+    cc_nrFiscal Cliente.nrFiscal%TYPE;
+
+BEGIN
+    SELECT nrFiscal INTO cc_nrFiscal FROM Cliente c WHERE c.nrFiscal = c_nrFiscal;
+
+    RAISE_APPLICATION_ERROR(-20000, 'nrFiscal ja existe!');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('nrFiscal valido!');
+END;
+/
+
+CREATE OR REPLACE PROCEDURE checkEmailJaExiste (c_email IN Cliente.email%TYPE)
+
+IS
+    cc_email Cliente.email%TYPE;
+
+BEGIN
+    SELECT email INTO cc_email FROM Cliente c WHERE c.email = c_email;
+
+    RAISE_APPLICATION_ERROR(-20000, 'email ja existe!');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('email valido!');
+END;
+/
+
+CREATE OR REPLACE FUNCTION criarCliente (
+    -- atributos do cliente
+    c_codInt Cliente.codInt%type,
+    c_nome Cliente.nome%type,
+    c_nrFiscal Cliente.nrFiscal%type,
+    c_email Cliente.email%type,
+    c_moradaCor Cliente.moradaCor%type,
+    c_moradaEnt Cliente.moradaEnt%type,
+    c_plafond Cliente.plafond%type,
+
+    -- atributos do utilizador
+    u_email Utilizador.email%type,
+    u_password Utilizador.password%type
+) return Cliente.codCliente%type
+
+is
+    c_codCliente Cliente.codCliente%type;
+    codUtilizador Utilizador.codUtilizador%type;
+
+begin
+
+    checkNome(c_nome);
+    checkEmail(c_email);
+    --checkNrFiscal(c_nrFiscal);
+    checkPlafond(c_plafond);
+    checkNrFiscalJaExiste(c_nrFiscal);
+    checkEmailJaExiste(c_email);
+    c_codCliente := adicionarNovoCliente(c_codInt, c_nome, c_nrFiscal, c_email, c_moradaCor, c_moradaEnt, c_plafond, u_email, u_password);
+    dbms_output.put_line('Cliente inserido com id: ' || c_codCliente);
+return c_codCliente;
 
     EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        INSERT INTO Morada (codPostal, rua, pais, andar, nrPorta, localidade);
-        VALUES (m_codPostal, m_rua, m_pais, m_andar, m_nrPorta, m_localidade);
-        RETURN m_codMorada;
-END;
+    WHEN others THEN
+        dbms_output.put_line(SQLERRM);
+        RETURN NULL;
+
+end;
 /
 
-CREATE OR REPLACE PROCEDURE adicionarCliente (
-    c_codInt IN Cliente.codInt%TYPE,
-    c_nome IN Cliente.nome%TYPE,
-    c_nrFiscal IN Cliente.nrFiscal%TYPE,
-    c_email IN Cliente.email%TYPE,
-    c_plafond IN Cliente.plafond%TYPE,
-    c_codMoradaCor IN Cliente.codMoradaCor%TYPE,
-    c_codMoradaEnt IN Cliente.codMoradaEnt%TYPE
-)   RETURN Cliente.codCliente%TYPE
-IS
-    c_codCliente Cliente.codCliente%TYPE;
-    cliente_nao_adicionado_exception EXCEPTION;
-
+DECLARE
+      l_success_code NUMBER;
 BEGIN
-    SELECT codCliente INTO c_codCliente
-    FROM Cliente c
-    WHERE c.codInt = c_codInt AND c.nome = c_nome AND c.nrFiscal = c_nrFiscal AND c.email = c_email AND c.plafond = c_plafond AND c.codMoradaCor = c_codMoradaCor AND c.codMoradaEnt = c_codMoradaEnt;
-
-    RETURN c_codCliente;
+      l_success_code := criarCliente(1, 'joao', 123456789, 'abcd1234@gmail.com', 'rua do isep', 'rua do isep dois', 1600, '1234abcd@gmail.com', 'abcd1234');
+      rollback;
 END;
-/
-
-CREATE OR REPLACE PROCEDURE ciarCliente (
-    c_codInt IN Cliente.codInt%TYPE,
-    c_nome IN Cliente.nome%TYPE,
-    c_nrFiscal IN Cliente.nrFiscal%TYPE,
-    c_email IN Cliente.email%TYPE,
-    c_plafond IN Cliente.plafond%TYPE,
-    c_codPostalCor IN Morada.codPostal%TYPE,
-    c_ruaCor IN Morada.rua%TYPE,
-    c_paisCor IN Morada.pais%TYPE,
-    c_andarCor IN Morada.andar%TYPE,
-    c_nrPortaCor IN Morada.nrPorta%TYPE,
-    c_localidadeCor IN Morada.localidade%TYPE,
-    c_codPostalEnt IN Morada.codPostal%TYPE,
-    c_ruaEnt IN Morada.rua%TYPE,
-    c_paisEnt IN Morada.pais%TYPE,
-    c_andarEnt IN Morada.andar%TYPE,
-    c_nrPortaEnt IN Morada.nrPorta%TYPE,
-    c_localidadeEnt IN Morada.localidade%TYPE
-)   RETURN Cliente.codCliente%TYPE
-
-IS
-    c_codMoradaCor Cliente.codMoradaCor%TYPE;
-    c_codMoradaEnt Cliente.codMoradaEnt%TYPE;
-    c_codCliente Cliente.codCliente%TYPE;
-    cliente_nao_criado_exception EXCEPTION;
-
-BEGIN
-    c_codMoradaCor := adicionarMorada(c_codPostalCor, c_ruaCor, c_paisCor, c_andarCor, c_nrPortaCor, c_localidadeCor);
-    c_codMoradaEnt := adicionarMorada(c_codPostalEnt, c_ruaEnt, c_paisEnt, c_andarEnt, c_nrPortaEnt, c_localidadeEnt);
-    c_codCliente := adicionarCliente(c_codInt, c_nome, c_nrFiscal, c_email, c_plafond, c_codMoradaCor, c_codMoradaEnt);
-    dbms_output.put_line('Cliente criado com sucesso! Cod: ' || c_codCliente);
-    RETURN c_codCliente;
-END;
-/
