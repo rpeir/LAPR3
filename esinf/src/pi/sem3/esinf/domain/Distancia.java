@@ -1,4 +1,4 @@
-package pi.sem3.esinf.domain;
+package esinf_sem3_pi.domain;
 
 public class Distancia {
 
@@ -22,6 +22,14 @@ public class Distancia {
 
     public int getLength() {
         return length;
+    }
+
+    public void setLocID1(ClienteProdutorEmpresa LocID1) {
+        this.LocID1 = LocID1;
+    }
+
+    public void setLocID2(ClienteProdutorEmpresa LocID2) {
+        this.LocID2 = LocID2;
     }
 
     @Override

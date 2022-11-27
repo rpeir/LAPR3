@@ -5,13 +5,13 @@ public class ClienteProdutorEmpresa {
     private String LocID;
     private float  latitude;
     private float  longitude;
-    private String designacao;
+    private Cabaz cabaz;
 
-    public ClienteProdutorEmpresa(String LocID, float latitude, float longitude, String designacao) {
+    public ClienteProdutorEmpresa(String LocID, float latitude, float longitude, Cabaz designacao) {
         this.LocID = LocID;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.designacao = designacao;
+        this.cabaz = designacao;
     }
 
     public String getLocID() {
@@ -26,12 +26,16 @@ public class ClienteProdutorEmpresa {
         return longitude;
     }
 
-    public String getDesignacao() {
-        return designacao;
+    public Cabaz getCabaz() {
+        return cabaz;
+    }
+
+    public void setCabaz(Cabaz cabaz) {
+        this.cabaz = cabaz;
     }
 
     @Override
     public String toString() {
-        return "ClienteProdutorEmpresa{" + "LocID=" + LocID + ", latitude=" + latitude + ", longitude=" + longitude + ", designacao=" + designacao + '}';
+        return "ClienteProdutorEmpresa{" + "LocID=" + LocID + ", latitude=" + latitude + ", longitude=" + longitude + ", designacao=" + cabaz + '}';
     }
 }

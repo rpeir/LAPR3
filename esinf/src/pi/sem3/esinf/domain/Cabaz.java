@@ -1,16 +1,16 @@
-package pi.sem3.esinf.domain;
+package esinf_sem3_pi.domain;
 
 import java.util.List;
 
 public class Cabaz {
 
-    private ClienteProdutorEmpresa clienteProdutorEmpresa;
+    private String clienteProdutorEmpresa;
 
-    private String diaDeProducao;
+    private int diaDeProducao;
 
     private List<Produto> produtos;
 
-    public Cabaz(ClienteProdutorEmpresa clienteProdutorEmpresa, String diaDeProducao, List<Produto> produtos) {
+    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Produto> produtos) {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
         this.produtos = produtos;
@@ -20,11 +20,11 @@ public class Cabaz {
         return produtos;
     }
 
-    public ClienteProdutorEmpresa getClienteProdutor() {
+    public String getClienteProdutor() {
         return clienteProdutorEmpresa;
     }
 
-    public String getDiaDeProducao() {
+    public int getDiaDeProducao() {
         return diaDeProducao;
     }
 }
