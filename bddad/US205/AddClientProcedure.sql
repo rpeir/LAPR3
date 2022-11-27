@@ -1,12 +1,25 @@
-DROP TABLE Utilizador CASCADE CONSTRAINTS;
 DROP TABLE Cliente CASCADE CONSTRAINTS;
+DROP TABLE Nivel CASCADE CONSTRAINTS;
 
-CREATE TABLE Utilizador (
-    codUtilizador number(10) GENERATED AS IDENTITY,
-    email varchar2(250) NOT NULL UNIQUE,
-    password varchar2(250) NOT NULL,
-    PRIMARY KEY (codUtilizador)
+CREATE TABLE Nivel (
+    codNivel number(10) GENERATED AS IDENTITY,
+    letra varchar2(250) NOT NULL UNIQUE,
+    PRIMARY KEY (codNivel)
 );
+
+CREATE OR REPLACE FUNCTION adicionarNivel (
+    n_letra IN Nivel.letra%TYPE
+)  return Nivel.codNivel%TYPE
+
+is
+    codNivel Nivel.codNivel%TYPE;
+begin
+    INSERT INTO Nivel (letra)
+    VALUES (n_letra)
+    RETURNING codNivel INTO codNivel;
+    RETURN codNivel;
+end;
+/
 
 CREATE TABLE Cliente (
     codCliente number(10) GENERATED AS IDENTITY,
@@ -17,6 +30,8 @@ CREATE TABLE Cliente (
     moradaCor VARCHAR2(250) NOT NULL,
     moradaEnt VARCHAR2(250) NOT NULL,
     plafond number(10) NOT NULL,
+    codNivel number(10) NOT NULL,
+    FOREIGN KEY (codNivel) REFERENCES Nivel(codNivel),
     PRIMARY KEY (codCliente)
 );
 
@@ -29,26 +44,18 @@ CREATE OR REPLACE FUNCTION adicionarNovoCliente (
     c_moradaCor IN Cliente.moradaCor%type,
     c_moradaEnt IN Cliente.moradaEnt%type,
     c_plafond IN Cliente.plafond%type,
+    c_codNivel IN Cliente.codNivel%type
 
-    -- atributos do utilizador
-    u_email IN Utilizador.email%type,
-    u_password IN Utilizador.password%type
 ) return Cliente.codCliente%type
 
 is
     codCliente Cliente.codCliente%type;
-    codUtilizador Utilizador.codUtilizador%type;
 
 begin
     -- inserir cliente
-    INSERT INTO Cliente (codInt, nome, nrFiscal, email, moradaCor, moradaEnt, plafond)
-    VALUES (c_codInt, c_nome, c_nrFiscal, c_email, c_moradaCor, c_moradaEnt, c_plafond)
+    INSERT INTO Cliente (codInt, nome, nrFiscal, email, moradaCor, moradaEnt, plafond, codNivel)
+    VALUES (c_codInt, c_nome, c_nrFiscal, c_email, c_moradaCor, c_moradaEnt, c_plafond, c_codNivel)
     RETURNING codCliente INTO codCliente;
-
-    -- inserir utilizador
-    INSERT INTO Utilizador (email, password)
-    VALUES (u_email, u_password)
-    RETURNING codUtilizador INTO codUtilizador;
 
     -- retornar o código do cliente
     return codCliente;
@@ -137,16 +144,14 @@ CREATE OR REPLACE FUNCTION criarCliente (
     c_email Cliente.email%type,
     c_moradaCor Cliente.moradaCor%type,
     c_moradaEnt Cliente.moradaEnt%type,
-    c_plafond Cliente.plafond%type,
+    c_plafond Cliente.plafond%type
 
-    -- atributos do utilizador
-    u_email Utilizador.email%type,
-    u_password Utilizador.password%type
 ) return Cliente.codCliente%type
 
 is
     c_codCliente Cliente.codCliente%type;
-    codUtilizador Utilizador.codUtilizador%type;
+    c_codNivel Cliente.codNivel%type;
+    n_letra Nivel.letra%type;
 
 begin
 
@@ -156,7 +161,9 @@ begin
     checkEmail(c_email);
     checkNrFiscal(c_nrFiscal);
     checkPlafond(c_plafond);
-    c_codCliente := adicionarNovoCliente(c_codInt, c_nome, c_nrFiscal, c_email, c_moradaCor, c_moradaEnt, c_plafond, u_email, u_password);
+    n_letra := 'C';
+    c_codNivel := adicionarNivel(n_letra);
+    c_codCliente := adicionarNovoCliente(c_codInt, c_nome, c_nrFiscal, c_email, c_moradaCor, c_moradaEnt, c_plafond, c_codNivel);
     dbms_output.put_line('Cliente inserido com id: ' || c_codCliente);
 return c_codCliente;
 
@@ -171,6 +178,6 @@ end;
 DECLARE
       success_code NUMBER;
 begin
-      success_code := criarCliente(67, 'joao', 123456789, 'abcd1234@gmail.com', 'rua do isep', 'rua do isep dois', 1600, '1234abcd@gmail.com', 'abcd1234');
+      success_code := criarCliente(67, 'joao', 123456789, 'abcd1234@gmail.com', 'rua do isep', 'rua do isep dois', 1600);
       rollback;
 end;
