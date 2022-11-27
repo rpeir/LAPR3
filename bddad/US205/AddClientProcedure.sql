@@ -171,6 +171,6 @@ end;
 DECLARE
       success_code NUMBER;
 begin
-      success_code := criarCliente(1, 'joao', 123456789, 'abcd1234@gmail.com', 'rua do isep', 'rua do isep dois', 1600, '1234abcd@gmail.com', 'abcd1234');
+      success_code := criarCliente(67, 'joao', 123456789, 'abcd1234@gmail.com', 'rua do isep', 'rua do isep dois', 1600, '1234abcd@gmail.com', 'abcd1234');
       rollback;
 end;
