@@ -10,6 +10,7 @@ CREATE TABLE Utilizador (
     PRIMARY KEY (codUtilizador)
 );
 
+
 CREATE TABLE Nivel (
     codNivel number(10) GENERATED AS IDENTITY,
     letra varchar2(250) NOT NULL UNIQUE,
