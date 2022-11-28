@@ -34,9 +34,7 @@ table( TipoSensor ) {
 table( Leitura ) {
     primary_key( codLeitura ): INTEGER
     foreign_key( idSensor ): INTEGER
-    column( hora ): INTEGER
-    column( data ): DATE
-    column( minuto ): INTEGER
+    column( instanteLeitura ): DATE
     column( valorLido ): INTEGER
 }
 
