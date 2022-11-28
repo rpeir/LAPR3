@@ -21,7 +21,7 @@ table( EstacaoMeteorologica ) {
 }
 
 table( Sensor ) {
-    primary_key( codSensor ): INTEGER
+    primary_key( IdSensor ): INTEGER
     foreign_key(codTipoSensor): VARCHAR
     foreign_key( codEstacaoMeteorologica ): INTEGER
     column( valorReferencia ): INTEGER
@@ -33,7 +33,7 @@ table( TipoSensor ) {
 
 table( Leitura ) {
     primary_key( codLeitura ): INTEGER
-    foreign_key( codSensor ): INTEGER
+    foreign_key( idSensor ): INTEGER
     column( hora ): INTEGER
     column( data ): DATE
     column( minuto ): INTEGER
@@ -146,47 +146,81 @@ table( SetorAgricola_Colheita_Cultura ) {
     foreign_key(primary_key( codSetorAgricola )): INTEGER
     foreign_key(primary_key( codColheita )): INTEGER
     foreign_key(primary_key( codCultura )): INTEGER
-    column( valorToneladas ): FLOAT
+    column( valorSetor ): FLOAT
 }
 
 table( Produto ) {
     primary_key( codProduto ): INTEGER
     foreign_key( codCultura ): INTEGER
+    foreign_key( codColheita ): INTEGER
     column( preco/kg ): FLOAT
     column( stock/kg ): FLOAT
     column( designacao ): VARCHAR
 }
 
+table( Colheita_Cultura ){
+    foreign_key(primary_key( codColheita )): INTEGER
+    foreign_key(primary_key( codCultura )): INTEGER
+    column( valorTotal ): FLOAT
+}
+
+table( Pedido_Produto ) {
+    primary_key( codPedidoProduto ): INTEGER
+    foreign_key( codPedido ): INTEGER
+    foreign_key( codProduto ): INTEGER
+    column( quantidadeProduto ): FLOAT
+    column( precoPedido ): FLOAT
+}
+
+table( Pedido ) {
+    primary_key( codPedido ): INTEGER
+    foreign_key( codInterno ): INTEGER
+    column( valorTotal ): FLOAT
+    column( dataPedido ): DATE
+    column( dataVencimento ): DATE
+}
+
+table( Entrega ) {
+    primary_key( codEntrega ): INTEGER
+    foreign_key( codMorada ): INTEGER
+    column( dataEntrega ): DATE
+}
+
+table( Incidente ) {
+    primary_key( codIncidente ): INTEGER
+    foreign_key( codPedido ): INTEGER
+    foreign_key( codInterno ): INTEGER
+    column( dataOcorrencia ): DATE
+}
+
 table( Cliente ) {
-    primary_key( codClient ): INTEGER
+    primary_key( codInterno ): INTEGER
     column( tipo ): VARCHAR
-    column( codInterno ): INTEGER
     column( nome ): VARCHAR
     column( emailCliente ): VARCHAR
     column( plafond ): INTEGER
     column( nrFiscal ): INTEGER
     column( moradaEntrega ): VARCHAR
     column( moradaCorrespondencia ): VARCHAR
-    foreign_key( codMoradaEntrega ): INTEGER
-    foreign_key( codMoradaCorrespondencia ): INTEGER
 }
 
 table( MoradaEntrega ) {
-    primary_key( codMoradaEntrega ): INTEGER
-    foreign_key( codMorada ): INTEGER
+    foreign_key(primary_key( codInterno )): INTEGER
+    foreign_key( primary_key( codMorada )): INTEGER
 }
 
 table( MoradaCorrespondencia ) {
-    primary_key( codMoradaCorrespondencia ): INTEGER
-    foreign_key( codMorada ): INTEGER
+    foreign_key(primary_key( codInterno )): INTEGER
+    foreign_key( primary_key( codMorada )): INTEGER
 }
 
 table( Morada ) {
     primary_key( codMorada ): INTEGER
     column( rua ): VARCHAR
+    column( nrEdificio ): INTEGER
     column( andar ): INTEGER
-    column( nrPorta ): INTEGER
-    column( codPostal ): INTEGER
+    column( porta ): VARCHAR
+    column( codPostal ): VARCHAR
     column( localidade ): VARCHAR
     column( pais ): VARCHAR
 }
@@ -196,16 +230,11 @@ table( Nivel ) {
     column( designacaoNivel ): VARCHAR
 }
 
-table( Incidente ) {
-    primary_key( codIncidente ): INTEGER
-    column( dataOcorrencia ): DATE
-}
-
-table( Pedido ) {
-    primary_key( codPedido ): INTEGER
-    column( valorTotal ): INTEGER
-    column( dataPedido ): DATE
-    column( dataVencimento ): DATE
+table( Cliente_nivel ) {
+    primary_key( codClienteNivel ): INTEGER
+    foreign_key( codInterno ): INTEGER
+    foreign_key( codNivel ): INTEGER
+    column( dataAtribuicao ): DATE
 }
 
 table( Pagamento ) {
@@ -213,82 +242,26 @@ table( Pagamento ) {
     column( dataPagamento ): DATE
 }
 
-table( Entrega ) {
-    primary_key( codEntrega ): INTEGER
-    column( dataEntrega ): DATE
+table( Pedido_Pagamento_Entrega ) {
+    foreign_key( primary_key( codPedido )): INTEGER
+    foreign_key( primary_key( codPagamento )): INTEGER
+    foreign_key( primary_key( codEntrega )): INTEGER
+    column( estadoAtual ): VARCHAR
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 table( InstalacaoAgricola ) {
     primary_key( codInstalacaoAgricola ): INTEGER
+    column( designacao ): VARCHAR
 }
-
-
 
 table( Edificio ) {
     primary_key( codEdificio ): INTEGER
-}
-
-table( Estabulo ) {
-    primary_key( codEstabulo ): INTEGER
-}
-
-table( Armazem ) {
-    primary_key( codArmazem ): INTEGER
-}
-
-table( Garagem ) {
-    primary_key( codGaragem ): INTEGER
-}
-
-' Tabelas que surgiram de relacoes
-table( Cliente_nivel ) {
-    primary_key( codClienteNivel ): INTEGER
-    foreign_key( codClient ): INTEGER
-    foreign_key( codNivel ): INTEGER
-}
-
-
-
-
-
-table( Pedido_Produto ) {
-    primary_key( codPedidoProduto ): INTEGER
-    column( quantidadeProduto ): INTEGER
-    column( precoPedido ): INTEGER
-    foreign_key( codPedido ): INTEGER
-    foreign_key( codProduto ): INTEGER
-}
-
-table( Pedido_Pagamento_Entrega ) {
-    primary_key( codPedidoPagamento ): INTEGER
-    column( estadoAtual ): VARCHAR
-    foreign_key( codPedido ): INTEGER
-    foreign_key( codPagamento ): INTEGER
-    foreign_key( codEntrega ): INTEGER
+    column( tipoEdificio ): VARCHAR
 }
 
 ' cardinalidades
-Cliente ||--|{ Incidente
-Cliente ||--|{ Pedido
-Edificio ||--|{ Estabulo
-Edificio ||--|{ Armazem
-Edificio ||--|{ Garagem
+Cliente ||--o{ Incidente
+Cliente ||--o{ Pedido
 InstalacaoAgricola ||--|{ Edificio
 Cliente ||--|{ Cliente_nivel
 Cliente_nivel }|--|| Nivel
@@ -302,9 +275,11 @@ EstacaoMeteorologica ||--|| ZonaGeografica
 EstacaoMeteorologica ||--|{ Sensor
 TipoSensor ||--|{ Sensor
 Sensor ||--|{ Leitura
-Pedido ||--|| Incidente
-Morada ||--|| Entrega
-Pedido ||--|| Entrega
+Pedido ||--o| Incidente
+Morada ||--o{ Entrega
+Pedido ||--|| Pedido_Pagamento_Entrega
+Pagamento |o--|| Pedido_Pagamento_Entrega
+Entrega |o--|| Pedido_Pagamento_Entrega
 Produto }|--|| Cultura
 Operacao ||--|| Rega
 CalendarioOperacoes ||--|{ Operacao
@@ -317,8 +292,10 @@ FatoresProducao ||--|| AplicacaoFatorProducao
 Cultura ||--|| AplicacaoFatorProducao
 Operacao ||--|| AplicacaoFatorProducao
 SetorAgricola ||--|| AplicacaoFatorProducao
-Morada ||--|{ MoradaEntrega
-Entrega ||--|| MoradaEntrega
+Morada ||--|| MoradaEntrega
+Cliente ||--|| MoradaEntrega
+Morada ||--|| MoradaCorrespondencia
+Cliente ||--|| MoradaCorrespondencia
 AplicacaoRega ||--|| Cultura
 AplicacaoRega ||--|| SetorAgricola
 AplicacaoRega ||--|| Rega
@@ -329,7 +306,9 @@ Rega ||--|| Cultura_Rega
 PlanoRega ||--|{ Cultura_Rega
 PlanoRega ||--|{ PlanoAnual_SetorAgricola
 
-SetorAgricola_Colheita_Cultura ||--|| Colheita
-SetorAgricola_Colheita_Cultura ||--|| Cultura
 SetorAgricola_Colheita_Cultura ||--|| SetorAgricola
+Colheita_Cultura ||--|| Colheita
+Colheita_Cultura ||--|| Cultura
+Colheita_Cultura ||--|{ SetorAgricola_Colheita_Cultura
+Produto }|--|| Colheita_Cultura
 @enduml
