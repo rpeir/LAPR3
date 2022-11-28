@@ -220,6 +220,17 @@ begin
 end;
 /
 
+CREATE OR REPLACE PROCEDURE checkPass (pass IN Utilizador.pass%type)
+is
+begin
+    if (pass is NULL) then
+        RAISE_APPLICATION_ERROR(-20000, 'password não pode ser nula!');
+    elsif NOT (REGEXP_LIKE(pass, '[a-zA-Z]{5}')) then
+        RAISE_APPLICATION_ERROR(-20000, 'password invalida!');
+    end if;
+end;
+/
+
 CREATE OR REPLACE PROCEDURE checkPlafond (plafond IN Cliente.Plafond%TYPE)
 
 IS
@@ -302,6 +313,7 @@ begin
     checkAndar(c_andar);
     checkNrPorta(c_nrPorta);
     checkLocalidade(c_localidade);
+    checkPass(u_pass);
     n_letra := 'C';
     c_codNivel := adicionarNivel(n_letra);
     c_codUtilizador := adicionarNovoUtilizador(c_email, u_pass);
@@ -317,6 +329,6 @@ end;
 DECLARE
       success_code NUMBER;
 begin
-      success_code := criarCliente(67, 'joao', 123456789, 'abcd1234@gmail.com', 1600, '4445-320', 'rua da constituicao', 'portugal', 9, 256, 'porto', 'abdfbfbhg');
+      success_code := criarCliente(67, 'joao', 123456789, 'abcd1234@gmail.com', 1600, '4445-320', 'rua da constituicao', 'portugal', 9, 256, 'porto', 'agfhyjyu');
       rollback;
 end;
