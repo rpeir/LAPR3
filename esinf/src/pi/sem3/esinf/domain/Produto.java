@@ -1,12 +1,13 @@
+package esinf_sem3_pi.domain;
 public class Produto {
 
-    int id;
+    double id;
 
-    public Produto(int id) {
+    public Produto(double id) {
         this.id = id;
     }
 
-    public int getId() {
+    public double getId() {
         return id;
     }
 

@@ -1,0 +1,280 @@
+@startuml
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+' Zero or One	|o--
+' Exactly One	||--
+' Zero or Many	}o--
+' One or Many	}|--
+
+' Entidades com atributos proprios
+table( Cliente ) {
+    primary_key( codClient ): INTEGER
+    column( tipo ): VARCHAR
+    column( codInterno ): INTEGER
+    column( nome ): VARCHAR
+    column( emailCliente ): VARCHAR
+    column( plafond ): INTEGER
+    column( nrFiscal ): INTEGER
+    column( moradaEntrega ): VARCHAR
+    column( moradaCorrespondencia ): VARCHAR
+    foreign_key( codMoradaEntrega ): INTEGER
+    foreign_key( codMoradaCorrespondencia ): INTEGER
+}
+
+table( MoradaEntrega ) {
+    primary_key( codMoradaEntrega ): INTEGER
+    foreign_key( codMorada ): INTEGER
+}
+
+table( MoradaCorrespondencia ) {
+    primary_key( codMoradaCorrespondencia ): INTEGER
+    foreign_key( codMorada ): INTEGER
+}
+
+table( Morada ) {
+    primary_key( codMorada ): INTEGER
+    column( rua ): VARCHAR
+    column( andar ): INTEGER
+    column( nrPorta ): INTEGER
+    column( codPostal ): INTEGER
+    column( localidade ): VARCHAR
+    column( pais ): VARCHAR
+}
+
+table( Nivel ) {
+    primary_key( codNivel ): INTEGER
+    column( designacaoNivel ): VARCHAR
+}
+
+table( Incidente ) {
+    primary_key( codIncidente ): INTEGER
+    column( dataOcorrencia ): DATE
+}
+
+table( Pedido ) {
+    primary_key( codPedido ): INTEGER
+    column( valorTotal ): INTEGER
+    column( dataPedido ): DATE
+    column( dataVencimento ): DATE
+}
+
+table( Pagamento ) {
+    primary_key( codPagamento ): INTEGER
+    column( dataPagamento ): DATE
+}
+
+table( Entrega ) {
+    primary_key( codEntrega ): INTEGER
+    column( dataEntrega ): DATE
+}
+
+table( Colheita ) {
+    primary_key( codColheita ): INTEGER
+    column( anoColheita ): INTEGER
+}
+
+table( Produto ) {
+    primary_key( codProduto ): INTEGER
+    column( preco/kg ): INTEGER
+    column( stock/kg ): INTEGER
+    column( codProduto ): INTEGER
+    column( designacao ): VARCHAR
+}
+
+table( Cultura ) {
+    primary_key( codCultura ): INTEGER
+    column( designacaoCultura ): VARCHAR
+    column( tipoCultura ): VARCHAR
+    column( objetivoCultura ): VARCHAR
+}
+
+table( SetorAgricola ) {
+    primary_key( codSetorAgricola ): INTEGER
+    column( designacaoSetorAgricola ): VARCHAR
+    column( areaSetorAgricola ): INTEGER
+}
+
+table( Rega ) {
+    primary_key( codRega ): INTEGER
+    column( tempoRega ): INTEGER
+}
+
+table( Operacao ) {
+    primary_key( codOperacao ): INTEGER
+    column( dataOperacao ): DATE
+    column( formaAplicacao ): VARCHAR
+    column( estadoOperacao ): VARCHAR
+}
+
+table( PlanoAnual ) {
+    primary_key( codPlanoAnual ): INTEGER
+    column( anoPlanoAnual ): INTEGER
+}
+
+table( ZonaGeografica ) {
+    primary_key( codZonaGeografica ): INTEGER
+    column( designacaoZonaGeografica ): VARCHAR
+}
+
+table( FatoresProducao ) {
+    primary_key( codFatoresProducao ): INTEGER
+    column( tipoFatorProducao ): VARCHAR
+    column( preco/kg ): INTEGER
+    column( nomeComercial ): VARCHAR
+    column( formulacao ): VARCHAR
+    column( fichaTecnica ): VARCHAR
+}
+
+table( EstacaoMeteorologica ) {
+    primary_key( codEstacaoMeteorologica ): INTEGER
+}
+
+table( Sensor ) {
+    primary_key( codSensor ): INTEGER
+    column( valorReferencia ): INTEGER
+}
+
+table( TipoSensor ) {
+    primary_key( codTipoSensor ): INTEGER
+}
+
+table( Leitura ) {
+    primary_key( codLeitura ): INTEGER
+    column( hora ): INTEGER
+    column( data ): DATE
+    column( minuto ): INTEGER
+    column( valorLido ): INTEGER
+}
+
+table( InstalacaoAgricola ) {
+    primary_key( codInstalacaoAgricola ): INTEGER
+}
+
+table( CalendarioOperacoes ) {
+    primary_key( codCalendarioOperacoes ): INTEGER
+    column( ano ): INTEGER
+}
+
+table( Edificio ) {
+    primary_key( codEdificio ): INTEGER
+}
+
+table( Estabulo ) {
+    primary_key( codEstabulo ): INTEGER
+}
+
+table( Armazem ) {
+    primary_key( codArmazem ): INTEGER
+}
+
+table( Garagem ) {
+    primary_key( codGaragem ): INTEGER
+}
+
+' Tabelas que surgiram de relacoes
+table( Cliente_nivel ) {
+    primary_key( codClienteNivel ): INTEGER
+    foreign_key( codClient ): INTEGER
+    foreign_key( codNivel ): INTEGER
+}
+
+table( Sensor_Leitura) {
+    primary_key( codSensorLeitura ): INTEGER
+    foreign_key( codSensor ): INTEGER
+    foreign_key( codLeitura ): INTEGER
+}
+
+table( Restricao ) {
+    primary_key( codRestricaoFatoresProducaoZonaGeografica ): INTEGER
+    column( periodo ): INTEGER
+    foreign_key( codFatoresProducao ): INTEGER
+    foreign_key( codZonaGeografica ): INTEGER
+}
+
+table( SetorAgricola_Cultura ) {
+    primary_key( codSetorAgricolaCultura ): INTEGER
+    column( periodoCultura ): INTEGER
+    foreign_key( codSetorAgricola ): INTEGER
+    foreign_key( codCultura ): INTEGER
+}
+
+table( Pedido_Produto ) {
+    primary_key( codPedidoProduto ): INTEGER
+    column( quantidadeProduto ): INTEGER
+    column( precoPedido ): INTEGER
+    foreign_key( codPedido ): INTEGER
+    foreign_key( codProduto ): INTEGER
+}
+
+table( Pedido_Pagamento_Entrega ) {
+    primary_key( codPedidoPagamento ): INTEGER
+    column( estadoAtual ): VARCHAR
+    foreign_key( codPedido ): INTEGER
+    foreign_key( codPagamento ): INTEGER
+    foreign_key( codEntrega ): INTEGER
+}
+
+table( PlanoAnual_Operacao ) {
+    primary_key( codPlanoAnualOperacao ): INTEGER
+    column( dataPrevista ): DATE
+    foreign_key( codPlanoAnual ): INTEGER
+    foreign_key( codOperacao ): INTEGER
+}
+
+table( Rega_SetorAgricula ) {
+    primary_key( codRegaSetorAgricula ): INTEGER
+    foreign_key( codRega ): INTEGER
+    foreign_key( codSetorAgricola ): INTEGER
+}
+
+table( FatoresProducao_SetorAgricola ) {
+    primary_key( codFatoresProducaoSetorAgricola ): INTEGER
+    foreign_key( codFatoresProducao ): INTEGER
+    foreign_key( codSetorAgricola ): INTEGER
+}
+
+
+
+' cardinalidades
+Cliente ||--|{ Incidente
+Cliente ||--|{ Pedido
+Edificio ||--|{ Estabulo
+Edificio ||--|{ Armazem
+Edificio ||--|{ Garagem
+InstalacaoAgricola ||--|{ Edificio
+Cliente ||--|{ Cliente_nivel
+Cliente_nivel }|--|| Nivel
+InstalacaoAgricola ||--|{ SetorAgricola
+SetorAgricola ||--|| Colheita
+Cultura ||--|{ SetorAgricola_Cultura
+SetorAgricola_Cultura }|--|| SetorAgricola
+Pedido ||--|{ Pedido_Produto
+Pedido_Produto }|--|| Produto
+EstacaoMeteorologica ||--|| ZonaGeografica
+EstacaoMeteorologica ||--|{ Sensor
+TipoSensor ||--|{ Sensor
+Sensor ||--|{ Sensor_Leitura
+Sensor_Leitura }|--|| Leitura
+Pedido ||--|| Incidente
+Morada ||--|| Entrega
+Pedido ||--|| Entrega
+Produto }|--|| Cultura
+Operacao ||--|| Rega
+CalendarioOperacoes ||--|{ Operacao
+FatoresProducao ||--|{ Restricao
+Restricao }|--|| ZonaGeografica
+Incidente ||--|| Pagamento
+SetorAgricola }|--|| ZonaGeografica
+PlanoAnual ||--|{ PlanoAnual_Operacao
+PlanoAnual_Operacao }|--|| Operacao
+Rega ||--|{ Rega_SetorAgricula
+Rega_SetorAgricula }|--|| SetorAgricola
+FatoresProducao ||--|{ FatoresProducao_SetorAgricola
+FatoresProducao_SetorAgricola }|--|| SetorAgricola
+Morada ||--|{ MoradaEntrega
+Entrega ||--|| MoradaEntrega
+
+@enduml
