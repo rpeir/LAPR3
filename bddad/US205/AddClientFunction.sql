@@ -5,7 +5,7 @@ DROP TABLE Utilizador CASCADE CONSTRAINTS;
 
 CREATE TABLE Utilizador (
     codUtilizador NUMBER(10) GENERATED AS IDENTITY,
-    email VARCHAR2(50) NOT NULL,
+    email VARCHAR2(50) NOT NULL UNIQUE,
     pass VARCHAR2(50) NOT NULL,
     PRIMARY KEY (codUtilizador)
 );
@@ -321,7 +321,12 @@ begin
     c_codMoradaCorrespondencia := adicionarMorada(c_codPostal, c_rua, c_pais, c_andar, c_nrPorta, c_localidade);
     c_codCliente := adicionarNovoCliente(c_codUtilizador, c_codInt, c_nome, c_nrFiscal, c_email, c_plafond, c_codNivel, c_codMoradaEntrega, c_codMoradaCorrespondencia);
     dbms_output.put_line('Cliente inserido com id: ' || c_codCliente);
-return c_codCliente;
+    return c_codCliente;
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        dbms_output.put_line('Cliente nao foi inserido');
+        RETURN NULL;
 
 end;
 /
