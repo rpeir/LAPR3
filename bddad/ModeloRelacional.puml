@@ -198,10 +198,8 @@ table( Cliente ) {
     column( tipo ): VARCHAR
     column( nome ): VARCHAR
     column( emailCliente ): VARCHAR
-    column( plafond ): INTEGER
+    column( plafond ): FLOAT
     column( nrFiscal ): INTEGER
-    column( moradaEntrega ): VARCHAR
-    column( moradaCorrespondencia ): VARCHAR
 }
 
 table( MoradaEntrega ) {
