@@ -1,4 +1,4 @@
-package esinf_sem3_pi.domain;
+package pi.sem3.esinf.domain;
 
 public class ClienteProdutorEmpresa {
 

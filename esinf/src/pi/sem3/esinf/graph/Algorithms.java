@@ -144,20 +144,19 @@ public class Algorithms {
             pathKeys[g.key(vertices)] = null;
             visited[g.key(vertices)] = false;
         }
-        dist[g.key(vOrig)] = zero;
+        int vOrigKey = g.key(vOrig);
+        dist[vOrigKey] = zero;
         while (vOrig != null) {
-            visited[g.key(vOrig)] = true;
+            vOrigKey = g.key(vOrig);
+            visited[vOrigKey] = true;
             for (V vAdj : g.adjVertices(vOrig)) {
                 Edge<V, E> edge = g.edge(vOrig, vAdj);
-                if (!visited[g.key(vAdj)]) {
-                    if (dist[g.key(vAdj)] != null) {
-                        if (ce.compare(dist[g.key(vAdj)], sum.apply(dist[g.key(vOrig)], edge.getWeight())) > 0) {
-                            dist[g.key(vAdj)] = sum.apply(dist[g.key(vOrig)], edge.getWeight());
-                            pathKeys[g.key(vAdj)] = vOrig;
-                        }
-                    } else {
-                        dist[g.key(vAdj)] = edge.getWeight();
-                        pathKeys[g.key(vAdj)] = vOrig;
+                int vAdjKey = g.key(vAdj);
+                if (!visited[vAdjKey]) {
+                    E newDist = sum.apply(dist[vOrigKey], edge.getWeight());
+                    if (dist[vAdjKey] == null || ce.compare(dist[vAdjKey], newDist) > 0) {
+                        dist[vAdjKey] = newDist;
+                        pathKeys[vAdjKey] = vOrig;
                     }
                 }
             }
@@ -221,7 +220,7 @@ public class Algorithms {
             }
         } else {
             result = null;
-            shortPath.removeAll(shortPath);
+            shortPath.clear();
         }
         return result;
     }
@@ -241,17 +240,35 @@ public class Algorithms {
     public static <V, E> boolean shortestPaths(Graph<V, E> g, V vOrig,
                                                Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                ArrayList<LinkedList<V>> paths, ArrayList<E> dists) {
+
+        if (!g.validVertex(vOrig))
+            return false;
+
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];
-        V[] pathKeys = (V[]) new Object[numVertices];
-        E[] dist = (E[]) new Object[numVertices];
-        for (int i = 0; i < numVertices; i++) {
-            visited[i] = false;
-            //
-            // dist[i] =;
-        }
+        V[] pathKeys = (V[]) new Object [numVertices];
+        E[] dist = (E[]) new Object [numVertices];
+
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
-        throw new UnsupportedOperationException("Not implemented yet!");
+
+        dists.clear();
+        paths.clear();
+
+        for (int i = 0; i < numVertices; i++) {
+            paths.add(null);
+            dists.add(null);
+        }
+
+        for (V vDest : g.vertices()) {
+            int i = g.key(vDest);
+            if (dist[i] != null) {
+                LinkedList<V> shortPath = new LinkedList<>();
+                getPath(g, vOrig, vDest, pathKeys, shortPath);
+                paths.set(i, shortPath);
+                dists.set(i, dist[i]);
+            }
+        }
+        return true;
     }
 
     /**
@@ -291,7 +308,10 @@ public class Algorithms {
                 if (i != k && matrix.edge(i, k) != null) {
                     for (int j = 0; j < n; j++) {
                         if (i != j && k != j && matrix.edge(k, j) != null) {
-                            matrix.addEdge(matrix.vertex(i), matrix.vertex(j), sum.apply(matrix.edge(i, k).getWeight(), matrix.edge(k, j).getWeight()));
+                            E newSum = sum.apply(matrix.edge(i, k).getWeight(), matrix.edge(k, j).getWeight());
+                            if (matrix.edge(i,j) == null || ce.compare(matrix.edge(i, j).getWeight(), newSum) > 0) {
+                                matrix.addEdge(matrix.vertex(i), matrix.vertex(j), newSum);
+                            }
                         }
                     }
                 }
