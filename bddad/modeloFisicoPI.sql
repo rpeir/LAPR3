@@ -1,6 +1,3 @@
-drop table Clientes;
-drop table Moradas;
-
 create table Clientes (
 codInterno integer,
 tipo varchar(1) constraint ckTipoCliente CHECK(tipo='P' OR tipo='E'),
