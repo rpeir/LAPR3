@@ -3,10 +3,7 @@ package pi.sem3.esinf.graph;
 
 import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.function.BinaryOperator;
 
 /**
@@ -199,20 +196,23 @@ public class Algorithms {
     public static <V, E> E shortestPath(Graph<V, E> g, V vOrig, V vDest,
                                         Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                         LinkedList<V> shortPath) {
+        if (!g.validVertex(vOrig) || !g.validVertex(vDest))
+            return null;
+
+        shortPath.clear();
+        int numVertices = g.numVertices();
         E result = zero;
-        E dist[] = (E[]) new Object[g.numVertices()];
-        V[] pathKeys = (V[]) new Object[g.numVertices()];
-        if (!g.validVertex(vOrig))
-            return null;
-        if (!g.validVertex(vDest))
-            return null;
-        boolean[] visited = new boolean[g.numVertices()];
-        for (int i = 0; i < g.numVertices(); i++) {
+        E dist[] = (E[]) new Object[numVertices];
+        V[] pathKeys = (V[]) new Object[numVertices];
+
+        boolean[] visited = new boolean[numVertices];
+        for (int i = 0; i < numVertices; i++) {
             visited[i] = false;
         }
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
         getPath(g, vOrig, vDest, pathKeys, shortPath);
+
         if (shortPath.contains(vDest)) {
             for (int i = 0; i < shortPath.size() - 1; i++) {
                 Edge<V, E> edge = g.edge(shortPath.get(i), shortPath.get(i + 1));
@@ -341,4 +341,96 @@ public class Algorithms {
         return minConnections;
     }
 
+    /**
+     * Determines a Minimum Spanning Tree using Kruskal's algorithm
+     *
+     * @param g The graph to be processed
+     * @param ce Comparator<E>
+     * @return A minimum spanning tree
+     */
+    public static <V, E> Graph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
+        Graph<V, E> mst = new MatrixGraph<>(false, g.numVertices());
+
+        for (V vert : g.vertices()) {
+            mst.addVertex(vert);
+        }
+
+        List<Edge<V, E>> lstEdges = new ArrayList<>(g.edges());
+        lstEdges.sort(new Comparator<Edge<V, E>>() {
+            @Override
+            public int compare(Edge<V, E> o1, Edge<V, E> o2) {
+                return ce.compare(o1.getWeight(), o2.getWeight());
+            }
+        });
+
+        for (Edge<V, E> edge : lstEdges) {
+            V vOrig = edge.getVOrig();
+            V vDest = edge.getVDest();
+            List<V> connectedVerts = DepthFirstSearch(mst, vOrig);
+            if (connectedVerts != null && !connectedVerts.contains(vDest)) {
+                mst.addEdge(vOrig,vDest,edge.getWeight());
+            }
+        }
+        return mst;
+    }
+
+    /**
+     * Determines a Minimum Spanning Tree using Prim's algorithm
+     *
+     * @param g the graph
+     * @param ce Comparator<E>
+     * @param zero the zero value for the edge weights.
+     * @return A minimum spanning tree.
+     */
+    public static <V, E> Graph<V, E> prim(Graph<V, E> g, Comparator<E> ce, E zero) {
+        int numVertices = g.numVertices();
+        boolean[] visited = new boolean[numVertices];
+        V[] pathKeys = (V[]) new Object [numVertices];
+        E[] dist = (E[]) new Object [numVertices];
+
+        int vOrigKey = 0;
+        V vOrig = g.vertex(0);
+        dist[vOrigKey] = zero;
+
+        while (vOrig != null) {
+            vOrigKey = g.key(vOrig);
+            visited[vOrigKey] = true;
+            for (V vAdj : g.adjVertices(vOrig)) {
+                Edge<V, E> edge = g.edge(vOrig, vAdj);
+                E newDist = edge.getWeight();
+                int vAdjKey = g.key(vAdj);
+                if (!visited[vAdjKey]) {
+                    if (dist[vAdjKey] == null || ce.compare(dist[vAdjKey], newDist) > 0) {
+                        dist[vAdjKey] = newDist;
+                        pathKeys[vAdjKey] = vOrig;
+                    }
+                }
+                vOrig = getVertMinDist(g, dist, visited, ce, zero);
+            }
+        }
+
+        return buildMst(g, pathKeys, dist);
+    }
+
+    private static <V, E> Graph<V,E> buildMst(Graph<V,E> g, V[] pathKeys, E[] dist) {
+        Graph<V, E> mst = new MatrixGraph<>(false);
+        for (V vert : g.vertices()) {
+            mst.addVertex(vert);
+        }
+
+        int numVertices = g.numVertices();
+        boolean[] treated = new boolean[numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            treated[i] = true;
+            V vDest = pathKeys[i];
+            if (vDest != null) {
+                int j = mst.key(vDest);
+                if (!treated[j]) {
+                    mst.addEdge(mst.vertex(i), vDest, dist[i]);
+                }
+            }
+        }
+
+        return mst;
+    }
 }
