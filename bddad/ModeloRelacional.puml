@@ -249,6 +249,7 @@ table( Pedido_Pagamento_Entrega ) {
 
 table( InstalacaoAgricola ) {
     primary_key( codInstalacaoAgricola ): INTEGER
+    foreign_key( codMorada ): INTEGER
     column( designacao ): VARCHAR
 }
 
@@ -309,4 +310,5 @@ Colheita_Cultura ||--|| Cultura
 Colheita_Cultura ||--|{ SetorAgricola_Colheita_Cultura
 Produto }|--|| Colheita_Cultura
 InstalacaoAgricola ||--|{ ZonaGeografica
+InstalacaoAgricola ||--|| Morada
 @enduml
