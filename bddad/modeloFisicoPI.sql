@@ -350,7 +350,7 @@ alter table Clientes_Niveis add constraint fk_clienteNivel_CodInterno FOREIGN KE
 alter table Clientes_Niveis add constraint fk_clienteNivel_CodNivel FOREIGN KEY (codNivel) references Niveis (codNivel);
 alter table Pedidos add constraint fk_pedidos_codInterno FOREIGN KEY (codInterno) references Clientes (codInterno);
 alter table Culturas add constraint ckTipoCultura CHECK(tipoCultura='P' OR tipoCultura='T' );
-alter table Culturas add constraint ckobjetivoCultura CHECK(tipoCultura ='A' OR tipoCultura ='C');
+alter table Culturas add constraint ckobjetivoCultura CHECK(objetivoCultura ='A' OR objetivoCultura ='C');
 alter table Regas add constraint fk_regas_codOperacao FOREIGN KEY (codOperacao) references Operacoes (codOperacao);
 alter table InstalacoesAgricolas add constraint fk_InstalacoesAgricolas_codMorada FOREIGN KEY (codMorada) references Moradas (codMorada);
 alter table ZonasGeograficas add constraint fk_ZonasGeograficas_CodInstalacaoAgricola FOREIGN KEY (codInstalacaoAgricola) references InstalacoesAgricolas (codInstalacaoAgricola);
