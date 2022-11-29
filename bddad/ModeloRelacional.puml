@@ -198,10 +198,8 @@ table( Cliente ) {
     column( tipo ): VARCHAR
     column( nome ): VARCHAR
     column( emailCliente ): VARCHAR
-    column( plafond ): INTEGER
+    column( plafond ): FLOAT
     column( nrFiscal ): INTEGER
-    column( moradaEntrega ): VARCHAR
-    column( moradaCorrespondencia ): VARCHAR
 }
 
 table( MoradaEntrega ) {
@@ -251,6 +249,7 @@ table( Pedido_Pagamento_Entrega ) {
 
 table( InstalacaoAgricola ) {
     primary_key( codInstalacaoAgricola ): INTEGER
+    foreign_key( codMorada ): INTEGER
     column( designacao ): VARCHAR
 }
 
@@ -311,4 +310,5 @@ Colheita_Cultura ||--|| Cultura
 Colheita_Cultura ||--|{ SetorAgricola_Colheita_Cultura
 Produto }|--|| Colheita_Cultura
 InstalacaoAgricola ||--|{ ZonaGeografica
+InstalacaoAgricola ||--|| Morada
 @enduml
