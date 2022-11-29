@@ -3,10 +3,7 @@ package pi.sem3.esinf.graph;
 
 import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.function.BinaryOperator;
 
 /**
@@ -144,20 +141,19 @@ public class Algorithms {
             pathKeys[g.key(vertices)] = null;
             visited[g.key(vertices)] = false;
         }
-        dist[g.key(vOrig)] = zero;
+        int vOrigKey = g.key(vOrig);
+        dist[vOrigKey] = zero;
         while (vOrig != null) {
-            visited[g.key(vOrig)] = true;
+            vOrigKey = g.key(vOrig);
+            visited[vOrigKey] = true;
             for (V vAdj : g.adjVertices(vOrig)) {
                 Edge<V, E> edge = g.edge(vOrig, vAdj);
-                if (!visited[g.key(vAdj)]) {
-                    if (dist[g.key(vAdj)] != null) {
-                        if (ce.compare(dist[g.key(vAdj)], sum.apply(dist[g.key(vOrig)], edge.getWeight())) > 0) {
-                            dist[g.key(vAdj)] = sum.apply(dist[g.key(vOrig)], edge.getWeight());
-                            pathKeys[g.key(vAdj)] = vOrig;
-                        }
-                    } else {
-                        dist[g.key(vAdj)] = edge.getWeight();
-                        pathKeys[g.key(vAdj)] = vOrig;
+                int vAdjKey = g.key(vAdj);
+                if (!visited[vAdjKey]) {
+                    E newDist = sum.apply(dist[vOrigKey], edge.getWeight());
+                    if (dist[vAdjKey] == null || ce.compare(dist[vAdjKey], newDist) > 0) {
+                        dist[vAdjKey] = newDist;
+                        pathKeys[vAdjKey] = vOrig;
                     }
                 }
             }
@@ -200,20 +196,23 @@ public class Algorithms {
     public static <V, E> E shortestPath(Graph<V, E> g, V vOrig, V vDest,
                                         Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                         LinkedList<V> shortPath) {
+        if (!g.validVertex(vOrig) || !g.validVertex(vDest))
+            return null;
+
+        shortPath.clear();
+        int numVertices = g.numVertices();
         E result = zero;
-        E dist[] = (E[]) new Object[g.numVertices()];
-        V[] pathKeys = (V[]) new Object[g.numVertices()];
-        if (!g.validVertex(vOrig))
-            return null;
-        if (!g.validVertex(vDest))
-            return null;
-        boolean[] visited = new boolean[g.numVertices()];
-        for (int i = 0; i < g.numVertices(); i++) {
+        E dist[] = (E[]) new Object[numVertices];
+        V[] pathKeys = (V[]) new Object[numVertices];
+
+        boolean[] visited = new boolean[numVertices];
+        for (int i = 0; i < numVertices; i++) {
             visited[i] = false;
         }
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
         getPath(g, vOrig, vDest, pathKeys, shortPath);
+
         if (shortPath.contains(vDest)) {
             for (int i = 0; i < shortPath.size() - 1; i++) {
                 Edge<V, E> edge = g.edge(shortPath.get(i), shortPath.get(i + 1));
@@ -221,7 +220,7 @@ public class Algorithms {
             }
         } else {
             result = null;
-            shortPath.removeAll(shortPath);
+            shortPath.clear();
         }
         return result;
     }
@@ -241,17 +240,35 @@ public class Algorithms {
     public static <V, E> boolean shortestPaths(Graph<V, E> g, V vOrig,
                                                Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                ArrayList<LinkedList<V>> paths, ArrayList<E> dists) {
+
+        if (!g.validVertex(vOrig))
+            return false;
+
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];
-        V[] pathKeys = (V[]) new Object[numVertices];
-        E[] dist = (E[]) new Object[numVertices];
-        for (int i = 0; i < numVertices; i++) {
-            visited[i] = false;
-            //
-            // dist[i] =;
-        }
+        V[] pathKeys = (V[]) new Object [numVertices];
+        E[] dist = (E[]) new Object [numVertices];
+
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
-        throw new UnsupportedOperationException("Not implemented yet!");
+
+        dists.clear();
+        paths.clear();
+
+        for (int i = 0; i < numVertices; i++) {
+            paths.add(null);
+            dists.add(null);
+        }
+
+        for (V vDest : g.vertices()) {
+            int i = g.key(vDest);
+            if (dist[i] != null) {
+                LinkedList<V> shortPath = new LinkedList<>();
+                getPath(g, vOrig, vDest, pathKeys, shortPath);
+                paths.set(i, shortPath);
+                dists.set(i, dist[i]);
+            }
+        }
+        return true;
     }
 
     /**
@@ -291,7 +308,10 @@ public class Algorithms {
                 if (i != k && matrix.edge(i, k) != null) {
                     for (int j = 0; j < n; j++) {
                         if (i != j && k != j && matrix.edge(k, j) != null) {
-                            matrix.addEdge(matrix.vertex(i), matrix.vertex(j), sum.apply(matrix.edge(i, k).getWeight(), matrix.edge(k, j).getWeight()));
+                            E newSum = sum.apply(matrix.edge(i, k).getWeight(), matrix.edge(k, j).getWeight());
+                            if (matrix.edge(i,j) == null || ce.compare(matrix.edge(i, j).getWeight(), newSum) > 0) {
+                                matrix.addEdge(matrix.vertex(i), matrix.vertex(j), newSum);
+                            }
                         }
                     }
                 }
@@ -321,4 +341,97 @@ public class Algorithms {
         return minConnections;
     }
 
+    /**
+     * Determines a Minimum Spanning Tree using Kruskal's algorithm
+     *
+     * @param g The graph to be processed
+     * @param ce Comparator<E>
+     * @return A minimum spanning tree
+     */
+    public static <V, E> Graph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
+        if (g.isDirected())
+            throw new RuntimeException("Graph must be undirected");
+
+        Graph<V, E> mst = new MatrixGraph<>(false, g.numVertices());
+
+        for (V vert : g.vertices()) {
+            mst.addVertex(vert);
+        }
+
+        List<Edge<V, E>> lstEdges = new ArrayList<>(g.edges());
+        lstEdges.sort(new Comparator<Edge<V, E>>() {
+            @Override
+            public int compare(Edge<V, E> o1, Edge<V, E> o2) {
+                return ce.compare(o1.getWeight(), o2.getWeight());
+            }
+        });
+
+        for (Edge<V, E> edge : lstEdges) {
+            V vOrig = edge.getVOrig();
+            V vDest = edge.getVDest();
+            List<V> connectedVerts = DepthFirstSearch(mst, vOrig);
+            if (connectedVerts != null && !connectedVerts.contains(vDest)) {
+                mst.addEdge(vOrig,vDest,edge.getWeight());
+            }
+        }
+        return mst;
+    }
+
+    /**
+     * Determines a Minimum Spanning Tree using Prim's algorithm
+     *
+     * @param g the graph
+     * @param ce Comparator<E>
+     * @param zero the zero value for the edge weights.
+     * @return A minimum spanning tree.
+     */
+    public static <V, E> Graph<V, E> prim(Graph<V, E> g, Comparator<E> ce, E zero) {
+        if (g.isDirected())
+            throw new RuntimeException("Graph must be undirected");
+
+        int numVertices = g.numVertices();
+        boolean[] visited = new boolean[numVertices];
+        V[] pathKeys = (V[]) new Object [numVertices];
+        E[] dist = (E[]) new Object [numVertices];
+
+        int vOrigKey = 0;
+        V vOrig = g.vertex(0);
+        dist[vOrigKey] = zero;
+
+        while (vOrig != null) {
+            vOrigKey = g.key(vOrig);
+            visited[vOrigKey] = true;
+            for (V vAdj : g.adjVertices(vOrig)) {
+                Edge<V, E> edge = g.edge(vOrig, vAdj);
+                E newDist = edge.getWeight();
+                int vAdjKey = g.key(vAdj);
+                if (!visited[vAdjKey]) {
+                    if (dist[vAdjKey] == null || ce.compare(dist[vAdjKey], newDist) > 0) {
+                        dist[vAdjKey] = newDist;
+                        pathKeys[vAdjKey] = vOrig;
+                    }
+                }
+            }
+            vOrig = getVertMinDist(g, dist, visited, ce, zero);
+        }
+
+        return buildMst(g, pathKeys, dist);
+    }
+
+    private static <V, E> Graph<V,E> buildMst(Graph<V,E> g, V[] pathKeys, E[] dist) {
+        Graph<V, E> mst = new MatrixGraph<>(false);
+        for (V vert : g.vertices()) {
+            mst.addVertex(vert);
+        }
+
+        int numVertices = g.numVertices();
+        for (int i = 0; i < numVertices; i++) {
+            V vDest = pathKeys[i];
+            if (vDest != null) {
+                mst.addEdge(mst.vertex(i), vDest, dist[i]);
+            }
+        }
+
+        return mst;
+    }
 }
