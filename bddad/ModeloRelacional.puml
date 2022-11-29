@@ -128,7 +128,7 @@ table( PlanoAnual_SetorAgricola ){
     foreign_key(primary_key( anoPlanoAnual )): INTEGER
     foreign_key( primary_key( codSetorAgricola )): INTEGER
     column( ordemRega ): INTEGER
-    column( periodicidadeRegaSetor ): VARCHAR
+    column( periodicidadeRegaSetor ): INTEGER
 }
 
 table( Cultura_Rega ){
