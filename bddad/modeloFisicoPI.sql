@@ -161,7 +161,7 @@ designacao varchar(50) constraint unDesignacaoProduto UNIQUE,
 
 
 
-create table Pedidos_Produto(
+create table Pedidos_Produtos(
 codPedido integer,
 codProduto integer,
 quantidadeProduto float constraint nnQuantidadePedido NOT NULL,
@@ -368,8 +368,8 @@ alter table Incidentes add constraint fk_IncidentesCodInterno FOREIGN KEY (codIn
 alter table Incidentes add constraint fk_IncidentescodPagamento FOREIGN KEY (codPagamento) references Pagamentos(codPagamento);
 alter table Produtos add constraint fk_Produtos_CodCultura FOREIGN KEY (codCultura) references Culturas (codCultura);
 alter table Produtos add constraint fk_Produtos_CodColheita FOREIGN KEY (codColheita) references Colheitas(codColheita);
-alter table Pedidos_Produto add constraint fk_PedidosProdutos_CodPedido FOREIGN KEY (codPedido) references Pedidos (codPedido);
-alter table Pedidos_Produto add constraint fk_PedidosProdutos_CodInterno FOREIGN KEY (codProduto) references Produtos (codProduto);
+alter table Pedidos_Produtos add constraint fk_PedidosProdutos_CodPedido FOREIGN KEY (codPedido) references Pedidos (codPedido);
+alter table Pedidos_Produtos add constraint fk_PedidosProdutos_CodInterno FOREIGN KEY (codProduto) references Produtos (codProduto);
 alter table Entregas add constraint fk_Entregas_CodEntrega FOREIGN KEY (codMorada) references Moradas (codMorada);
 alter table Pedidos_Pagamentos_Entregas add constraint fk_Pedidos_Pagamentos_Entregas_CodPedido FOREIGN KEY (codPedido) references Pedidos (codPedido);
 alter table Pedidos_Pagamentos_Entregas add constraint fk_Pedidos_Pagamentos_Entregas_CodPagamento FOREIGN KEY (codPagamento) references Pagamentos (codPagamento);
