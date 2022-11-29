@@ -349,6 +349,9 @@ public class Algorithms {
      * @return A minimum spanning tree
      */
     public static <V, E> Graph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
+        if (g.isDirected())
+            throw new RuntimeException("Graph must be undirected");
+
         Graph<V, E> mst = new MatrixGraph<>(false, g.numVertices());
 
         for (V vert : g.vertices()) {
@@ -383,6 +386,9 @@ public class Algorithms {
      * @return A minimum spanning tree.
      */
     public static <V, E> Graph<V, E> prim(Graph<V, E> g, Comparator<E> ce, E zero) {
+        if (g.isDirected())
+            throw new RuntimeException("Graph must be undirected");
+
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];
         V[] pathKeys = (V[]) new Object [numVertices];
@@ -405,8 +411,8 @@ public class Algorithms {
                         pathKeys[vAdjKey] = vOrig;
                     }
                 }
-                vOrig = getVertMinDist(g, dist, visited, ce, zero);
             }
+            vOrig = getVertMinDist(g, dist, visited, ce, zero);
         }
 
         return buildMst(g, pathKeys, dist);
@@ -419,15 +425,10 @@ public class Algorithms {
         }
 
         int numVertices = g.numVertices();
-        boolean[] treated = new boolean[numVertices];
         for (int i = 0; i < numVertices; i++) {
-            treated[i] = true;
             V vDest = pathKeys[i];
             if (vDest != null) {
-                int j = mst.key(vDest);
-                if (!treated[j]) {
-                    mst.addEdge(mst.vertex(i), vDest, dist[i]);
-                }
+                mst.addEdge(mst.vertex(i), vDest, dist[i]);
             }
         }
 
