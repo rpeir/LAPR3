@@ -1,10 +1,10 @@
-DROP TABLE Nivel CASCADE CONSTRAINTS;
-DROP TABLE Morada CASCADE CONSTRAINTS;
+DROP TABLE Niveis CASCADE CONSTRAINTS;
+DROP TABLE Moradas CASCADE CONSTRAINTS;
 DROP TABLE Utilizador CASCADE CONSTRAINTS;
-DROP TABLE Cliente CASCADE CONSTRAINTS;
-DROP TABLE Cliente_Nivel CASCADE CONSTRAINTS;
-DROP TABLE MoradaEntrega CASCADE CONSTRAINTS;
-DROP TABLE MoradaCorrespondencia CASCADE CONSTRAINTS;
+DROP TABLE Clientes CASCADE CONSTRAINTS;
+DROP TABLE Clientes_Niveis CASCADE CONSTRAINTS;
+DROP TABLE MoradasEntrega CASCADE CONSTRAINTS;
+DROP TABLE MoradasCorrespondencia CASCADE CONSTRAINTS;
 -- criar tables que vao ser usadas
 -- utilizador
 CREATE TABLE Utilizador (
@@ -14,75 +14,79 @@ CREATE TABLE Utilizador (
     PRIMARY KEY (codUtilizador)
 );
 --cliente
-CREATE TABLE Cliente (
-    codUtilizador number(10) NOT NULL UNIQUE,
-    codInt number(10) GENERATED AS IDENTITY,
-    tipo varchar2(250) NOT NULL,
-    nome varchar2(250) NOT NULL,
-    email varchar2(250) NOT NULL UNIQUE,
-    plafond number(10) NOT NULL,
-    nrFiscal number(9) NOT NULL UNIQUE,
-    FOREIGN KEY (codUtilizador) REFERENCES Utilizador (codUtilizador),
-    PRIMARY KEY (codInt)
+create table Clientes (
+codInterno integer,
+tipo varchar(1) constraint ckTipoCliente CHECK(tipo='P' OR tipo='E'),
+nome varchar(100) constraint nnNomeCliente NOT NULL,
+emailCliente varchar(255) constraint unEmailCliente UNIQUE,
+plafond float constraint nnPlafondCliente NOT NULL,
+nrFiscal integer constraint unNrFiscalCliente UNIQUE,
+    constraint pk_CodInterno PRIMARY KEY (codInterno)
 );
+alter table Clientes add CONSTRAINT ckemailvalidation CHECK ( REGEXP_LIKE ( emailCliente, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$' ) );
 -- morada
-CREATE TABLE Morada (
-    codMorada number(10) GENERATED AS IDENTITY,
-    codPostal varchar2(250) NOT NULL,
-    rua varchar2(250) NOT NULL,
-    pais varchar2(250) NOT NULL,
-    andar number(10) NOT NULL,
-    nrPorta number(10) NOT NULL,
-    localidade varchar2(250) NOT NULL,
-    PRIMARY KEY(codMorada)
+create table Moradas (
+codMorada integer,
+rua varchar(100) constraint nnRuaMorada NOT NULL,
+nrEdificio integer constraint nnNrEdificio NOT NULL,
+andar integer,
+porta varchar(100),
+codPostal varchar(8) constraint nnCodPostal NOT NULL,
+localidade varchar(100) constraint nnLocalidade NOT NULL,
+pais varchar(100) constraint nnPais NOT NULL,
+    constraint pk_CodMorada PRIMARY KEY (codMorada)
 );
+alter table Moradas add constraint  ckCodPostal CHECK(REGEXP_LIKE (codPostal, '^\d{4}(-\d{3})?$'));
 -- nivel
-CREATE TABLE Nivel (
-    codNivel number(10) GENERATED AS IDENTITY,
-    letra varchar2(250) NOT NULL UNIQUE,
-    PRIMARY KEY (codNivel)
+create table Niveis(
+codNivel integer,
+designacaoNivel varchar(1),
+    constraint pk_codnivel PRIMARY KEY (codNivel)
 );
+alter table Niveis add constraint ckDesignacaoNivel CHECK(designacaoNivel='A' OR designacaoNivel='B' OR designacaoNivel='C');
 -- cliente_nivel
-CREATE TABLE Cliente_Nivel (
-    codClienteNivel number(10) GENERATED AS IDENTITY,
-    codInt number(10) NOT NULL,
-    codNivel number(10) NOT NULL,
-    dataAtribuicao date NOT NULL,
-    FOREIGN KEY (codInt) REFERENCES Cliente (codInt),
-    FOREIGN KEY (codNivel) REFERENCES Nivel (codNivel)
+create table Clientes_Niveis(
+codClienteNivel integer,
+codInterno integer,
+codNivel integer,
+dataAtribuicao Date constraint nnDataAtribuicao NOT NULL,
+    constraint pk_codClienteNivel PRIMARY KEY (codClienteNivel)
 );
+alter table Clientes_Niveis add constraint fk_clienteNivel_CodInterno FOREIGN KEY (codInterno) references Clientes(codInterno);
+alter table Clientes_Niveis add constraint fk_clienteNivel_CodNivel FOREIGN KEY (codNivel) references Niveis (codNivel);
 -- moradaEntrega
-CREATE TABLE MoradaEntrega (
-    codMorada number(10) NOT NULL,
-    codInt number(10) NOT NULL,
-    FOREIGN KEY (codMorada) REFERENCES Morada (codMorada),
-    FOREIGN KEY (codInt) REFERENCES Cliente (codInt),
-    PRIMARY KEY (codMorada, codInt)
+create table MoradasEntrega(
+codInterno integer,
+codMorada integer,
+    constraint pk_MoradasEntrega_CodInterno_CodMorada PRIMARY KEY (codInterno,codMorada)
 );
+alter table MoradasEntrega add constraint fk_moradasEntrega_CodInterno FOREIGN KEY (codInterno) references Clientes(codInterno);
+alter table MoradasEntrega add constraint fk_moradasEntrega_CodMorada FOREIGN KEY (codMorada) references Moradas(codMorada);
 -- moradaCorrespondencia
-CREATE TABLE MoradaCorrespondencia (
-    codMorada number(10) NOT NULL,
-    codInt number(10) NOT NULL,
-    FOREIGN KEY (codMorada) REFERENCES Morada (codMorada),
-    FOREIGN KEY (codInt) REFERENCES Cliente (codInt),
-    PRIMARY KEY (codMorada, codInt)
+create table MoradasCorrespondencia(
+codInterno integer,
+codMorada integer,
+    constraint pk_MoradasCorrespondencia_CodInterno_CodMorada PRIMARY KEY (codInterno,codMorada)
 );
+alter table MoradasCorrespondencia add constraint fk_moradaCorrespondencia_CodInterno FOREIGN KEY (codInterno) references Clientes(codInterno);
+alter table MoradasCorrespondencia add constraint fk_moradaCorrespondencia_CodMorada FOREIGN KEY (codMorada) references Moradas(codMorada);
 --criar as funcoes que vao ser usadas
 -- adicionar morada
 CREATE OR REPLACE FUNCTION adicionarMorada (
-    m_codPostal IN Morada.codPostal%TYPE,
-    m_rua IN Morada.rua%TYPE,
-    m_pais IN Morada.pais%TYPE,
-    m_andar IN Morada.andar%TYPE,
-    m_nrPorta IN Morada.nrPorta%TYPE,
-    m_localidade IN Morada.localidade%TYPE
-) return Morada.codMorada%TYPE
+    m_codPostal IN Moradas.codPostal%TYPE,
+    m_rua IN Moradas.rua%TYPE,
+    m_nrEdificio IN Moradas.nrEdificio%TYPE,
+    m_pais IN Moradas.pais%TYPE,
+    m_andar IN Moradas.andar%TYPE,
+    m_nrPorta IN Moradas.porta%TYPE,
+    m_localidade IN Moradas.localidade%TYPE
+) return Moradas.codMorada%TYPE
 
 is
-    codMorada Morada.codMorada%TYPE;
+    codMorada Moradas.codMorada%TYPE;
 begin
-    INSERT INTO Morada (codPostal, rua, pais, andar, nrPorta, localidade)
-    VALUES (m_codPostal, m_rua, m_pais, m_andar, m_nrPorta, m_localidade)
+    INSERT INTO Moradas (codPostal, rua, pais, nrEdificio, andar, porta, localidade)
+    VALUES (m_codPostal, m_rua, m_pais, m_nrEdificio, m_andar, m_nrPorta, m_localidade)
     RETURNING codMorada INTO codMorada;
     RETURN codMorada;
 end;
@@ -90,13 +94,13 @@ end;
 
 -- adicionar nivel
 CREATE OR REPLACE FUNCTION adicionarNivel (
-    n_letra IN Nivel.letra%TYPE
-)  return Nivel.codNivel%TYPE
+    n_letra IN Niveis.designacaoNivel%TYPE
+)  return Niveis.codNivel%TYPE
 
 is
-    codNivel Nivel.codNivel%TYPE;
+    codNivel Niveis.codNivel%TYPE;
 begin
-    INSERT INTO Nivel (letra)
+    INSERT INTO Niveis (designacaoNivel)
     VALUES (n_letra)
     RETURNING codNivel INTO codNivel;
     RETURN codNivel;
@@ -120,40 +124,39 @@ end;
 -- adicionar cliente
 CREATE OR REPLACE FUNCTION adicionarNovoCliente (
     -- atributos do cliente
-    c_codUtilizador IN Cliente.codUtilizador%TYPE,
-    c_codInt IN Cliente.codInt%type,
-    c_tipo IN Cliente.tipo%TYPE,
-    c_nome IN Cliente.nome%type,
-    c_nrFiscal IN Cliente.nrFiscal%type,
-    c_email IN Cliente.email%type,
-    c_plafond IN Cliente.plafond%type
+    c_codInt IN Clientes.codInterno%type,
+    c_tipo IN Clientes.tipo%TYPE,
+    c_nome IN Clientes.nome%type,
+    c_nrFiscal IN Clientes.nrFiscal%type,
+    c_email IN Clientes.emailCliente%type,
+    c_plafond IN Clientes.plafond%type
 
-) return Cliente.codInt%type
+) return Clientes.codInterno%type
 
 is
-    codInt Cliente.codInt%type;
+    codInterno Clientes.codInterno%type;
 
 begin
     -- inserir cliente
-    INSERT INTO Cliente (codUtilizador, codInt, tipo, nome, nrFiscal, email, plafond)
-    VALUES (c_codUtilizador, c_codInt, c_tipo, c_nome, c_nrFiscal, c_email, c_plafond)
-    RETURNING codInt INTO codInt;
+    INSERT INTO Clientes (codInterno, tipo, nome, nrFiscal, emailCliente, plafond)
+    VALUES (c_codInt, c_tipo, c_nome, c_nrFiscal, c_email, c_plafond)
+    RETURNING codInterno INTO codInterno;
 
     -- retornar o código interno do cliente
-    return codInt;
+    return codInterno;
 end;
 /
 -- adicionar cliente_nivel
-CREATE OR REPLACE FUNCTION adicionarClienteNivel (
-    cn_codInt IN Cliente_Nivel.codInt%TYPE,
-    cn_codNivel IN Cliente_Nivel.codClienteNivel%TYPE,
-    cn_dataAtribuicao IN Cliente_Nivel.dataAtribuicao%TYPE
-) return Cliente_Nivel.codClienteNivel%TYPE
+CREATE OR REPLACE FUNCTION adicionarClienteNiveis (
+    cn_codInt IN Clientes_Niveis.codInterno%TYPE,
+    cn_codNivel IN Clientes_Niveis.codClienteNivel%TYPE,
+    cn_dataAtribuicao IN Clientes_Niveis.dataAtribuicao%TYPE
+) return Clientes_Niveis.codClienteNivel%TYPE
 
 is
-    codClienteNivel Cliente_Nivel.codClienteNivel%TYPE;
+    codClienteNivel Clientes_Niveis.codClienteNivel%TYPE;
 begin
-    INSERT INTO Cliente_Nivel (codInt, codNivel, dataAtribuicao)
+    INSERT INTO Clientes_Niveis (codInterno, codNivel, dataAtribuicao)
     VALUES (cn_codInt, cn_codNivel, cn_dataAtribuicao)
     RETURNING codClienteNivel INTO codClienteNivel;
     RETURN codClienteNivel;
@@ -162,26 +165,26 @@ end;
 
 -- adicionar moradaEntrega
 CREATE OR REPLACE PROCEDURE adicionarMoradaEntrega (
-    me_codMorada IN MoradaEntrega.codMorada%TYPE,
-    me_codInt IN MoradaEntrega.codInt%TYPE
+    me_codMorada IN MoradasEntrega.codMorada%TYPE,
+    me_codInt IN MoradasEntrega.codInterno%TYPE
 )
 
 is
 begin
-    INSERT INTO MoradaEntrega (codMorada, codInt)
+    INSERT INTO MoradasEntrega (codMorada, codInterno)
     VALUES (me_codMorada, me_codInt);
 end;
 /
 
 -- adicionar moradaCorrespondencia
 CREATE OR REPLACE PROCEDURE adicionarMoradaCorrespondencia (
-    mc_codMorada IN MoradaCorrespondencia.codMorada%TYPE,
-    mc_codInt IN MoradaCorrespondencia.codInt%TYPE
+    mc_codMorada IN MoradasCorrespondencia.codMorada%TYPE,
+    mc_codInt IN MoradasCorrespondencia.codInterno%TYPE
 )
 
 is
 begin
-    INSERT INTO MoradaCorrespondencia (codMorada, codInt)
+    INSERT INTO MoradasCorrespondencia (codMorada, codInterno)
     VALUES (mc_codMorada, mc_codInt);
 end;
 /
@@ -189,7 +192,7 @@ end;
 --criar os checks para verificar as restricoes de integridade
 --check dos atributos da morada
 CREATE OR REPLACE PROCEDURE checkRua (
-    rua IN Morada.rua%TYPE
+    rua IN Moradas.rua%TYPE
 ) IS
 
 begin
@@ -200,7 +203,7 @@ end;
 /
 
 CREATE OR REPLACE PROCEDURE checkPais (
-    pais IN Morada.pais%TYPE
+    pais IN Moradas.pais%TYPE
 ) IS
 
 begin
@@ -211,7 +214,7 @@ end;
 /
 
 CREATE OR REPLACE PROCEDURE checkAndar (
-    andar IN Morada.andar%TYPE
+    andar IN Moradas.andar%TYPE
 ) IS
 
 begin
@@ -222,7 +225,7 @@ end;
 /
 
 CREATE OR REPLACE PROCEDURE checkNrPorta (
-    nrPorta IN Morada.nrPorta%TYPE
+    nrPorta IN Moradas.porta%TYPE
 ) IS
 begin
     IF nrPorta IS NULL THEN
@@ -232,7 +235,7 @@ end;
 /
 
 CREATE OR REPLACE PROCEDURE checkLocalidade (
-    localidade IN Morada.localidade%TYPE
+    localidade IN Moradas.localidade%TYPE
 ) IS
 begin
     IF localidade IS NULL THEN
@@ -242,7 +245,7 @@ end;
 /
 
 CREATE OR REPLACE PROCEDURE checkCodPostal (
-    codPostal IN Morada.codPostal%type
+    codPostal IN Moradas.codPostal%type
 )
 
 IS
@@ -257,7 +260,7 @@ end;
 /
 
 -- checks dos atributos proprios do cliente
-CREATE OR REPLACE PROCEDURE checkNome (nome IN Cliente.nome%type)
+CREATE OR REPLACE PROCEDURE checkNome (nome IN Clientes.nome%type)
 is
 begin
     if (nome is NULL) THEN
@@ -266,7 +269,7 @@ begin
 end;
 /
 
-CREATE OR REPLACE PROCEDURE checkNrFiscal (nrFiscal IN Cliente.nrFiscal%type)
+CREATE OR REPLACE PROCEDURE checkNrFiscal (nrFiscal IN Clientes.nrFiscal%type)
 is
 begin
     if (nrFiscal is NULL) then
@@ -277,7 +280,7 @@ begin
 end;
 /
 
-CREATE OR REPLACE PROCEDURE checkPlafond (plafond IN Cliente.Plafond%TYPE)
+CREATE OR REPLACE PROCEDURE checkPlafond (plafond IN Clientes.Plafond%TYPE)
 
 IS
 
@@ -290,13 +293,13 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE PROCEDURE checkNrFiscalJaExiste (c_nrFiscal IN Cliente.nrFiscal%TYPE)
+CREATE OR REPLACE PROCEDURE checkNrFiscalJaExiste (c_nrFiscal IN Clientes.nrFiscal%TYPE)
 
 IS
-    cc_nrFiscal Cliente.nrFiscal%TYPE;
+    cc_nrFiscal Clientes.nrFiscal%TYPE;
 
 begin
-    SELECT nrFiscal INTO cc_nrFiscal FROM Cliente c WHERE c.nrFiscal = c_nrFiscal;
+    SELECT nrFiscal INTO cc_nrFiscal FROM Clientes c WHERE c.nrFiscal = c_nrFiscal;
 
     RAISE_APPLICATION_ERROR(-20000, 'nrFiscal ja existe!');
 EXCEPTION
@@ -305,13 +308,13 @@ EXCEPTION
 end;
 /
 
-CREATE OR REPLACE PROCEDURE checkEmailJaExiste (c_email IN Cliente.email%TYPE)
+CREATE OR REPLACE PROCEDURE checkEmailJaExiste (c_email IN Clientes.emailCliente%TYPE)
 
 IS
-    cc_email Cliente.email%TYPE;
+    cc_email Clientes.emailCliente%TYPE;
 
 begin
-    SELECT email INTO cc_email FROM Cliente c WHERE c.email = c_email;
+    SELECT emailCliente INTO cc_email FROM Clientes c WHERE c.emailCliente = c_email;
 
     RAISE_APPLICATION_ERROR(-20000, 'email ja existe!');
 EXCEPTION
@@ -348,29 +351,30 @@ CREATE OR REPLACE FUNCTION criarCliente (
     u_email Utilizador.email%TYPE,
     u_pass Utilizador.pass%TYPE,
     -- atributos que tem de ser passados por parametro do cliente
-    c_tipo Cliente.tipo%TYPE,
-    c_nome Cliente.nome%TYPE,
-    c_email Cliente.email%TYPE,
-    c_plafond Cliente.plafond%TYPE,
-    c_nrFiscal Cliente.nrFiscal%TYPE,
+    c_tipo Clientes.tipo%TYPE,
+    c_nome Clientes.nome%TYPE,
+    c_email Clientes.emailCliente%TYPE,
+    c_plafond Clientes.plafond%TYPE,
+    c_nrFiscal Clientes.nrFiscal%TYPE,
     -- atributos que tem de ser passados por parametro da morada
-    m_codMorada Morada.codMorada%TYPE,
-    m_codPostal Morada.codPostal%TYPE,
-    m_rua Morada.rua%TYPE,
-    m_andar Morada.andar%TYPE,
-    m_pais Morada.pais%TYPE,
-    m_nrPorta Morada.nrPorta%TYPE,
-    m_localidade Morada.localidade%TYPE
-)   return Cliente.codUtilizador%TYPE
+    m_codMorada Moradas.codMorada%TYPE,
+    m_codPostal Moradas.codPostal%TYPE,
+    m_rua Moradas.rua%TYPE,
+    m_nrEdificio Moradas.nrEdificio%TYPE,
+    m_andar Moradas.andar%TYPE,
+    m_pais Moradas.pais%TYPE,
+    m_nrPorta Moradas.porta%TYPE,
+    m_localidade Moradas.localidade%TYPE
+)   return Clientes.codInterno%TYPE
 
 is
-    c_codInt Cliente.codInt%type;
-    n_codNivel Nivel.codNivel%type;
-    n_letra Nivel.letra%type;
+    c_codInt Clientes.codInterno%type;
+    n_codNivel Niveis.codNivel%type;
+    n_letra Niveis.designacaoNivel%type;
     c_codUtilizador Utilizador.codUtilizador%type;
-    c_codMorada Morada.codMorada%type;
-    cn_dataAtribuicao Cliente_Nivel.dataAtribuicao%type;
-    cn_codClienteNivel Cliente_Nivel.codClienteNivel%type;
+    c_codMorada Moradas.codMorada%type;
+    cn_dataAtribuicao Clientes_Niveis.dataAtribuicao%type;
+    cn_codClienteNivel Clientes_Niveis.codClienteNivel%type;
 begin
     --check do utilizador
     checkEmail(u_email);
@@ -395,13 +399,13 @@ begin
     --obter o codigo do utilizador
     c_codUtilizador := adicionarNovoUtilizador(u_email, u_pass);
     --obter o codigo da morada
-    c_codMorada := adicionarMorada(m_codPostal, m_rua, m_pais, m_andar, m_nrPorta, m_localidade);
+    c_codMorada := adicionarMorada(m_codPostal, m_rua, m_nrEdificio, m_pais, m_andar, m_nrPorta, m_localidade);
     --obter o codigo do cliente
-    c_codInt := adicionarNovoCliente(c_codUtilizador, c_codUtilizador, c_tipo, c_nome, c_nrFiscal, c_email, c_plafond);
+    c_codInt := adicionarNovoCliente(c_tipo, c_nome, c_nrFiscal, c_email, c_plafond);
     --obter a data de atribuicao do nivel
     cn_dataAtribuicao := sysdate;
     --obter codiogo ClienteNivel
-    cn_codClienteNivel := adicionarClienteNivel(c_codInt, n_codNivel, cn_dataAtribuicao);
+    cn_codClienteNivel := adicionarClienteNiveis(c_codInt, n_codNivel, cn_dataAtribuicao);
     --inserir na tabela MoradaEntrega
     adicionarMoradaEntrega(c_codMorada, c_codInt);
     --inserir na tabela MoradaCorresponencia
