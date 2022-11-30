@@ -36,7 +36,8 @@ movb %sil, %al
 cbw 
 movb $5, %cl
 idivb %cl
-mov %ah, %sil
+movb %ah, %al
+movb %al, %sil
 jmp back
 
 end:

@@ -32,7 +32,8 @@ movb %dl, %al
 cbw 
 movb $5, %cl
 idivb %cl
-mov %ah, %dl
+movb %ah, %al
+movb %al, %dl
 jmp back
 
 pNula:

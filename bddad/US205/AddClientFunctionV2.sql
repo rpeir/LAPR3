@@ -124,7 +124,6 @@ end;
 -- adicionar cliente
 CREATE OR REPLACE FUNCTION adicionarNovoCliente (
     -- atributos do cliente
-    c_codInt IN Clientes.codInterno%type,
     c_tipo IN Clientes.tipo%TYPE,
     c_nome IN Clientes.nome%type,
     c_nrFiscal IN Clientes.nrFiscal%type,
@@ -139,7 +138,7 @@ is
 begin
     -- inserir cliente
     INSERT INTO Clientes (codInterno, tipo, nome, nrFiscal, emailCliente, plafond)
-    VALUES (c_codInt, c_tipo, c_nome, c_nrFiscal, c_email, c_plafond)
+    VALUES (codInterno, c_tipo, c_nome, c_nrFiscal, c_email, c_plafond)
     RETURNING codInterno INTO codInterno;
 
     -- retornar o código interno do cliente
@@ -421,3 +420,5 @@ begin
 
 end;
 /
+
+
