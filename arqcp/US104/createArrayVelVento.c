@@ -6,21 +6,21 @@
 #include <stdio.h>
 uint64_t state = 0;
 uint64_t inc = 0;
-char *createArrayTemp(char max, char min, unsigned int freq, int n)
+unsigned char *createArrayVelVento(unsigned char max, unsigned char min, unsigned int freq, int n)
 {
     int count = 0;
     char maxErrorReached = 0;
     int size = SECDAY / freq;
-    char *vec = malloc(size * sizeof(int));
+    unsigned char *vec = malloc(size * sizeof(int));
     do
     {
         char comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
-        vec[0] = sens_temp(0, comp_rand);
+        vec[0] = sens_velc_vento(0, comp_rand);
         for (int i = 1; i < size && maxErrorReached != 0, i++)
         {
             comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
-            *(vec + i) = sens_temp(*(vec + i - 1), comp_rand);
-            char valid = checkValueInRangeChar(max, min, *(vec + i));
+            *(vec + i) = sens_velc_vento(*(vec + i - 1), comp_rand);
+            char valid = checkValueInRangeUC(max, min, *(vec + i));
             if (valid == 0)
             {
                 count++;
