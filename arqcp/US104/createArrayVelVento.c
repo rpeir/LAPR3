@@ -14,7 +14,7 @@ unsigned char *createArrayVelVento(unsigned char max, unsigned char min, unsigne
     unsigned char *vec = malloc(size * sizeof(int));
     do
     {
-        char comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
+        char comp_rand = (char)pcg32_random_r();
         vec[0] = sens_velc_vento(0, comp_rand);
         for (int i = 1; i < size && maxErrorReached != 0, i++)
         {
@@ -41,5 +41,5 @@ unsigned char *createArrayVelVento(unsigned char max, unsigned char min, unsigne
             state = pcg32_random_r();
             inc = pcg32_random_r();
         }
-    } while (maxErrorReached != 0)
+    } while (maxErrorReached != 0) return vec;
 }
