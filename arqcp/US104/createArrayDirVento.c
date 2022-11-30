@@ -14,11 +14,11 @@ unsigned short *createArrayDirVento(unsigned short max, unsigned short min, unsi
     unsigned short *vec = malloc(size * sizeof(int));
     do
     {
-        short comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
+        short comp_rand = (short)pcg32_random_r();
         vec[0] = sens_dir_vento(0, comp_rand);
         for (int i = 1; i < size && maxErrorReached != 0, i++)
         {
-            comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
+            comp_rand = (short)pcg32_random_r();
             *(vec + i) = sens_dir_vento(*(vec + i - 1), comp_rand);
             char valid = checkValueInRangeUS(max, min, *(vec + i));
             if (valid == 0)
@@ -41,5 +41,5 @@ unsigned short *createArrayDirVento(unsigned short max, unsigned short min, unsi
             state = pcg32_random_r();
             inc = pcg32_random_r();
         }
-    } while (maxErrorReached != 0)
+    } while (maxErrorReached != 0) return vec;
 }
