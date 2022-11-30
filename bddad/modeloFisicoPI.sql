@@ -8,10 +8,6 @@ nrFiscal integer constraint unNrFiscalCliente UNIQUE,
     constraint pk_CodInterno PRIMARY KEY (codInterno)
 );
 
-
-
-
-
 create table Moradas (
 codMorada integer,
 rua varchar(100) constraint nnRuaMorada NOT NULL,
