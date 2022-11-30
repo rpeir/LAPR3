@@ -273,8 +273,8 @@ table( Componentes ) {
 table( FichasTecnicas_Componentes ){
     foreign_key( primary_key( codFichaTecnica )): INTEGER
     foreign_key( primary_key( codComponente )): INTEGER
-    column( unidade ): INTEGER
-    column( quantidade ): VARCHAR
+    column( unidade ): VARCHAR
+    column( quantidade ): INTEGER
 }
 
 ' cardinalidades
