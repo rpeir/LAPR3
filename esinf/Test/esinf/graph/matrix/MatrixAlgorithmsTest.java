@@ -16,8 +16,6 @@ class MatrixAlgorithmsTest {
     final Graph<String,Integer> completeMap = new MatrixGraph<>(false);
     Graph<String,Integer> incompleteMap = new MatrixGraph<>(false);
 
-    Graph<String,Integer> mst = new MatrixGraph<>(false);
-
     public MatrixAlgorithmsTest() {
     }
 
@@ -53,11 +51,6 @@ class MatrixAlgorithmsTest {
         completeMap.addEdge("Aveiro", "Viseu", 85);
         completeMap.addEdge("Leiria", "Castelo Branco", 170);
         completeMap.addEdge("Lisboa", "Faro", 280);
-
-        mst = completeMap.clone();
-        mst.removeEdge("Aveiro", "Leiria");
-        mst.removeEdge("Coimbra", "Lisboa");
-        mst.removeEdge("Leiria", "Castelo Branco");
     }
 
     private void checkContentEquals(List<String> l1, List<String> l2, String msg) {
@@ -232,23 +225,6 @@ class MatrixAlgorithmsTest {
         assertEquals(255, minDistGraph.edge("Leiria", "Braga").getWeight(), "Minimum distance between Leiria and Braga should be 255 Km");
     }
     
-    @Test
-    public void testKruskall() {
-        System.out.println("Test of Kruskall Algorithm");
-        Graph<String, Integer> kruskall = Algorithms.kruskall(completeMap, Integer::compare);
-        testMST(kruskall);
-    }
-
-    @Test
-    public void testPrim() {
-        System.out.println("Test of Prim Algorithm");
-        Graph<String, Integer> prim = Algorithms.prim(completeMap, Integer::compare, 0);
-        testMST(prim);
-    }
-
-    public <V, E> void testMST(Graph<V, E> g) {
-        assertEquals(mst.numVertices(), g.numVertices(), "Kruskall should have 11 vertices");
-        assertEquals(mst.numEdges(), g.numEdges(), "Kruskall should have 10 edges");
-        assertEquals(mst, g, "Kruskall should be the same as the MST");
-    }
+    
+    
 }

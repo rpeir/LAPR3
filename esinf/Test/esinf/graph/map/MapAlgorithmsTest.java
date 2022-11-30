@@ -215,7 +215,7 @@ class MapAlgorithmsTest {
         System.out.println("Test of min connections");
 
         int result = Algorithms.minConnections(completeMap, Integer::compare, Integer::sum, 0);
-        assertEquals(5,result);
+        assertEquals(6,result);
 
 
         result = Algorithms.minConnections(incompleteMap,Integer::compare, Integer::sum, 0);

@@ -152,7 +152,7 @@ table( SetoresAgricolas_Colheitas_Culturas ) {
 table( Produtos ) {
     primary_key( codProduto ): INTEGER
     foreign_key( codCultura ): INTEGER
-    foreign_key( codColheita ): INTEGER
+    'foreign_key( codColheita ): INTEGER
     column( preco/kg ): FLOAT
     column( stock/kg ): FLOAT
     column( designacao ): VARCHAR
@@ -259,6 +259,24 @@ table( Edificios ) {
     column( tipoEdificio ): VARCHAR
 }
 
+table( FichasTecnicas ) {
+    primary_key( codFichaTecnica ): INTEGER
+    foreign_key( codFatorProducao ): INTEGER
+}
+
+table( Componentes ) {
+    primary_key( codComponente )
+    column( substancia ):  VARCHAR
+    column( categoria ): VARCHAR
+}
+
+table( FichasTecnicas_Componentes ){
+    foreign_key( primary_key( codFichaTecnica )): INTEGER
+    foreign_key( primary_key( codComponente )): INTEGER
+    column( unidade ): INTEGER
+    column( quantidade ): VARCHAR
+}
+
 ' cardinalidades
 Clientes ||--o{ Incidentes
 Clientes ||--o{ Pedidos
@@ -308,7 +326,11 @@ SetoresAgricolas_Colheitas_Culturas ||--|| SetoresAgricolas
 Colheitas_Culturas }|--|| Colheitas
 Colheitas_Culturas ||--|| Culturas
 Colheitas_Culturas ||--|{ SetoresAgricolas_Colheitas_Culturas
-Produtos }|--|| Colheitas_Culturas
+' Produtos }|--|| Colheitas_Culturas
 InstalacoesAgricolas ||--|{ ZonasGeograficas
 InstalacoesAgricolas ||--|| Moradas
+FatoresProducao ||--|| FichasTecnicas
+FichasTecnicas }|--|| FichasTecnicas_Componentes
+Componentes }|--|| FichasTecnicas_Componentes
+
 @enduml
