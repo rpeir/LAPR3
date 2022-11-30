@@ -283,7 +283,6 @@ tipoFatorProducao varchar(2),
 precoKg float constraint nnFPPrecoKg NOT NULL,
 nomeComercial varchar(50) constraint unNomeComercial UNIQUE,
 formulacao varchar(1),
-fichaTecnica blob, ----ESPERANDO O FICHEIRO PROFS
     constraint pk_codFatorProducao PRIMARY KEY (codFatorProducao)
 );
 

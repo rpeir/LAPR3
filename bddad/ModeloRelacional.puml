@@ -44,7 +44,6 @@ table( FatoresProducao ) {
     column( preco_kg ): FLOAT
     column( nomeComercial ): VARCHAR
     column( formulacao ): VARCHAR
-    column( fichaTecnica ): BLOB
 }
 
 table( Restricoes ) {
