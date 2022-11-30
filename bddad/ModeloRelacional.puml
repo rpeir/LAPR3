@@ -229,9 +229,8 @@ table( Niveis ) {
 }
 
 table( Clientes_Niveis ) {
-    primary_key( codClienteNivel ): INTEGER
-    foreign_key( codInterno ): INTEGER
-    foreign_key( codNivel ): INTEGER
+    foreign_key( primary_key( codInterno )): INTEGER
+    foreign_key( primary_key( codNivel )): INTEGER
     column( dataAtribuicao ): DATE
 }
 
