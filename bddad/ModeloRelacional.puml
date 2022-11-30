@@ -152,7 +152,7 @@ table( SetoresAgricolas_Colheitas_Culturas ) {
 table( Produtos ) {
     primary_key( codProduto ): INTEGER
     foreign_key( codCultura ): INTEGER
-    foreign_key( codColheita ): INTEGER
+    'foreign_key( codColheita ): INTEGER
     column( preco/kg ): FLOAT
     column( stock/kg ): FLOAT
     column( designacao ): VARCHAR
@@ -308,7 +308,7 @@ SetoresAgricolas_Colheitas_Culturas ||--|| SetoresAgricolas
 Colheitas_Culturas }|--|| Colheitas
 Colheitas_Culturas ||--|| Culturas
 Colheitas_Culturas ||--|{ SetoresAgricolas_Colheitas_Culturas
-Produtos }|--|| Colheitas_Culturas
+' Produtos }|--|| Colheitas_Culturas
 InstalacoesAgricolas ||--|{ ZonasGeograficas
 InstalacoesAgricolas ||--|| Moradas
 @enduml

@@ -144,7 +144,7 @@ dataOcorrencia date constraint nnDataOcorrencia NOT NULL,
 create table Produtos(
 codProduto integer,
 codCultura integer,
-codColheita integer,
+-- codColheita integer,
 precoKg float constraint nnPrecoKg NOT NULL,
 stockKg float constraint nnStockKg NOT NULL,
 designacao varchar(50) constraint unDesignacaoProduto UNIQUE,
@@ -360,7 +360,7 @@ alter table Incidentes add constraint fk_IncidentesCodPedido FOREIGN KEY (codPed
 alter table Incidentes add constraint fk_IncidentesCodInterno FOREIGN KEY (codInterno) references Clientes(codInterno);
 alter table Incidentes add constraint fk_IncidentescodPagamento FOREIGN KEY (codPagamento) references Pagamentos(codPagamento);
 alter table Produtos add constraint fk_Produtos_CodCultura FOREIGN KEY (codCultura) references Culturas (codCultura);
-alter table Produtos add constraint fk_Produtos_CodColheita FOREIGN KEY (codColheita) references Colheitas(codColheita);
+-- alter table Produtos add constraint fk_Produtos_CodColheita FOREIGN KEY (codColheita) references Colheitas(codColheita);
 alter table Pedidos_Produtos add constraint fk_PedidosProdutos_CodPedido FOREIGN KEY (codPedido) references Pedidos (codPedido);
 alter table Pedidos_Produtos add constraint fk_PedidosProdutos_CodInterno FOREIGN KEY (codProduto) references Produtos (codProduto);
 alter table Entregas add constraint fk_Entregas_CodEntrega FOREIGN KEY (codMorada) references Moradas (codMorada);
