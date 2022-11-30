@@ -331,10 +331,37 @@ instanteLeitura date constraint nnInstanteLeitura NOT NULL,
 valorLido integer constraint nnValorLido NOT NULL,
     constraint pk_codLeitura PRIMARY KEY (codLeitura)
 );
+
+create table FichasTecnicas(
+codFichaTecnica integer,
+codFatorProducao integer,
+    constraint pk_codFichaTecnica primary key (codFichaTecnica)
+);
+
+create table Componentes(
+codComponente integer,
+substancia varchar(100)
+    constraint unSubstancia unique, nnSubstancia not null,
+categoria varchar(50) constraint nnCategoria not null,
+    constraint pk_codComponente primary key (codComponente)
+);
+
+create table FichasTecnicas_Componentes(
+codFichaTecnica integer,
+codComponente integer,
+unidade varchar(20) constraint nnUnidade not null,
+quantidade integer constraint nnQuantidade not null,
+    constraint pk_codFichaTecnica_codComponente PRIMARY KEY (codFichaTecnica,codComponente)
+);
+
+
+alter table FichasTecnicas_Componentes add constraint fk_FichasTecnicas_Componentes_codFichaTecnica FOREIGN KEY (codFichaTecnica) references FichasTecnicas (codFichaTecnica);
+alter table FichasTecnicas_Componentes add constraint fk_FichasTecnicas_Componentes_codComponentes FOREIGN KEY (codComponente) references Componentes (codComponente);
+alter table FichasTecnicas add constraint fk_Fichastecnicas_codFatorProducao foreign key (codFatorProducao) references FatoresProducao (codFatorProducao);
 alter table Leituras add constraint fk_Leitura_idSensor FOREIGN KEY (idSensor) references Sensores (idSensor);
 alter table Leituras add constraint ck_valorLido CHECK(valorLido>=0 AND valorLido<=100);
 alter table Clientes add CONSTRAINT ckemailvalidation CHECK ( REGEXP_LIKE ( emailCliente, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$' ) );
-alter table Sensores add constraint fk_Senosres_codTipoSensor FOREIGN KEY (codTipoSensor) references TiposSensores (codTipoSensor);
+alter table Sensores add constraint fk_Sensores_codTipoSensor FOREIGN KEY (codTipoSensor) references TiposSensores (codTipoSensor);
 alter table Sensores add constraint fk_Sensores_codEstacaoMeteorologica FOREIGN KEY (codEstacaoMeteorologica) references EstacoesMeteorologicas (codEstacaoMeteorologica);
 alter table Moradas add constraint  ckCodPostal CHECK(REGEXP_LIKE (codPostal, '^\d{4}(-\d{3})?$'));
 alter table MoradasCorrespondencia add constraint fk_moradaCorrespondencia_CodInterno FOREIGN KEY (codInterno) references Clientes(codInterno);
@@ -346,7 +373,7 @@ alter table Clientes_Niveis add constraint fk_clienteNivel_CodInterno FOREIGN KE
 alter table Clientes_Niveis add constraint fk_clienteNivel_CodNivel FOREIGN KEY (codNivel) references Niveis (codNivel);
 alter table Pedidos add constraint fk_pedidos_codInterno FOREIGN KEY (codInterno) references Clientes (codInterno);
 alter table Culturas add constraint ckTipoCultura CHECK(tipoCultura='P' OR tipoCultura='T' );
-alter table Culturas add constraint ckobjetivoCultura CHECK(objetivoCultura ='A' OR objetivoCultura ='C');
+alter table Culturas add constraint ckobjetivoCultura CHECK(objetivoCultura ='A' OR objetivoCultura ='C' OR objetivoCultura='AC');
 alter table Regas add constraint fk_regas_codOperacao FOREIGN KEY (codOperacao) references Operacoes (codOperacao);
 alter table InstalacoesAgricolas add constraint fk_InstalacoesAgricolas_codMorada FOREIGN KEY (codMorada) references Moradas (codMorada);
 alter table ZonasGeograficas add constraint fk_ZonasGeograficas_CodInstalacaoAgricola FOREIGN KEY (codInstalacaoAgricola) references InstalacoesAgricolas (codInstalacaoAgricola);
