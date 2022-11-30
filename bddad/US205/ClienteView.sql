@@ -13,3 +13,12 @@ CREATE VIEW DataUltimoIncidente AS SELECT codInterno "Codigo Interno", (
 ) AS "Data do ultimo incidente"
 FROM Clientes c;
 
+CREATE VIEW EncomendasEntreguesNaoPagas AS SELECT codInterno "Codigo Interno", (
+    SELECT COUNT(codInterno) FROM Pedidos_Pagamentos_Entregas
+    WHERE codInterno = c.codInterno
+    AND estadoAtual = 'Entregue'
+    AND codPagamento IS NULL
+) AS "Encomendas entregues mas nao pagas"
+FROM Clientes c;
+
+
