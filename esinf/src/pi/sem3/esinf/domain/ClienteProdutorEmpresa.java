@@ -1,41 +1,130 @@
 package pi.sem3.esinf.domain;
 
+import java.util.Objects;
+import java.util.regex.Pattern;
+
 public class ClienteProdutorEmpresa {
 
-    private String LocID;
-    private float  latitude;
-    private float  longitude;
-    private Cabaz cabaz;
+    private Localizacao localizacao;
 
-    public ClienteProdutorEmpresa(String LocID, float latitude, float longitude, Cabaz designacao) {
-        this.LocID = LocID;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.cabaz = designacao;
+    private String designacao;
+
+    private String id;
+
+    private boolean empresa;
+
+    private boolean hub;
+
+    public ClienteProdutorEmpresa(String id,  Localizacao localizacao, String designacao, boolean empresa) {
+        this.localizacao = localizacao;
+        this.designacao = designacao;
+        this.id = id;
+        this.empresa = empresa;
+        this.hub = false;
     }
 
-    public String getLocID() {
-        return LocID;
+    public ClienteProdutorEmpresa(String id, Localizacao localizacao, boolean empresa) {
+        this.id = id;
+        this.localizacao = localizacao;
+        this.designacao=id;
+        this.empresa = empresa;
+        this.hub = false;
     }
 
-    public float getLatitude() {
-        return latitude;
+    public ClienteProdutorEmpresa(String id, String locId, float longitude, float latitude, String designacao, boolean empresa) {
+        setLocalizacao(locId, longitude, latitude);
+        this.designacao = designacao;
+        this.id = id;
+        this.empresa = empresa;
+        this.hub = false;
     }
 
-    public float getLongitude() {
-        return longitude;
+    public ClienteProdutorEmpresa(String id, String locId, float longitude, float latitude, boolean empresa) {
+        setLocalizacao(locId, longitude, latitude);
+        this.designacao = id;
+        this.id = id;
+        this.empresa = empresa;
+        this.hub = false;
     }
 
-    public Cabaz getCabaz() {
-        return cabaz;
+    public Localizacao getLocalizacao() {
+        return localizacao;
     }
 
-    public void setCabaz(Cabaz cabaz) {
-        this.cabaz = cabaz;
+    public String getDesignacao() {
+        return designacao;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setLocalizacao(Localizacao localizacao) {
+        this.localizacao = localizacao;
+    }
+
+    public void setLocalizacao(String locId, float longitude, float latitude) {
+        this.localizacao = new Localizacao(locId, longitude, latitude);
+    }
+
+    public void setDesignacao(String designacao) {
+        this.designacao = designacao;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClienteProdutorEmpresa that = (ClienteProdutorEmpresa) o;
+        return Objects.equals(getLocalizacao(), that.getLocalizacao()) && Objects.equals(getDesignacao(), that.getDesignacao()) && getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-        return "ClienteProdutorEmpresa{" + "LocID=" + LocID + ", latitude=" + latitude + ", longitude=" + longitude + ", designacao=" + cabaz + '}';
+        return designacao.equals(id)?id:String.format("%s (%s)", id, designacao);
+    }
+
+    public boolean isEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(boolean bool) {
+        this.empresa = bool;
+    }
+
+    public void setNotHub() {
+        this.hub = false;
+    }
+
+    public boolean isHub() {
+        return hub;
+    }
+
+    public void setHub() {
+        if (this.empresa) {
+            this.hub = true;
+        }
+       throw new IllegalArgumentException("Apenas empresas podem ser um hub");
+    }
+
+    public static boolean validateEmpresaID(String id) {
+        return Pattern.matches("E[0-9]+", id);
+    }
+
+    public static boolean validateProdutoID(String id) {
+        return Pattern.matches("P[0-9]+", id);
+    }
+
+    public static boolean validateClienteID(String id) {
+        return Pattern.matches("C[0-9]+", id);
     }
 }

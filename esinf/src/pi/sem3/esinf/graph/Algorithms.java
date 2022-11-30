@@ -418,6 +418,14 @@ public class Algorithms {
         return buildMst(g, pathKeys, dist);
     }
 
+    /**
+     * Builds a minimum spanning tree from a graph and a pathKeys array and a dist array
+     *
+     * @param g the graph to find the MST of
+     * @param pathKeys An array of vertices that represent the path from the source vertex to the current vertex.
+     * @param dist The array of distances from the source vertex to each vertex in the graph.
+     * @return A minimum spanning tree of the graph.
+     */
     private static <V, E> Graph<V,E> buildMst(Graph<V,E> g, V[] pathKeys, E[] dist) {
         Graph<V, E> mst = new MatrixGraph<>(false);
         for (V vert : g.vertices()) {
