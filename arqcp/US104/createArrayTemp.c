@@ -14,11 +14,11 @@ char *createArrayTemp(char max, char min, unsigned int freq, int n)
     char *vec = malloc(size * sizeof(int));
     do
     {
-        char comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
+        char comp_rand = (char)pcg32_random_r();
         vec[0] = sens_temp(0, comp_rand);
         for (int i = 1; i < size && maxErrorReached != 0, i++)
         {
-            comp_rand = 0; // comp. gerada pela fnc da US101 (gerada em cada iteracao)
+            comp_rand = (char)pcg32_random_r();
             *(vec + i) = sens_temp(*(vec + i - 1), comp_rand);
             char valid = checkValueInRangeChar(max, min, *(vec + i));
             if (valid == 0)
@@ -41,5 +41,6 @@ char *createArrayTemp(char max, char min, unsigned int freq, int n)
             state = pcg32_random_r();
             inc = pcg32_random_r();
         }
-    } while (maxErrorReached != 0)
+    } while (maxErrorReached != 0) return vec;
+    return vec;
 }
