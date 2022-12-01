@@ -263,6 +263,14 @@ public class MatrixGraph<V,E> extends CommonGraph<V,E> {
         return g;
     }
 
+    @Override
+    public boolean edgeExists(V v1, V v2) {
+        if(validVertex(v1) && validVertex(v2)){
+            return edge(v1,v2) != null ;
+        }
+        return false;
+    }
+
     /**
      * Returns a string representation of the graph.
      * Matrix only represents existence of Edge

@@ -1,17 +1,18 @@
 package pi.sem3.esinf.Controller;
 
 import pi.sem3.esinf.domain.ClienteProdutorEmpresa;
+import pi.sem3.esinf.domain.Localizacao;
 import pi.sem3.esinf.graph.Algorithms;
 import pi.sem3.esinf.graph.Graph;
 
 public class MSTNetworkController {
 
-    private final Graph<ClienteProdutorEmpresa, Integer> graph;
+    private final Graph<Localizacao, Integer> graph;
     public MSTNetworkController() {
         graph = App.getInstance().getGraph();
     }
 
-    public MSTNetworkController(Graph<ClienteProdutorEmpresa, Integer> graph) {
+    public MSTNetworkController(Graph<Localizacao, Integer> graph) {
         this.graph = graph;
     }
 

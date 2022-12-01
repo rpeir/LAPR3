@@ -1,3 +1,4 @@
+package pi.sem3.esinf.store;
 
 import pi.sem3.esinf.domain.Produto;
 
@@ -22,6 +23,15 @@ public class ProdutoStore {
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+    public void setNProdutos(int n){
+        produtos.clear();
+        for(int i = 0; i < n; i++){
+            produtos.add(new Produto("Prod " + i));
+        }
+    }
+    public Produto getProduto(int i){
+        return produtos.get(i);
     }
 
 }

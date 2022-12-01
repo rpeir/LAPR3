@@ -4,17 +4,17 @@ import java.util.Objects;
 
 public class Produto {
 
-    private double id;
+    private String id;
 
-    public Produto(double id) {
+    public Produto(String id) {
         this.id = id;
     }
 
-    public double getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(double id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -28,7 +28,7 @@ public class Produto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Produto produto = (Produto) o;
-        return Double.compare(produto.getId(), getId()) == 0;
+        return (produto.getId().equals(getId()));
     }
 
     @Override
