@@ -66,6 +66,7 @@ public class ReadCSVController {
             ClienteProdutorEmpresa cpe = new ClienteProdutorEmpresa(values[0], Float.parseFloat(values[1]), Float.parseFloat(values[2]), values[3]);
             if(!cpeStore.containsCPE(cpe.getId())) {
                 cpeStore.addCPE(cpe);
+                localizacaoStore.addLocalizacao(cpe.getLocalizacao());
                 graph.addVertex(cpe.getLocalizacao());
             }
             line = br.readLine();
@@ -89,7 +90,6 @@ public class ReadCSVController {
             Localizacao lc1=localizacaoStore.getLocalizacao(values[0]);
             Localizacao lc2=localizacaoStore.getLocalizacao(values[1]);
             if(lc1!=null && lc2!=null){
-                graph.addEdge(lc1,lc2,Integer.parseInt(values[2]));
                 if(!graph.edgeExists(lc2,lc1)){
                     graph.addEdge(lc2,lc1,Integer.parseInt(values[2]));
                 }
