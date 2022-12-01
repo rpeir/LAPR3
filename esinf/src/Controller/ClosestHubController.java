@@ -1,9 +1,9 @@
 package Controller;
 
-import pi.sem3.esinf.domain.ClienteProdutorEmpresa;
-import pi.sem3.esinf.domain.Localizacao;
-import pi.sem3.esinf.graph.Algorithms;
-import pi.sem3.esinf.graph.Graph;
+import domain.ClienteProdutorEmpresa;
+import domain.Localizacao;
+import graph.Algorithms;
+import graph.Graph;
 
 import java.util.LinkedList;
 import java.util.Map;

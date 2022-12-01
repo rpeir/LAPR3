@@ -1,9 +1,7 @@
 package UI;
 
-import pi.sem3.esinf.Controller.ClosestHubController;
-import pi.sem3.esinf.domain.ClienteProdutorEmpresa;
-import pi.sem3.esinf.domain.Localizacao;
-import pi.sem3.esinf.graph.Graph;
+import Controller.ClosestHubController;
+import domain.ClienteProdutorEmpresa;
 
 import java.util.Map;
 
