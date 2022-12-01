@@ -1,12 +1,12 @@
 package esinf.graph.map;
 
-import pi.sem3.esinf.graph.Algorithms;
-import pi.sem3.esinf.graph.Graph;
-import pi.sem3.esinf.graph.map.MapGraph;
+import graph.Algorithms;
+import graph.Graph;
+import graph.map.MapGraph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pi.sem3.esinf.graph.matrix.MatrixGraph;
+import graph.matrix.MatrixGraph;
 
 import java.util.*;
 
