@@ -44,7 +44,6 @@ table( FatoresProducao ) {
     column( preco_kg ): FLOAT
     column( nomeComercial ): VARCHAR
     column( formulacao ): VARCHAR
-    column( fichaTecnica ): BLOB
 }
 
 table( Restricoes ) {
@@ -229,9 +228,8 @@ table( Niveis ) {
 }
 
 table( Clientes_Niveis ) {
-    primary_key( codClienteNivel ): INTEGER
-    foreign_key( codInterno ): INTEGER
-    foreign_key( codNivel ): INTEGER
+    foreign_key( primary_key( codInterno )): INTEGER
+    foreign_key( primary_key( codNivel )): INTEGER
     column( dataAtribuicao ): DATE
 }
 

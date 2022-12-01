@@ -43,11 +43,10 @@ designacaoNivel varchar(1),
 
 
 create table Clientes_Niveis(
-codClienteNivel integer,
 codInterno integer,
 codNivel integer,
 dataAtribuicao Date constraint nnDataAtribuicao NOT NULL,
-    constraint pk_codClienteNivel PRIMARY KEY (codClienteNivel)
+    constraint pk_codInterno_codNivel PRIMARY KEY (codInterno, codNivel)
 );
 
 create table Pedidos(
@@ -284,7 +283,6 @@ tipoFatorProducao varchar(2),
 precoKg float constraint nnFPPrecoKg NOT NULL,
 nomeComercial varchar(50) constraint unNomeComercial UNIQUE,
 formulacao varchar(1),
-fichaTecnica blob, ----ESPERANDO O FICHEIRO PROFS
     constraint pk_codFatorProducao PRIMARY KEY (codFatorProducao)
 );
 
