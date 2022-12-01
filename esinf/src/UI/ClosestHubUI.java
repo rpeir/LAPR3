@@ -1,4 +1,4 @@
-package pi.sem3.esinf.UI;
+package UI;
 
 public class ClosestHubUI {
 }

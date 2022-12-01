@@ -1,4 +1,4 @@
-package pi.sem3.esinf.Controller;
+package Controller;
 
 public class ClosestHubController {
 }
