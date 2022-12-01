@@ -3,12 +3,12 @@ package esinf.graph.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pi.sem3.esinf.Controller.App;
-import pi.sem3.esinf.Controller.MSTNetworkController;
-import pi.sem3.esinf.Controller.ReadCSVController;
-import pi.sem3.esinf.domain.Localizacao;
-import pi.sem3.esinf.graph.Algorithms;
-import pi.sem3.esinf.graph.Graph;
+import Controller.App;
+import Controller.MSTNetworkController;
+import Controller.ReadCSVController;
+import domain.Localizacao;
+import graph.Algorithms;
+import graph.Graph;
 
 import java.io.File;
 import java.io.IOException;
