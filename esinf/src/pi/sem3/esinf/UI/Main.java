@@ -1,4 +1,4 @@
-package pi.sem3.esinf.Controller;
+package pi.sem3.esinf.UI;
 
 import pi.sem3.esinf.UI.MSTNetworkUI;
 
@@ -22,7 +22,8 @@ public class Main {
 
             switch (opcao) {
                 case "1":
-
+                    ImportCSVUI importCSVUI = new ImportCSVUI();
+                    importCSVUI.run();
                     break;
                 case "2":
 
