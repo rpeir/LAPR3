@@ -8,6 +8,7 @@ import pi.sem3.esinf.store.LocalizacaoStore;
 import pi.sem3.esinf.store.ProdutoStore;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -49,7 +50,7 @@ public class ReadCSVController {
     }
 
 
-    public void readClientesProdutoresFile(String filename) throws IOException {
+    public void readClientesProdutoresFile(File filename) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filename));
         br.readLine(); // skip first line
         String line = br.readLine();
@@ -71,7 +72,7 @@ public class ReadCSVController {
         }
     }
 
-    public void readDistancesFile(String filename) throws IOException {
+    public void readDistancesFile(File filename) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filename));
         br.readLine(); // skip first line
         String line = br.readLine();
