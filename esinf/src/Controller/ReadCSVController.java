@@ -91,7 +91,6 @@ public class ReadCSVController {
             if(lc1!=null && lc2!=null){
                 if(!graph.edgeExists(lc2,lc1)){
                     graph.addEdge(lc2,lc1,Integer.parseInt(values[2]));
-                    System.out.println(graph.edge(lc2,lc1).getWeight());
                 }
             }
             line = br.readLine();
