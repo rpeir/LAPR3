@@ -56,7 +56,7 @@ public class Algorithms {
         }
         visited[g.key(vOrig)] = true;
         qdfs.add(vOrig);
-        for (V v : g.vertices()) {
+        for (V v : g.adjVertices(vOrig)) {
             if (g.edge(vOrig, v) != null && !visited[g.key(v)]) {
                 DepthFirstSearch(g, v, visited, qdfs);
             }

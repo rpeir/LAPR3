@@ -117,4 +117,12 @@ public abstract class CommonGraph <V,E> implements Graph<V,E> {
     public int hashCode() {
         return Objects.hash(numVerts, numEdges, isDirected, vertices);
     }
+
+    @Override
+    public boolean edgeExists(V v1, V v2) {
+        if(validVertex(v1) && validVertex(v2)){
+            return edge(v1,v2) != null ;
+        }
+        return false;
+    }
 }

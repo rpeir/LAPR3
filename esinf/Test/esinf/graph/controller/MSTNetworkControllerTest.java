@@ -7,6 +7,7 @@ import pi.sem3.esinf.Controller.MSTNetworkController;
 import pi.sem3.esinf.Controller.ReadCSVController;
 import pi.sem3.esinf.graph.Graph;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,12 +25,12 @@ public class MSTNetworkControllerTest {
     public void setUp() {
         ReadCSVController readCSVController = new ReadCSVController();
         try {
-            readCSVController.readClientesProdutoresFile("esinf/grafos/grafos/Big/clientes-produtores_big.csv");
+            readCSVController.readClientesProdutoresFile(new File("esinf/grafos/grafos/Big/clientes-produtores_big.csv"));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste clientes-produtores_big.csv");
         }
         try {
-            readCSVController.readDistancesFile("esinf/grafos/grafos/Big/distancias_big.csv");
+            readCSVController.readDistancesFile(new File("esinf/grafos/grafos/Big/distancias_big.csv"));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste distancias_big.csv");
         }
