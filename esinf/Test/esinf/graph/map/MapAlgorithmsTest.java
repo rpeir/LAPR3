@@ -6,6 +6,7 @@ import pi.sem3.esinf.graph.map.MapGraph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pi.sem3.esinf.graph.matrix.MatrixGraph;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ class MapAlgorithmsTest {
 
     final Graph<String, Integer> completeMap = new MapGraph<>(false);
     Graph<String, Integer> incompleteMap = new MapGraph<>(false);
+    Graph<String,Integer> mst = new MatrixGraph<>(false);
 
     public MapAlgorithmsTest() {
     }
@@ -51,6 +53,12 @@ class MapAlgorithmsTest {
         completeMap.addEdge("Aveiro", "Viseu", 85);
         completeMap.addEdge("Leiria", "Castelo Branco", 170);
         completeMap.addEdge("Lisboa", "Faro", 280);
+
+
+        mst = completeMap.clone();
+        mst.removeEdge("Aveiro", "Leiria");
+        mst.removeEdge("Coimbra", "Lisboa");
+        mst.removeEdge("Leiria", "Castelo Branco");
     }
 
     private void checkContentEquals(List<String> l1, List<String> l2, String msg) {
@@ -204,9 +212,25 @@ class MapAlgorithmsTest {
      */
     @Test
     public void testminDistGraph() {
-    
-        throw new UnsupportedOperationException("Not supported yet.");
-        
+
+        System.out.println("Test of minimum distance graph");
+
+        //Testing with complete graph
+        MatrixGraph<String, Integer> minDistGraph = Algorithms.minDistGraph(completeMap, Integer::compare, Integer::sum);
+
+        //Testing with complete graph
+
+        assertEquals(195, minDistGraph.edge("Porto", "Leiria").getWeight(), "Minimum distance between Porto and Leiria should be 365 Km");
+        assertEquals(195, minDistGraph.edge("Leiria", "Porto").getWeight(), "Minimum distance between Leiria and Porto should be 365 Km");
+        assertEquals(170, minDistGraph.edge("Leiria", "Castelo Branco").getWeight(), "Minimum distance between Leiria and Castelo Branco should be 170 Km");
+        assertEquals(170, minDistGraph.edge("Castelo Branco", "Leiria").getWeight(), "Minimum distance between Castelo Branco and Leiria should be 170 Km");
+
+        //Testing with incomplete graph
+        minDistGraph = Algorithms.minDistGraph(incompleteMap, Integer::compare, Integer::sum);
+        assertEquals(335, minDistGraph.edge("Porto", "Lisboa").getWeight(), "Minimum distance between Porto and Lisboa should be 335 Km");
+        assertEquals(335, minDistGraph.edge("Lisboa", "Porto").getWeight(), "Minimum distance between Lisboa and Porto should be 335 Km");
+        assertEquals(255, minDistGraph.edge("Braga", "Leiria").getWeight(), "Minimum distance between Braga and Leiria should be 255 Km");
+        assertEquals(255, minDistGraph.edge("Leiria", "Braga").getWeight(), "Minimum distance between Leiria and Braga should be 255 Km");
     }
 
 
@@ -221,4 +245,25 @@ class MapAlgorithmsTest {
         result = Algorithms.minConnections(incompleteMap,Integer::compare, Integer::sum, 0);
         assertEquals(-1,result);
     }
+
+    @Test
+    public void testKruskall() {
+        System.out.println("Test of Kruskall Algorithm");
+        Graph<String, Integer> kruskall = Algorithms.kruskall(completeMap, Integer::compare);
+        testMST(kruskall);
+    }
+
+    @Test
+    public void testPrim() {
+        System.out.println("Test of Prim Algorithm");
+        Graph<String, Integer> prim = Algorithms.prim(completeMap, Integer::compare, 0);
+        testMST(prim);
+    }
+
+    public <V, E> void testMST(Graph<V, E> g) {
+        assertEquals(mst.numVertices(), g.numVertices(), "Kruskall should have 11 vertices");
+        assertEquals(mst.numEdges(), g.numEdges(), "Kruskall should have 10 edges");
+        assertEquals(mst, g, "Kruskall should be the same as the MST");
+    }
+
 }

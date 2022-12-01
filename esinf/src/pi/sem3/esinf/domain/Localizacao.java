@@ -24,7 +24,7 @@ public class Localizacao {
 
     public void setLocID(String locID) {
         if (validateID(locID)) {
-            setLocID(locID);
+            this.locID = locID;
         } else {
             throw new IllegalArgumentException("Invalid ID: does not match pattern CT[0-9]+");
         }
