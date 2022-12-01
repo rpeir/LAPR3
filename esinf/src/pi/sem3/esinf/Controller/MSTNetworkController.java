@@ -21,7 +21,7 @@ public class MSTNetworkController {
      * Get the minimum spanning tree of the graph
      * @return the minimum spanning tree of the graph
      */
-    public Graph<?, ?> getMSTNetwork(){
+    public Graph<Localizacao, Integer> getMSTNetwork(){
         if (kruskallBetterToUse()) {
             return Algorithms.kruskall(graph, Integer::compare);
         } else {
@@ -37,6 +37,15 @@ public class MSTNetworkController {
         int nVertices = graph.numVertices();
         int nEdges = graph.numEdges();
         return nVertices*nVertices > nEdges*Math.log(nVertices);
+    }
+
+    /**
+     * Return the total distance of the network
+     * @param mst mst
+     * @return total distance
+     */
+    public int getMSTNetworkDistance(Graph<Localizacao, Integer> mst) {
+        return Algorithms.totalWeight(mst, Integer::sum, 0);
     }
 
 }

@@ -442,4 +442,21 @@ public class Algorithms {
 
         return mst;
     }
+
+    /**
+     * Gets the total weight of a graph
+     * @param g The graph to get the weight of
+     * @param sum The sum function
+     * @param zero The zero value for the edge weights
+     * @return The total weight of the graph
+     * @param <V> The vertex type
+     * @param <E> The edge type
+     */
+    public static <V, E> E totalWeight(Graph<V, E> g, BinaryOperator<E> sum, E zero) {
+        E totalWeight = zero;
+        for (Edge<V, E> edge : g.edges()) {
+            totalWeight = sum.apply(totalWeight, edge.getWeight());
+        }
+        return totalWeight;
+    }
 }

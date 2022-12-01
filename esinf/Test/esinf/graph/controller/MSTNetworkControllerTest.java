@@ -3,8 +3,11 @@ package esinf.graph.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pi.sem3.esinf.Controller.App;
 import pi.sem3.esinf.Controller.MSTNetworkController;
 import pi.sem3.esinf.Controller.ReadCSVController;
+import pi.sem3.esinf.domain.Localizacao;
+import pi.sem3.esinf.graph.Algorithms;
 import pi.sem3.esinf.graph.Graph;
 
 import java.io.File;
@@ -16,21 +19,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MSTNetworkControllerTest {
 
+    private final Graph<Localizacao, Integer> g;
     private final MSTNetworkController instance;
     public MSTNetworkControllerTest() {
         instance = new MSTNetworkController();
+        g=App.getInstance().getGraph();
     }
+
+    private final String pathCPbig = "esinf/grafos/grafos/Big/clientes-produtores_big.csv";
+
+    private final String pathCPsmall = "esinf/grafos/grafos/Small/clientes-produtores_small.csv";
+
+    private final String pathDbig = "esinf/grafos/grafos/Big/distancias_big.csv";
+
+    private final String pathDsmall = "esinf/grafos/grafos/Small/distancias_small.csv";
 
     @BeforeEach
     public void setUp() {
         ReadCSVController readCSVController = new ReadCSVController();
         try {
-            readCSVController.readClientesProdutoresFile(new File("esinf/grafos/grafos/Big/clientes-produtores_big.csv"));
+            readCSVController.readClientesProdutoresFile(new File(pathCPbig));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste clientes-produtores_big.csv");
         }
         try {
-            readCSVController.readDistancesFile(new File("esinf/grafos/grafos/Big/distancias_big.csv"));
+            readCSVController.readDistancesFile(new File(pathDbig));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste distancias_big.csv");
         }
@@ -40,8 +53,30 @@ public class MSTNetworkControllerTest {
     public void testGetMSTNetwork() {
         System.out.println("getMSTNetwork");
         Graph<?, ?> result = instance.getMSTNetwork();
+        testMST(result);
         System.out.println(result);
         Assertions.assertNotNull(result);
+    }
+
+    @Test
+    public void testKruskall() {
+        System.out.println("Test of Kruskall Algorithm");
+        Graph<?, ?> kruskall = Algorithms.kruskall(g, Integer::compare);
+        testMST(kruskall);
+        System.out.println(kruskall);
+    }
+
+    @Test
+    public void testPrim() {
+        System.out.println("Test of Prim Algorithm");
+        Graph<?, ?> prim = Algorithms.prim(g, Integer::compare, 0);
+        testMST(prim);
+        System.out.println(prim);
+    }
+
+    private void testMST(Graph<?, ?> mst) {
+        assertEquals(App.getInstance().getGraph().numVertices(), mst.numVertices(), "The number of vertices in the MST is not the same as the original graph");
+        assertEquals((App.getInstance().getGraph().numVertices()-1)*2, mst.numEdges(), "The number of edges in the MST is not the number of vertices - 1");
     }
 
 }
