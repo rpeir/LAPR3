@@ -15,7 +15,7 @@ public class Main {
             System.out.println("1 - Carregar informacao a partir de ficheiros CSV");
             System.out.println("2 - ");
             System.out.println("3 - ");
-            System.out.println("4 - ");
+            System.out.println("4 - Determinar o hub mais proximo para cada cliente");
             System.out.println("5 - Determinar a rede que conecte todos os clientes e produtores com uma distancia total minima");
             System.out.println("0 - Sair");
             String opcao = sc.nextLine();
@@ -32,7 +32,8 @@ public class Main {
 
                     break;
                 case "4":
-
+                    ClosestHubUI closestHubUI = new ClosestHubUI();
+                    closestHubUI.run();
                     break;
                 case "5":
                     MSTNetworkUI mstNetworkUI = new MSTNetworkUI();

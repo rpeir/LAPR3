@@ -29,7 +29,7 @@ public interface Graph<V, E> extends Cloneable {
      */
     ArrayList<V> vertices();
 
-    /** Check is vertex is in graph
+    /** Check if vertex is in graph
      *
      * @param vert the vertex to check
      * @return true is vert exists in the graph, false otherwise
@@ -161,5 +161,12 @@ public interface Graph<V, E> extends Cloneable {
      */
     Graph<V, E> clone();
 
+    /**
+     * Returns true if an edge exists between the two vertices, false otherwise
+     *
+     * @param lc2 The first vertex of the edge.
+     * @param lc1 The first vertex of the edge.
+     * @return A boolean value.
+     */
     boolean edgeExists(V lc2, V lc1);
 }

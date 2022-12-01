@@ -162,6 +162,17 @@ public class Algorithms {
 
     }
 
+    /**
+     * It returns the vertex with the minimum distance from the source vertex
+     *
+     * @param g the graph
+     * @param dist an array of the same size as the number of vertices in the graph. It will contain the distance from the
+     * source vertex to each vertex in the graph.
+     * @param visited an array of booleans that indicates whether a vertex has been visited or not.
+     * @param ce Comparator<E>
+     * @param zero the zero element of the type E.
+     * @return The vertex with the minimum distance.
+     */
     private static <V, E> V getVertMinDist(Graph<V, E> g, E[] dist, boolean[] visited, Comparator<E> ce, E zero) {
         E menorDistancia = zero;
         V vMenor = null;
@@ -321,6 +332,16 @@ public class Algorithms {
     }
 
 
+    /**
+     * This function takes a graph, a comparator, a binary operator, and a zero value, and returns the minimum number of
+     * connections needed to connect all vertices in the graph
+     *
+     * @param g The graph to be analyzed
+     * @param ce Comparator<E>
+     * @param sum a function that takes two edges and returns the sum of the two edges.
+     * @param zero the zero element of the edge type.
+     * @return The minimum number of connections between any two vertices in the graph.
+     */
     public static <V, E> int minConnections(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
         int minConnections = 0;
         for (V vert : g.vertices()) {
