@@ -120,7 +120,7 @@ public class ClienteProdutorEmpresa {
         return Pattern.matches("E[0-9]+", id);
     }
 
-    public static boolean validateProdutoID(String id) {
+    public static boolean validateProdutorID(String id) {
         return Pattern.matches("P[0-9]+", id);
     }
 
