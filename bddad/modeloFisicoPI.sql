@@ -74,7 +74,7 @@ create table Culturas(
 codCultura integer,
 designacaoCultura varchar(50) constraint nnDesignacaoCultura NOT NULL,
 tipoCultura varchar(1),
-objetivoCultura varchar(8), 
+objetivoCultura varchar(2), 
 tempoCrescimento integer constraint nnTempoCrescimento NOT NULL,
     constraint pk_codCultura PRIMARY KEY (codCultura)
 );
@@ -146,7 +146,7 @@ codCultura integer,
 -- codColheita integer,
 precoKg float constraint nnPrecoKg NOT NULL,
 stockKg float constraint nnStockKg NOT NULL,
-designacao varchar(50) constraint unDesignacaoProduto UNIQUE,
+designacaoProduto varchar(50) constraint unDesignacaoProduto UNIQUE,
     constraint pk_codProduto PRIMARY KEY (codProduto)
 );
 
@@ -181,7 +181,7 @@ estadoAtual varchar(1),
 create table Colheitas_Culturas(
 codColheita integer,
 codCultura integer,
-valorTotal float constraint nnValorTotal NOT NULL,
+valorTotalColheita float constraint nnValorTotal NOT NULL,
     constraint pk_codColheita_codCultura PRIMARY KEY (codColheita,codCultura)
 );
 
@@ -399,8 +399,8 @@ alter table SetoresAgricolas_Culturas add constraint fk_SetoresAgricolas_Cultura
 alter table SetoresAgricolas_Culturas add constraint fk_SetoresAgricolas_Culturas_codCultura FOREIGN KEY (codCultura) references Culturas (codCultura);
 alter table Operacoes add constraint fk_Operacoes_anoPlanoAnual FOREIGN KEY (anoPlanoAnual) references PlanosAnuais (anoPlanoAnual);
 alter table Operacoes add constraint fk_Operacoes_codCalendarioOperacoes FOREIGN KEY (codCalendarioOperacoes) references CalendariosOperacoes (codCalendarioOperacoes);
-alter table Operacoes add constraint ck_formaAplicacao CHECK(formaAplicacao='F' OR formaAplicacao='R' OR formaAplicacao='S');
-alter table Operacoes add constraint ck_estadoOperacao CHECK(estadoOperacao='F' OR estadoOperacao='R' OR estadoOperacao='S');
+alter table Operacoes add constraint ck_formaAplicacao CHECK(formaAplicacao='F' OR formaAplicacao='FR' OR formaAplicacao='S');
+alter table Operacoes add constraint ck_estadoOperacao CHECK(estadoOperacao='M' OR estadoOperacao='C');
 alter table PlanosRega add constraint fk_PlanosRega_anoPlanoAnual FOREIGN KEY (anoPlanoAnual) references PlanosAnuais (anoPlanoAnual);
 alter table PlanosRega add constraint fk_PlanosRega_codSetorAgricola FOREIGN KEY (codSetorAgricola) references SetoresAgricolas (codSetorAgricola);
 alter table PlanosRega add constraint fk_PlanosRega_codCultura FOREIGN KEY (codCultura) references Culturas (codCultura);
@@ -423,7 +423,7 @@ alter table FatoresProducao add constraint ck_tipoFatorProducao CHECK(tipoFatorP
 alter table FatoresProducao add constraint ck_formulacao CHECK(formulacao='G' OR formulacao='L' OR formulacao='P');
 alter table Restricoes add constraint fk_Restricoes_codZonaGeografica FOREIGN KEY (codZonaGeografica) references ZonasGeograficas (codZonaGeografica);
 alter table Restricoes add constraint fk_Restricoes_codFatorProducao FOREIGN KEY (codFatorProducao) references FatoresProducao (codFatorProducao);
-alter table TiposSensores add constraint ck_codTipoSensor CHECK(codTipoSensor='HS' OR codTipoSensor='VV' OR codTipoSensor='PI'OR codTipoSensor='TX'OR codTipoSensor='TA'OR codTipoSensor='HA'OR codTipoSensor='PA');
+alter table TiposSensores add constraint ck_codTipoSensor CHECK(codTipoSensor='HS' OR codTipoSensor='VV' OR codTipoSensor='PI'OR codTipoSensor='TS'OR codTipoSensor='TA'OR codTipoSensor='HA'OR codTipoSensor='PA');
 alter table EstacoesMeteorologicas add constraint fk_EstacoesMeteorologicas_codZonaGeografica FOREIGN KEY(codZonaGeografica) references ZonasGeograficas (codZonaGeografica);
-
+alter table Moradas add constraint ck_andar CHECK(andar>=0 AND andar<165);
 
