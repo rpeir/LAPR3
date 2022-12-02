@@ -62,6 +62,7 @@ public class App {
         return singleton;
     }
 
+
     public ProdutoStore getProdutoStore() {
         return produtoStore;
     }

@@ -11,7 +11,7 @@ public class Main {
         while (run) {
             System.out.println("\nSelecione uma opcao:\n");
             System.out.println("1 - Carregar informacao a partir de ficheiros CSV");
-            System.out.println("2 - ");
+            System.out.println("2 - Verificar se o grafo e conexo e o nr minimo de conexoes para chegar dum vertice a qualquer outro ");
             System.out.println("3 - Definir os hubs da rede de distribuicao");
             System.out.println("4 - Determinar o hub mais proximo para cada cliente");
             System.out.println("5 - Determinar a rede que conecte todos os clientes e produtores com uma distancia total minima");
@@ -25,7 +25,8 @@ public class Main {
                     importCSVUI.run();
                     break;
                 case "2":
-
+                    ConnectionsUI connectionsUI = new ConnectionsUI();
+                    connectionsUI.run();
                     break;
                 case "3":
                     HubsDistribuicaoUI hubsDistribuicaoUI = new HubsDistribuicaoUI();
