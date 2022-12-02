@@ -154,13 +154,13 @@ table( Produtos ) {
     'foreign_key( codColheita ): INTEGER
     column( preco/kg ): FLOAT
     column( stock/kg ): FLOAT
-    column( designacao ): VARCHAR
+    column( designacaoProduto ): VARCHAR
 }
 
 table( Colheitas_Culturas ){
     foreign_key(primary_key( codColheita )): INTEGER
     foreign_key(primary_key( codCultura )): INTEGER
-    column( valorTotal ): FLOAT
+    column( valorTotalColheita ): FLOAT
 }
 
 table( Pedidos_Produtos ) {

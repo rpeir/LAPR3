@@ -210,7 +210,7 @@ create table Operacoes(
 codOperacao integer,
 anoPlanoAnual integer,
 codCalendarioOperacoes integer,
-dataPrevistaPlano date,
+dataPrevistaPlano date constraint nnDataPrevistaPlano NOT NULL,
 dataOperacao date constraint nnDataOperacao NOT NULL,
 formaAplicacao varchar(1),
 estadoOperacao varchar(1),
