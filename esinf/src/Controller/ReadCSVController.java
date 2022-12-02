@@ -50,6 +50,7 @@ public class ReadCSVController {
 
 
     public void readClientesProdutoresFile(File filename) throws IOException {
+        try{
         BufferedReader br = new BufferedReader(new FileReader(filename));
         br.readLine(); // skip first line
         String line = br.readLine();
@@ -70,9 +71,15 @@ public class ReadCSVController {
             }
             line = br.readLine();
         }
+        }catch (NumberFormatException e) {
+            throw new IOException("Invalid ID format");
+        }catch (IllegalArgumentException e){
+            throw new IOException(e.getMessage());
+        }
     }
 
     public void readDistancesFile(File filename) throws IOException {
+        try{
         BufferedReader br = new BufferedReader(new FileReader(filename));
         br.readLine(); // skip first line
         String line = br.readLine();
@@ -94,6 +101,11 @@ public class ReadCSVController {
                 }
             }
             line = br.readLine();
+        }
+    }catch (NumberFormatException e) {
+            throw new IOException("Invalid ID format");
+        }catch (IllegalArgumentException e){
+            throw new IOException(e.getMessage());
         }
     }
 }

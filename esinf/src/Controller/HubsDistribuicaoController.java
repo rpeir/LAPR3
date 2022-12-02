@@ -51,7 +51,6 @@ public class HubsDistribuicaoController {
     public void getMediaDistancia(Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas, Graph<Localizacao, Integer> grafo, int n) {
         Graph<ClienteProdutorEmpresa, Integer> grafoEmpresas2 = new MapGraph<>(false);
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
-        ArrayList<Distancia> caminhoMaisCurto = new ArrayList<>();
         double media;
         for (ClienteProdutorEmpresa e : getEmpresas()) {
             grafoEmpresas2.addVertex(e);
@@ -68,16 +67,28 @@ public class HubsDistribuicaoController {
         LinkedList<ClienteProdutorEmpresa> caminho = new LinkedList<>();
         for(ClienteProdutorEmpresa cpe1 : grafoEmpresas2.vertices()){
             if(cpe1.getDesignacao().contains("E")) {
-                int soma = 0;
-                double numeroCPE = 0;
+
+                Double soma = (double)0;
+                Double numeroCPE = (double)0;
+
                 for (ClienteProdutorEmpresa cpe2 : grafoEmpresas2.vertices()) {
                     if (!(cpe2.getDesignacao().contains("E"))) {
-                        soma += Algorithms.shortestPath(grafoEmpresas2, cpe1, cpe2, Integer::compare, Integer::sum, 0, caminho);
-                        System.out.println("O caminho mais curto de " + cpe1.getDesignacao() + " para " + cpe2.getDesignacao() + " e: " + caminho);
-                        // cpe1 - empresa ; cpe2 - cliente ou producao
-                        Distancia add = new Distancia(cpe1, cpe2, soma);
-                        caminhoMaisCurto.add(add);
-                        numeroCPE++;
+
+                        if (Algorithms.shortestPath(grafoEmpresas2, cpe1, cpe2, Integer::compare, Integer::sum, 0, caminho) != null) {
+                            soma += Algorithms.shortestPath(
+                                    grafoEmpresas2,
+                                    cpe1,
+                                    cpe2,
+                                    Integer::compare,
+                                    Integer::sum,
+                                    0,
+                                    caminho
+                            );
+
+
+                            numeroCPE++;
+                        }
+
                     }
                 }
 
@@ -100,10 +111,11 @@ public class HubsDistribuicaoController {
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .forEachOrdered(x -> sorted.put(x.getKey(), x.getValue()));
-        // imprimir os n primeiros elementod do mapa ordenado
+        // imprimir os n primeiros elementos do mapa ordenado
         int i = 0;
         for (Map.Entry<ClienteProdutorEmpresa, Double> entry : sorted.entrySet()) {
             if (i < n) {
+                entry.getKey().setHub();
                 System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
                 i++;
             }

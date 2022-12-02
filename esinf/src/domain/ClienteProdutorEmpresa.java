@@ -18,13 +18,13 @@ public class ClienteProdutorEmpresa {
     public ClienteProdutorEmpresa(Localizacao localizacao, String id, String designacao) {
         this.localizacao = localizacao;
         this.designacao = designacao;
-        this.id = id;
+        setId(id);
         this.empresa = validateEmpresaID(id);
         this.hub = false;
     }
 
     public ClienteProdutorEmpresa(Localizacao localizacao,String id) {
-        this.id = id;
+        setId(id);
         this.localizacao = localizacao;
         this.designacao=id;
         this.empresa =validateEmpresaID(id);
@@ -34,7 +34,7 @@ public class ClienteProdutorEmpresa {
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude,String id, String designacao) {
         setLocalizacao(locId, longitude, latitude);
         this.designacao = designacao;
-        this.id = id;
+        setId(id);
         this.empresa = validateEmpresaID(id);
         this.hub = false;
     }
@@ -42,7 +42,7 @@ public class ClienteProdutorEmpresa {
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude, String id) {
         setLocalizacao(locId, longitude, latitude);
         this.designacao = id;
-        this.id = id;
+        setId(id);
         this.empresa = validateEmpresaID(id);
         this.hub = false;
     }
@@ -72,6 +72,11 @@ public class ClienteProdutorEmpresa {
     }
 
     public void setId(String id) {
+        if (validateEmpresaID(id)) {
+            this.empresa=true;
+        } else if (!validateClienteID(id) && !validateProdutorID(id)) {
+            throw new IllegalArgumentException("Invalid ID: does not match pattern [CPE][0-9]+]");
+        }
         this.id = id;
     }
 
