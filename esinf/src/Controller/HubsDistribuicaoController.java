@@ -32,11 +32,12 @@ public class HubsDistribuicaoController {
     }
 
     public Graph<ClienteProdutorEmpresa, Distancia> getGrafoEmpresas(Graph<Localizacao, Integer> grafo) {
+
         Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas = new MapGraph<>(false);
         for (ClienteProdutorEmpresa e : getEmpresas()) {
             grafoEmpresas.addVertex(e);
             for (Map.Entry<String, ClienteProdutorEmpresa> cpe : app.getClienteProdutorEmpresaStore().getMapCPE().entrySet()) {
-                if (!cpe.getValue().isEmpresa() && !cpe.getValue().isHub()) {
+                if (!(cpe.getValue().getId().contains("E"))) {
                     if (grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()) != null) {
                         Distancia add = new Distancia(e, cpe.getValue(), grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()).getWeight());
                         grafoEmpresas.addEdge(e, cpe.getValue(), add);
@@ -55,7 +56,7 @@ public class HubsDistribuicaoController {
         for (ClienteProdutorEmpresa e : getEmpresas()) {
             grafoEmpresas2.addVertex(e);
             for (Map.Entry<String, ClienteProdutorEmpresa> cpe : app.getClienteProdutorEmpresaStore().getMapCPE().entrySet()) {
-                if (!cpe.getValue().isEmpresa() && !cpe.getValue().isHub()) {
+                if (!cpe.getValue().getId().contains("E")) {
                     if (grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()) != null) {
                         Distancia add = new Distancia(e, cpe.getValue(), grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()).getWeight());
                         grafoEmpresas2.addEdge(e, cpe.getValue(), add.getLength());

@@ -20,10 +20,7 @@ public class HubsDistribuicaoUI {
 
     public void run() {
 
-        System.out.println("Grafo das empresas em relacao aos clientes e produtores: ");
         Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas = ctrl.getGrafoEmpresas(app.getGraph());
-        System.out.println(grafoEmpresas);
-
 
         int n;
         Scanner sc = new Scanner(System.in);
