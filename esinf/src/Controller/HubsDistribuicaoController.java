@@ -48,10 +48,11 @@ public class HubsDistribuicaoController {
         return grafoEmpresas;
     }
 
-    public Map<ClienteProdutorEmpresa, Double> getMediaDistancia(Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas, Graph<Localizacao, Integer> grafo) {
+    public void getMediaDistancia(Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas, Graph<Localizacao, Integer> grafo, int n) {
         Graph<ClienteProdutorEmpresa, Integer> grafoEmpresas2 = new MapGraph<>(false);
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
-        Double media;
+        ArrayList<Distancia> caminhoMaisCurto = new ArrayList<>();
+        double media;
         for (ClienteProdutorEmpresa e : getEmpresas()) {
             grafoEmpresas2.addVertex(e);
             for (Map.Entry<String, ClienteProdutorEmpresa> cpe : app.getClienteProdutorEmpresaStore().getMapCPE().entrySet()) {
@@ -63,19 +64,20 @@ public class HubsDistribuicaoController {
                 }
             }
         }
-        LinkedList<ClienteProdutorEmpresa> caminho = new LinkedList<>();
 
+        LinkedList<ClienteProdutorEmpresa> caminho = new LinkedList<>();
         for(ClienteProdutorEmpresa cpe1 : grafoEmpresas2.vertices()){
-            int i = 0;
             if(cpe1.getDesignacao().contains("E")) {
-                double soma = 0;
+                int soma = 0;
                 double numeroCPE = 0;
                 for (ClienteProdutorEmpresa cpe2 : grafoEmpresas2.vertices()) {
                     if (!(cpe2.getDesignacao().contains("E"))) {
                         soma += Algorithms.shortestPath(grafoEmpresas2, cpe1, cpe2, Integer::compare, Integer::sum, 0, caminho);
-                        System.out.println(i+ "O caminho mais curto de " + cpe1.getDesignacao() + " para " + cpe2.getDesignacao() + " e: " + caminho + " com " + soma + " de distancia");
+                        System.out.println("O caminho mais curto de " + cpe1.getDesignacao() + " para " + cpe2.getDesignacao() + " e: " + caminho);
+                        // cpe1 - empresa ; cpe2 - cliente ou producao
+                        Distancia add = new Distancia(cpe1, cpe2, soma);
+                        caminhoMaisCurto.add(add);
                         numeroCPE++;
-                        i++;
                     }
                 }
 
@@ -84,32 +86,27 @@ public class HubsDistribuicaoController {
                     medias.put(cpe1, media);
                 }
             }
-
-//        int menor = Integer.MAX_VALUE;
-//        int distanciaTotal = 0;
-//        for (ClienteProdutorEmpresa cpe1 : grafoEmpresas.vertices()) {
-//            for (ClienteProdutorEmpresa cpe2 : grafoEmpresas.vertices()) {
-//                if (grafoEmpresas.edge(cpe1, cpe2) != null) {
-//
-//                    int distanciaEdge = grafoEmpresas.edge(cpe1, cpe2).getWeight().getLength();
-//                    if (distanciaEdge < menor) {
-//                        menor = distanciaEdge;
-//                    }
-//                }
-//            }
-//            distanciaTotal = distanciaTotal + menor;
-//            menor = Integer.MAX_VALUE;
-//        }
-//        double media = distanciaTotal / grafoEmpresas.numVertices();
         }
+
         System.out.println("\nMedia dos caminhos mais curtos: ");
         for (Map.Entry<ClienteProdutorEmpresa, Double> entry : medias.entrySet()) {
             System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
         }
-        return medias;
-    }
 
-    public void getNumEmpresasProximas(int n, Map<ClienteProdutorEmpresa, Double> medias) {
-
+        System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media: ");
+        // ordenar mapa por valor
+        Map<ClienteProdutorEmpresa, Double> sorted = new LinkedHashMap<>();
+        medias.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(x -> sorted.put(x.getKey(), x.getValue()));
+        // imprimir os n primeiros elementod do mapa ordenado
+        int i = 0;
+        for (Map.Entry<ClienteProdutorEmpresa, Double> entry : sorted.entrySet()) {
+            if (i < n) {
+                System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
+                i++;
+            }
+        }
     }
 }

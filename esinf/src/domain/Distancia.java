@@ -5,6 +5,7 @@ public class Distancia {
     private ClienteProdutorEmpresa LocID1;
     private ClienteProdutorEmpresa LocID2;
     private int length;
+    private double distancia;
 
     public Distancia(ClienteProdutorEmpresa LocID1, ClienteProdutorEmpresa LocID2, int length) {
         this.LocID1 = LocID1;
@@ -18,6 +19,10 @@ public class Distancia {
 
     public ClienteProdutorEmpresa getLocID2() {
         return LocID2;
+    }
+
+    public double getDistancia() {
+        return distancia;
     }
 
     public int getLength() {
@@ -34,6 +39,7 @@ public class Distancia {
 
     @Override
     public String toString() {
-        return "Distancia{" + "LocID1=" + LocID1 + ", LocID2=" + LocID2 + ", length=" + length + '}';
+        return "LocID1=" + LocID1 + ", distancia=" + length;
     }
+
 }
