@@ -190,7 +190,7 @@ create table SetoresAgricolas_Culturas(
 codSetorAgricola integer,
 codCultura integer,
 dataPlantacao date constraint nnDataPlantacao NOT NULL,
-    constraint pk_codSetorAgricola_codCultura PRIMARY KEY (codSetorAgricola,codCultura)
+    constraint pk_codSetorAgricola_codCultura PRIMARY KEY (codSetorAgricola,codCultura,dataPlantacao)
 );
 
 
@@ -212,7 +212,7 @@ anoPlanoAnual integer,
 codCalendarioOperacoes integer,
 dataPrevistaPlano date constraint nnDataPrevistaPlano NOT NULL,
 dataOperacao date constraint nnDataOperacao NOT NULL,
-formaAplicacao varchar(1),
+formaAplicacao varchar(2),
 estadoOperacao varchar(1),
     constraint pk_codOperacao PRIMARY KEY (codOperacao)
 );
