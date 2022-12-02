@@ -90,7 +90,7 @@ table( Culturas ) {
 table( SetoresAgricolas_Culturas ) {
     foreign_key(primary_key( codSetorAgricola )): INTEGER
     foreign_key(primary_key( codCultura )): INTEGER
-    column( dataPlantacao ): DATE
+    primary_key( dataPlantacao ): DATE
 }
 
 table( PlanosAnuais ) {
