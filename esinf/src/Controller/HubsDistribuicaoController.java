@@ -58,8 +58,7 @@ public class HubsDistribuicaoController {
             for (Map.Entry<String, ClienteProdutorEmpresa> cpe : app.getClienteProdutorEmpresaStore().getMapCPE().entrySet()) {
                 if (!cpe.getValue().getId().contains("E")) {
                     if (grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()) != null) {
-                        Distancia add = new Distancia(e, cpe.getValue(), grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()).getWeight());
-                        grafoEmpresas2.addEdge(e, cpe.getValue(), add.getLength());
+                        grafoEmpresas2.addEdge(e, cpe.getValue(), grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()).getWeight());
                     }
                 }
             }
