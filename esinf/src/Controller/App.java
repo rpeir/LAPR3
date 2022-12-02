@@ -1,11 +1,14 @@
 package Controller;
 
 import domain.Localizacao;
+import domain.WaterController.Sector;
+import domain.WaterController.WaterController;
 import graph.Graph;
 import graph.map.MapGraph;
 import store.ClienteProdutorEmpresaStore;
 import store.LocalizacaoStore;
 import store.ProdutoStore;
+import store.WaterController.SectorStore;
 
 public class App {
 
@@ -14,6 +17,16 @@ public class App {
     private ClienteProdutorEmpresaStore cpeStore;
     private LocalizacaoStore localizacaoStore;
 
+    private WaterController waterController;
+    private SectorStore sectorStore;
+
+    public SectorStore getSectorStore() {
+        return sectorStore;
+    }
+
+    public WaterController getWaterController() {
+        return waterController;
+    }
 
     public Graph<Localizacao, Integer> getGraph() {
         return graph;
@@ -32,6 +45,8 @@ public class App {
         produtoStore = new ProdutoStore();
         cpeStore = new ClienteProdutorEmpresaStore();
         localizacaoStore = new LocalizacaoStore();
+        waterController = new WaterController();
+        sectorStore = new SectorStore();
 
     }
 

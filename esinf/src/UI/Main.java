@@ -15,6 +15,7 @@ public class Main {
             System.out.println("3 - Definir os hubs da rede de distribuicao");
             System.out.println("4 - Determinar o hub mais proximo para cada cliente");
             System.out.println("5 - Determinar a rede que conecte todos os clientes e produtores com uma distancia total minima");
+            System.out.println("6 - Controlador de rega");
             System.out.println("0 - Sair");
             String opcao = sc.nextLine();
 
@@ -37,6 +38,10 @@ public class Main {
                 case "5":
                     MSTNetworkUI mstNetworkUI = new MSTNetworkUI();
                     mstNetworkUI.run();
+                    break;
+                case "6":
+                    ImportWaterControllerUI importWaterControllerUI = new ImportWaterControllerUI();
+                    importWaterControllerUI.run();
                     break;
                 case "0":
 

@@ -5,8 +5,8 @@ import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
 
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class ClosestHubController {
     private final Graph<Localizacao, Integer> graph;
@@ -53,8 +53,8 @@ public class ClosestHubController {
     * @return A map of ClienteProdutorEmpresa objects, where the key is the ClienteProdutorEmpresa object and the value is
     * the closest hub to the ClienteProdutorEmpresa object.
     */
-   public Map<ClienteProdutorEmpresa,ClienteProdutorEmpresa> getAllClosestHubs (){
-        Map<ClienteProdutorEmpresa,ClienteProdutorEmpresa> result = null;
+   public HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> getAllClosestHubs (){
+        HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> result = new HashMap<>();
         for (ClienteProdutorEmpresa cpe: App.getInstance().getClienteProdutorEmpresaStore().getMapCPE().values()) {
             if (ClienteProdutorEmpresa.validateClienteID(cpe.getId())) {
                 result.put(cpe,getClosestHub(cpe));
