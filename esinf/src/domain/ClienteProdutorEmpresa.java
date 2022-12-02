@@ -117,8 +117,9 @@ public class ClienteProdutorEmpresa {
     public void setHub() {
         if (this.empresa) {
             this.hub = true;
+        }else{
+            throw new IllegalArgumentException("Only companies can be hubs.");
         }
-       throw new IllegalArgumentException("Apenas empresas podem ser um hub");
     }
 
     public static boolean validateEmpresaID(String id) {
