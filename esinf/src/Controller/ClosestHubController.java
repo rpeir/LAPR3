@@ -26,7 +26,7 @@ public class ClosestHubController {
      */
     public ClienteProdutorEmpresa getClosestHub(ClienteProdutorEmpresa cpe) {
         LinkedList<Localizacao> list = new LinkedList<>();
-        Integer minlenpath = 0;
+        Integer minlenpath = Integer.MAX_VALUE;
         ClienteProdutorEmpresa result = null;
         for (ClienteProdutorEmpresa cpe2: App.getInstance().getClienteProdutorEmpresaStore().getMapCPE().values()) {
             if (cpe2.isHub()) {
@@ -35,7 +35,7 @@ public class ClosestHubController {
                 }
                 else{
                     Integer tempLenPath = Algorithms.shortestPath(graph, cpe.getLocalizacao(), cpe2.getLocalizacao(), Integer::compare,Integer::sum, 0,list );
-                    if (tempLenPath < minlenpath || minlenpath == 0) {
+                    if (tempLenPath < minlenpath) {
                         minlenpath = tempLenPath;
                         result = cpe2;
                     }
