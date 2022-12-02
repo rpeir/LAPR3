@@ -3,7 +3,7 @@ package esinf.domain;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pi.sem3.esinf.domain.ClienteProdutorEmpresa;
+import domain.ClienteProdutorEmpresa;
 
 import static org.junit.jupiter.api.Assertions.*;
 
