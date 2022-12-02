@@ -50,6 +50,7 @@ public class ReadCSVController {
 
 
     public void readClientesProdutoresFile(File filename) throws IOException {
+        try{
         BufferedReader br = new BufferedReader(new FileReader(filename));
         br.readLine(); // skip first line
         String line = br.readLine();
@@ -70,9 +71,15 @@ public class ReadCSVController {
             }
             line = br.readLine();
         }
+    }catch (IOException e){
+            e = new IOException(e.getMessage()+"\nErro: Ficheiro não é válido");
+            e.setStackTrace(e.getStackTrace());
+            throw e;
+    }
     }
 
     public void readDistancesFile(File filename) throws IOException {
+        try{
         BufferedReader br = new BufferedReader(new FileReader(filename));
         br.readLine(); // skip first line
         String line = br.readLine();
@@ -94,6 +101,11 @@ public class ReadCSVController {
                 }
             }
             line = br.readLine();
+        }
+    }catch (IOException e){
+            e = new IOException(e.getMessage()+"\nErro: Ficheiro não é válido");
+            e.setStackTrace(e.getStackTrace());
+            throw e;
         }
     }
 }
