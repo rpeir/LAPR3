@@ -338,8 +338,8 @@ codFatorProducao integer,
 
 create table Componentes(
 codComponente integer,
-substancia varchar(100)
-    constraint unSubstancia unique, nnSubstancia not null,
+substancia varchar(100) 
+    constraint unSubstancia unique,
 categoria varchar(50) constraint nnCategoria not null,
     constraint pk_codComponente primary key (codComponente)
 );
