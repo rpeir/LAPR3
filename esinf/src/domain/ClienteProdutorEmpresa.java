@@ -16,34 +16,34 @@ public class ClienteProdutorEmpresa {
     private boolean hub;
 
     public ClienteProdutorEmpresa(Localizacao localizacao, String id, String designacao) {
+        this.empresa=false;
         this.localizacao = localizacao;
         this.designacao = designacao;
         setId(id);
-        this.empresa = validateEmpresaID(id);
         this.hub = false;
     }
 
     public ClienteProdutorEmpresa(Localizacao localizacao,String id) {
+        this.empresa=false;
         setId(id);
         this.localizacao = localizacao;
         this.designacao=id;
-        this.empresa =validateEmpresaID(id);
         this.hub = false;
     }
 
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude,String id, String designacao) {
+        this.empresa=false;
         setLocalizacao(locId, longitude, latitude);
         this.designacao = designacao;
         setId(id);
-        this.empresa = validateEmpresaID(id);
         this.hub = false;
     }
 
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude, String id) {
+        this.empresa=false;
         setLocalizacao(locId, longitude, latitude);
         this.designacao = id;
         setId(id);
-        this.empresa = validateEmpresaID(id);
         this.hub = false;
     }
 
