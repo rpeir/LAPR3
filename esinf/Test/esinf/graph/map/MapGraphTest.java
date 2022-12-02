@@ -1,8 +1,8 @@
 //package esinf.graph.map;
 //
-//import pi.sem3.esinf.graph.map.MapGraph;
-//import pi.sem3.esinf.graph.Edge;
-//import pi.sem3.esinf.graph.Graph;
+//import graph.map.MapGraph;
+//import graph.Edge;
+//import graph.Graph;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //

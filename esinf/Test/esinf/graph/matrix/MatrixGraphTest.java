@@ -1,8 +1,8 @@
 //package esinf.graph.matrix;
 //
-//import pi.sem3.esinf.graph.Edge;
-//import pi.sem3.esinf.graph.Graph;
-//import pi.sem3.esinf.graph.matrix.MatrixGraph;
+//import graph.Edge;
+//import graph.Graph;
+//import graph.matrix.MatrixGraph;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //
