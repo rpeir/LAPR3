@@ -51,7 +51,6 @@ public class HubsDistribuicaoController {
     public void getMediaDistancia(Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas, Graph<Localizacao, Integer> grafo, int n) {
         Graph<ClienteProdutorEmpresa, Integer> grafoEmpresas2 = new MapGraph<>(false);
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
-        ArrayList<Distancia> caminhoMaisCurto = new ArrayList<>();
         double media;
         for (ClienteProdutorEmpresa e : getEmpresas()) {
             grafoEmpresas2.addVertex(e);
@@ -88,10 +87,6 @@ public class HubsDistribuicaoController {
 
 
                             numeroCPE++;
-                            //System.out.println("O caminho mais curto de " + cpe1.getDesignacao() + " para " + cpe2.getDesignacao() + " e: " + caminho);
-                            // cpe1 - empresa ; cpe2 - cliente ou producao
-                            //Distancia add = new Distancia(cpe1, cpe2, Integer.parseInt(String.valueOf(soma)));
-                            //caminhoMaisCurto.add(add);
                         }
 
                     }
@@ -120,6 +115,7 @@ public class HubsDistribuicaoController {
         int i = 0;
         for (Map.Entry<ClienteProdutorEmpresa, Double> entry : sorted.entrySet()) {
             if (i < n) {
+                entry.getKey().setHub();
                 System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
                 i++;
             }
