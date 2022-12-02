@@ -426,4 +426,4 @@ alter table Restricoes add constraint fk_Restricoes_codFatorProducao FOREIGN KEY
 alter table TiposSensores add constraint ck_codTipoSensor CHECK(codTipoSensor='HS' OR codTipoSensor='VV' OR codTipoSensor='PI'OR codTipoSensor='TS'OR codTipoSensor='TA'OR codTipoSensor='HA'OR codTipoSensor='PA');
 alter table EstacoesMeteorologicas add constraint fk_EstacoesMeteorologicas_codZonaGeografica FOREIGN KEY(codZonaGeografica) references ZonasGeograficas (codZonaGeografica);
 alter table Moradas add constraint ck_andar CHECK(andar>=0 AND andar<165);
-
+alter table Clientes add constraint ck_nrFiscal CHECK(REGEXP_LIKE nrFiscal,^[0-9]{9}$);
