@@ -71,11 +71,11 @@ public class ReadCSVController {
             }
             line = br.readLine();
         }
-    }catch (IOException e){
-            e = new IOException(e.getMessage()+"\nErro: Ficheiro não é válido");
-            e.setStackTrace(e.getStackTrace());
-            throw e;
-    }
+        }catch (NumberFormatException e) {
+            throw new IOException("Invalid ID format");
+        }catch (IllegalArgumentException e){
+            throw new IOException(e.getMessage());
+        }
     }
 
     public void readDistancesFile(File filename) throws IOException {
@@ -102,10 +102,10 @@ public class ReadCSVController {
             }
             line = br.readLine();
         }
-    }catch (IOException e){
-            e = new IOException(e.getMessage()+"\nErro: Ficheiro não é válido");
-            e.setStackTrace(e.getStackTrace());
-            throw e;
+    }catch (NumberFormatException e) {
+            throw new IOException("Invalid ID format");
+        }catch (IllegalArgumentException e){
+            throw new IOException(e.getMessage());
         }
     }
 }
