@@ -21,7 +21,6 @@ CURSOR c_cursor (codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%typ
                                     WHERE codInstalacaoAgricola = codInstalacaoAgricola);
 
 
-
  begin
     OPEN c_cursor(search_codColheita, search_codInstalacaoAgricola);
     LOOP
