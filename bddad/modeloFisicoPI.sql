@@ -61,7 +61,7 @@ dataVencimento date constraint nnDataVencimento NOT NULL,
 
 create table Pagamentos( 
 codPagamento integer,
-dataPagamento date constraint nnDataPagamento NOT NULL,
+dataPagamento date,
     constraint pk_codPagamento PRIMARY KEY (codPagamento)
 );
 
@@ -165,7 +165,7 @@ precoPedido float constraint nnPrecoPedido NOT NULL,
 create table Entregas(
 codEntrega integer,
 codMorada integer,
-dataEntrega date constraint nnDataEntrega NOT NULL,
+dataEntrega date,
     constraint pk_codEntrega PRIMARY KEY (codEntrega)
 );
 
