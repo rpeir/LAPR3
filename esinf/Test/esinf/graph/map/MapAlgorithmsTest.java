@@ -266,4 +266,38 @@ class MapAlgorithmsTest {
         assertEquals(mst, g, "Kruskall should be the same as the MST");
     }
 
+    /**
+     * Test of allPaths method
+     */
+    @Test
+    public void testAllPaths() {
+        System.out.println("Test of all paths");
+
+        ArrayList<LinkedList<String>> paths = Algorithms.allPaths(completeMap, "Porto", "Chaves");
+        assertEquals(0, paths.size(), "There should be no paths between Porto and Chaves");
+
+        paths = Algorithms.allPaths(incompleteMap, "Porto", "Lisboa");
+        ArrayList<LinkedList<String>> expected = new ArrayList<>();
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Coimbra", "Lisboa")));
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Leiria", "Lisboa")));
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Coimbra", "Leiria", "Lisboa")));
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Leiria", "Coimbra", "Lisboa")));
+        assertEquals(expected.size(), paths.size(), "There should be 4 paths between Porto and Lisboa");
+
+        for (LinkedList<String> path : expected) {
+            assertTrue(paths.contains(path), "Path " + path + " should be in the list of expected paths");
+        }
+
+        paths = Algorithms.allPaths(incompleteMap, "Porto", "Coimbra");
+        expected = new ArrayList<>();
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Coimbra")));
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Leiria", "Coimbra")));
+        expected.add(new LinkedList<>(Arrays.asList("Porto", "Aveiro", "Leiria", "Lisboa", "Coimbra")));
+        assertEquals(expected.size(), paths.size(), "There should be 2 paths between Porto and Coimbra");
+
+        for (LinkedList<String> path : expected) {
+            assertTrue(paths.contains(path), "Path " + path + " should be in the list of expected paths");
+        }
+    }
+
 }

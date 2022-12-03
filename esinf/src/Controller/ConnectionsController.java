@@ -3,19 +3,15 @@ package Controller;
 import graph.Algorithms;
 
 public class ConnectionsController {
-    // private final App app;
-    //private Graph<V, E> graph;
-
+     private final App app;
     public ConnectionsController() {
-       // app = app.getInstance();
-       // graph = app.getGraph;
+        app = App.getInstance();
     }
 
 
     public int minConnevtions(){
-        int result = 0;
-       //result = Algorithms.minConnections(graph, Integer::compare, Integer::sum, 0);
-        return result;
+       return Algorithms.minConnections(app.getGraph(), Integer::compare, Integer::sum, 0);
+
     }
 
 

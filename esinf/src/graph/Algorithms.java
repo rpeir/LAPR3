@@ -92,17 +92,23 @@ public class Algorithms {
     private static <V, E> void allPaths(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
                                         LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
 
+        if (visited[g.key(vOrig)]) return;
+
+        path.push(vOrig);
         visited[g.key(vOrig)] = true;
-        path.addFirst(vOrig);
-        if (vOrig.equals(vDest)) {
-            paths.add(path);
-        } else {
-            for (V v : g.vertices()) {
-                if (g.edge(vOrig, v) != null && !visited[g.key(v)]) {
-                    allPaths(g, v, vDest, visited, path, paths);
-                }
+        for (V vAdj : g.adjVertices(vOrig)) {
+            if (vAdj.equals(vDest)) {
+                path.push(vDest);
+                LinkedList<V> pathCopy = new LinkedList<>(path);
+                Collections.reverse(pathCopy);
+                paths.add(pathCopy);
+                path.pop();
+            } else {
+                allPaths(g, vAdj, vDest, visited, path, paths);
             }
         }
+        path.pop();
+        visited[g.key(vOrig)] = false;
     }
 
     /**
