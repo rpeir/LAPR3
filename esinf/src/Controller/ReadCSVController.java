@@ -49,6 +49,11 @@ public class ReadCSVController {
     }
 
 
+    /**
+     * It reads a file refering to Clients and Producers and puts it in a graph
+     *
+     * @param filename The file to be read
+     */
     public void readClientesProdutoresFile(File filename) throws IOException {
         try{
         BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -77,7 +82,11 @@ public class ReadCSVController {
             throw new IOException(e.getMessage());
         }
     }
-
+    /**
+     * It reads a file refering to the connections between Clients and Producers and puts it in a graph
+     *
+     * @param filename The file to be read
+     */
     public void readDistancesFile(File filename) throws IOException {
         try{
         BufferedReader br = new BufferedReader(new FileReader(filename));
