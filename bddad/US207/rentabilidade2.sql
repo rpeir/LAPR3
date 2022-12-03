@@ -2,7 +2,8 @@
 CREATE OR REPLACE PROCEDURE lucroDeUmSetor
 (search_codColheita IN SetoresAgricolas_Colheitas_Culturas.codColheita%type,
 search_codInstalacaoAgricola IN InstalacoesAgricolas.codInstalacaoAgricola%type,
-search_codSetor IN SetoresAgricolas.codSetorAgricola%type)
+search_codSetor IN SetoresAgricolas.codSetorAgricola%type,
+)
 
 is
 lucro NUMBER;
@@ -17,7 +18,8 @@ begin
     FROM (SELECT InstalacoesAgricolas.codInstalacaoAgricola,
     SetoresAgricolas_Colheitas_Culturas.codColheita,
     SetoresAgricolas_Colheitas_Culturas.codSetorAgricola,
-    SetoresAgricolas_Colheitas_Culturas.valorSetor
+    SetoresAgricolas_Colheitas_Culturas.valorSetor,
+    SetoresAgricolas_Colheitas_Culturas.codCultura
     FROM InstalacoesAgricolas INNER JOIN SetoresAgricolas_Colheitas_Culturas
     ON InstalacoesAgricolas.codInstalacaoAgricola = search_codInstalacaoAgricola)
 
@@ -44,7 +46,7 @@ begin
     WHERE codColheita = search_codColheita
     AND codSetorAgricola = search_codSetor;
 
-    lucro := (qntNumSetor*1000/denominador) * precoUmaUnidade;
+    lucro := (qntNumSetor*1000/denominador) * precoUmaUnidade);
 
     dbms_output.put_line('Lucro por hectar em cada setor: ' || lucro);
 
