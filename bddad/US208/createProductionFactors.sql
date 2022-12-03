@@ -1,5 +1,5 @@
 --Função que cria um fator de produção
-CREATE OR REPLACE FUNCTION createFatorProducao(tipo FatoresProducao.tipoFatorProducao%type,preco FatoresProducao.precoKg%type,nome FatoresProducao.nomeComercial%type, form FatoresProducao.formulacao%type) return integer
+CREATE OR REPLACE FUNCTION createFatorProducao(tipo FatoresProducao.tipoFatorProducao%type,preco FatoresProducao.precoKg%type,nome FatoresProducao.nomeComercial%type, formulacao FatoresProducao.formulacao%type) return integer
 IS
     codFator integer;
    	countFator integer; 
