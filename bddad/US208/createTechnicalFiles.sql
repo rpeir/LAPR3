@@ -1,14 +1,19 @@
 --Função que cria ficha técnica
 CREATE OR REPLACE FUNCTION createFichaTecnica(codFator FichasTecnicas.codFatorProducao%type) return integer
 IS
-    DECLARE codFicha integer;
+    codFicha integer;
+    countTecnica integer;
 BEGIN
-IF (EXISTS(SELECT * FROM FichasTecnicas WHERE codFator = FichasTecnicas.codFatorProducao))
+select COUNT(*)
+into countTecnica
+from FichasTecnicas 
+where codFicha=FichasTecnicas.codFichaTecnica;
+IF (countTecnica=1)
 THEN
-UPDATE FichasTecnicas SET codFicha = :new.codFichaTecnica WHERE codFatorProducao= codFator;
+UPDATE FichasTecnicas SET codFatorProducao =codFator WHERE codFicha= codFichaTecnica;
 ELSE
-INSERT INTO FichasTecnicas (codFatorProducao,codFatorProducao) VALUES (codFicha,codFator) RETURNING codFicha INTO codigoFichaTecnica;
+INSERT INTO FichasTecnicas (codFatorProducao) VALUES (codFator) RETURNING codFicha INTO codFicha;
 END IF;
-RETURN codigoFichaTecnica;
+RETURN codFicha;
 END;
 

@@ -1,9 +1,14 @@
 --cria a ficha tecnica de um componente
 CREATE OR REPLACE FUNCTION createFichaTecnicaComponente(codFicha FichasTecnicas_Componentes.codFichaTecnica%type,codComp FichasTecnicas_Componentes.codComponente%type,unid FichasTecnicas_Componentes.unidade%type,qnt FichasTecnicas_Componentes.quantidade%type) return integer
 IS
-    DECLARE codFichaComp integer;
+codFichaComp integer;
+countFichaComp integer;
 BEGIN
-IF (EXISTS(SELECT * FROM FichasTecnicas_Componentes WHERE codFicha = FichasTecnicas_Componentes.codFichaTecnica AND codComp = FichasTecnicas_Componentes.codComponente))
+select COUNT(*)
+into countFichaComp
+from FichasTecnicas_Componentes 
+where codFicha= FichasTecnicas_Componentes.codFichaTecnica and codComp=FichasTecnicas_Componentes.codComponente; 
+IF (countFichaComp=1)
 THEN
 UPDATE FichasTecnicas_Componentes SET codFichaTecnica = codFicha, codComponente = codComp, unidade = unid, quantidade = qnt WHERE codFichaTecnica = FichasTecnicas_Componentes.codFichaTecnica AND codComponente = FichasTecnicas_Componentes.codComponente;
 ELSE
