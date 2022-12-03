@@ -13,8 +13,7 @@ import java.io.IOException;
 
 /**
  * Read data from csv file and put it in a graph
-  */
-
+ */
 public class ReadCSVController {
     /**
      * The main regular expression that is used to split the line into words
