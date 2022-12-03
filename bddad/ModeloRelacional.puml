@@ -47,9 +47,9 @@ table( FatoresProducao ) {
 }
 
 table( Restricoes ) {
+    primary_key( dataInicio ): DATE
     foreign_key(primary_key( codZonaGeografica )): INTEGER
     foreign_key(primary_key( codFatorProducao )): INTEGER
-    column( dataInicio ): DATE
     column( dataFim ): DATE
 }
 
