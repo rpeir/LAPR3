@@ -293,7 +293,7 @@ codZonaGeografica integer,
 codFatorProducao integer,
 dataInicio date,
 duracao integer constraint nnduracao NOT NULL,
-    constraint pk_codZonaGeografica_codFatorProducao PRIMARY KEY (codZonaGeografica,codFatorProducao,dataInico)
+    constraint pk_codZonaGeografica_codFatorProducao PRIMARY KEY (codZonaGeografica,codFatorProducao,dataInicio)
 );
 
 
