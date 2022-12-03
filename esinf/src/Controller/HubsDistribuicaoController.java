@@ -1,7 +1,6 @@
 package Controller;
 
 import domain.ClienteProdutorEmpresa;
-import domain.Distancia;
 import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
@@ -31,25 +30,7 @@ public class HubsDistribuicaoController {
         // 5 empresas - small
     }
 
-    public Graph<ClienteProdutorEmpresa, Distancia> getGrafoEmpresas(Graph<Localizacao, Integer> grafo) {
-
-        Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas = new MapGraph<>(false);
-        for (ClienteProdutorEmpresa e : getEmpresas()) {
-            grafoEmpresas.addVertex(e);
-            for (Map.Entry<String, ClienteProdutorEmpresa> cpe : app.getClienteProdutorEmpresaStore().getMapCPE().entrySet()) {
-                if (!(cpe.getValue().getId().contains("E"))) {
-                    if (grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()) != null) {
-                        Distancia add = new Distancia(e, cpe.getValue(), grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()).getWeight());
-                        grafoEmpresas.addEdge(e, cpe.getValue(), add);
-                    }
-                }
-            }
-        }
-        System.out.println(grafoEmpresas);
-        return grafoEmpresas;
-    }
-
-    public void getMediaDistancia(Graph<ClienteProdutorEmpresa, Distancia> grafoEmpresas, Graph<Localizacao, Integer> grafo, int n) {
+    public void getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
         Graph<ClienteProdutorEmpresa, Integer> grafoEmpresas2 = new MapGraph<>(false);
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
         double media;
@@ -63,6 +44,7 @@ public class HubsDistribuicaoController {
                 }
             }
         }
+        System.out.println(grafoEmpresas2);
 
         LinkedList<ClienteProdutorEmpresa> caminho = new LinkedList<>();
         for(ClienteProdutorEmpresa cpe1 : grafoEmpresas2.vertices()){
