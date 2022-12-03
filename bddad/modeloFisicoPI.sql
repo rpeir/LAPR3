@@ -143,7 +143,7 @@ dataOcorrencia date constraint nnDataOcorrencia NOT NULL,
 create table Produtos(
 codProduto integer,
 codCultura integer,
--- codColheita integer,
+codColheita integer,
 precoKg float constraint nnPrecoKg NOT NULL,
 stockKg float constraint nnStockKg NOT NULL,
 designacaoProduto varchar(50) constraint unDesignacaoProduto UNIQUE,
@@ -290,9 +290,9 @@ formulacao varchar(1),
 create table Restricoes(
 codZonaGeografica integer,
 codFatorProducao integer,
-dataInicio date constraint nnDataInicio NOT NULL,
-dataFim date constraint nnDataFim NOT NULL,
-    constraint pk_codZonaGeografica_codFatorProducao PRIMARY KEY (codZonaGeografica,codFatorProducao)
+dataInicio date,
+duracao integer constraint nnduracao NOT NULL,
+    constraint pk_codZonaGeografica_codFatorProducao PRIMARY KEY (codZonaGeografica,codFatorProducao,dataInico)
 );
 
 
@@ -426,4 +426,4 @@ alter table Restricoes add constraint fk_Restricoes_codFatorProducao FOREIGN KEY
 alter table TiposSensores add constraint ck_codTipoSensor CHECK(codTipoSensor='HS' OR codTipoSensor='VV' OR codTipoSensor='PI'OR codTipoSensor='TS'OR codTipoSensor='TA'OR codTipoSensor='HA'OR codTipoSensor='PA');
 alter table EstacoesMeteorologicas add constraint fk_EstacoesMeteorologicas_codZonaGeografica FOREIGN KEY(codZonaGeografica) references ZonasGeograficas (codZonaGeografica);
 alter table Moradas add constraint ck_andar CHECK(andar>=0 AND andar<165);
-alter table Clientes add constraint ck_nrFiscal CHECK(REGEXP_LIKE nrFiscal,^[0-9]{9}$);
+alter table Clientes add constraint ck_nrFiscal CHECK(REGEXP_LIKE(nrFiscal,'^[0-9]{9}$'));

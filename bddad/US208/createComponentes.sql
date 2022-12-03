@@ -1,14 +1,18 @@
 --Função que cria um componente
-CREATE OR ALTER FUNCTION createComponente(subs Componentes.substancia%type, catg Componentes.categoria%type) return integer
+CREATE OR REPLACE FUNCTION createComponente(subs Componentes.substancia%type, catg Componentes.categoria%type) return integer
 IS
-    DECLARE codComp integer;
+    codComp integer;
+    countComp integer;
 BEGIN
-IF (EXISTS(SELECT * FROM Componentes WHERE codComp = Componentes.codComponente))
+select COUNT(*)
+into countComp
+from Componentes 
+where codComp=Componentes.codComponente; 
+IF (countComp=1)
 THEN
 UPDATE Componentes SET substancia = subs, categoria=catg WHERE codComp = Componentes.codComponente;
 ELSE
-INSERT INTO Componentes (codComponente,substancia,categoria) VALUES (:new.codComponente,substancia,categoria) RETURNING codComponente INTO codComp;
-END
+INSERT INTO Componentes (substancia,categoria) VALUES (subs,catg) RETURNING codComponente INTO codComp;
 END IF;
 RETURN codComp;
 END;
