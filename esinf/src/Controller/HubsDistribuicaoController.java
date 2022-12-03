@@ -4,7 +4,6 @@ import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
-import graph.map.MapGraph;
 
 import java.util.*;
 
@@ -31,6 +30,8 @@ public class HubsDistribuicaoController {
     }
 
     public void getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
+        if(n > getEmpresas().size()) System.out.println("O numero de hubs nao pode ser menor que o numero de empresas");
+        else {
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
         List<ClienteProdutorEmpresa> listaEmpresas = getEmpresas();
         ArrayList<LinkedList<Localizacao>> listaCaminhos = new ArrayList<>();
@@ -77,6 +78,7 @@ public class HubsDistribuicaoController {
                 entry.getKey().setHub();
                 System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
                 i++;
+                }
             }
         }
     }
