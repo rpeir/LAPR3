@@ -1,58 +1,33 @@
-CREATE OR REPLACE PROCEDURE lucroDeUmSetorCursor (
-search_codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%type,
-search_codInstalacaoAgricola InstalacoesAgricolas.codInstalacaoAgricola%type)
+create or replace PROCEDURE rentabilidade( colheitaA SetoresAgricolas_Colheitas_Culturas.codColheita%type)
 
 AS
-denominador NUMBER;
-qntNumSetor NUMBER;
-precoUmaUnidade NUMBER;
-c_codSetorAgricola SetoresAgricolas_Colheitas_Culturas.codSetorAgricola%type;
-c_codCultura SetoresAgricolas_Colheitas_Culturas.codCultura%type;
-lucro NUMBER;
+ c_codSetorAgricola SetoresAgricolas_Colheitas_Culturas.codSetorAgricola%type;
+ c_codCultura SetoresAgricolas_Colheitas_Culturas.codCultura%type;
+ c_valorSetor SetoresAgricolas_Colheitas_Culturas.valorSetor%type;
 
-CURSOR c_cursor (codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%type,
-         codInstalacaoAgricola InstalacoesAgricolas.codInstalacaoAgricola%type) IS
+	CURSOR c_culturas
+	(colheita SetoresAgricolas_Colheitas_Culturas.codColheita%type) IS
+		SELECT codSetorAgricola, codCultura, valorSetor from SetoresAgricolas_Colheitas_Culturas
+		 WHERE codColheita = colheita
+		 ORDER BY valorSetor DESC;
+	colheita_inexistente EXCEPTION;
+	dummy Colheitas.codColheita%type;
 
-        SELECT SetoresAgricolas_Colheitas_Culturas.codSetorAgricola,
-               SetoresAgricolas_Colheitas_Culturas.codCultura
-        FROM SetoresAgricolas_Colheitas_Culturas
-        WHERE codColheita = codColheita 
-        AND codSetorAgricola IN (SELECT codSetorAgricola FROM SetoresAgricolas
-                                    WHERE codInstalacaoAgricola = codInstalacaoAgricola);
 
-    
 
- begin
-    OPEN c_cursor(search_codColheita, search_codInstalacaoAgricola);
-    LOOP
-        FETCH c_cursor INTO c_codSetorAgricola, c_codCultura;
-        EXIT WHEN c_cursor%notfound;
-        -- obter a quantidade produzida de uma colheita especifica em cada setor de uma instalacao agricola
-                     SELECT SUM(valorSetor) INTO qntNumSetor
 
-                     FROM (SELECT InstalacoesAgricolas.codInstalacaoAgricola,
-                     SetoresAgricolas_Colheitas_Culturas.codColheita,
-                     SetoresAgricolas_Colheitas_Culturas.codSetorAgricola,
-                     SetoresAgricolas_Colheitas_Culturas.valorSetor
-                     FROM InstalacoesAgricolas INNER JOIN SetoresAgricolas_Colheitas_Culturas
-                     ON InstalacoesAgricolas.codInstalacaoAgricola = search_codInstalacaoAgricola)
-
-                     WHERE codColheita = search_codColheita
-                     AND codInstalacaoAgricola = search_codInstalacaoAgricola;
-
-                     -- obter a area total de um setor agricola especifico de uma instalacao agricola especifica
-                     SELECT areaSetorAgricola INTO denominador
-                     FROM SetoresAgricolas
-                     WHERE codInstalacaoAgricola = search_codInstalacaoAgricola;
-
-                     -- o preco de uma unidade de produto daquela colheita especifica naquele setor especifico na instalacao agricola especifica
-                     SELECT precoKg INTO precoUmaUnidade
-                     FROM (SELECT precoKG FROM Produtos p WHERE p.codCultura = codCultura);
-                
-                
-
-        dbms_output.put_line(c_codSetorAgricola || '-' ||  c_codCultura || '-' || lucro);
-    END LOOP;
-    CLOSE c_cursor;
-end;
+BEGIN
+	SELECT COUNT(*) INTO dummy FROM Colheitas WHERE codColheita = colheitaA;
+	IF dummy = 0 THEN
+	 RAISE colheita_inexistente;
+	ELSE
+	 OPEN c_culturas(colheitaA);
+	LOOP
+		FETCH c_culturas INTO c_codSetorAgricola, c_codCultura, c_valorSetor;
+		EXIT WHEN c_culturas%notfound;
+			dbms_output.put_line(c_codSetorAgricola || '-' ||  c_codCultura || '-' || c_valorSetor);
+	END LOOP;
+	CLOSE c_culturas;
+	end if;
+END;
 /
