@@ -49,7 +49,8 @@ CURSOR c_cursor (codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%typ
                      SELECT precoKg INTO precoUmaUnidade
                      FROM (SELECT precoKG FROM Produtos p WHERE p.codCultura = codCultura);
                 
-                
+                                    lucro := (qntNumSetor*1000/denominador) * precoUmaUnidade;
+
 
         dbms_output.put_line(c_codSetorAgricola || '-' ||  c_codCultura || '-' || lucro);
     END LOOP;

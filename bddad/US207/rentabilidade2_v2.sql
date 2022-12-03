@@ -21,6 +21,7 @@ CURSOR c_cursor (codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%typ
                                     WHERE codInstalacaoAgricola = codInstalacaoAgricola);
 
 
+
  begin
     OPEN c_cursor(search_codColheita, search_codInstalacaoAgricola);
     LOOP
@@ -46,18 +47,12 @@ CURSOR c_cursor (codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%typ
 
                      -- o preco de uma unidade de produto daquela colheita especifica naquele setor especifico na instalacao agricola especifica
                      SELECT precoKg INTO precoUmaUnidade
+                     FROM (SELECT precoKG FROM Produtos WHERE c_codCultura = codCultura)
 
-                     FROM (SELECT Produtos.codCultura,
-                     Produtos.precoKg,
-                     SetoresAgricolas_Colheitas_Culturas.codSetorAgricola,
-                     SetoresAgricolas_Colheitas_Culturas.codColheita
-                     FROM Produtos INNER JOIN SetoresAgricolas_Colheitas_Culturas
-                     ON Produtos.codCultura = SetoresAgricolas_Colheitas_Culturas.codCultura)
 
-                     WHERE codColheita = search_codColheita;
+
         dbms_output.put_line(c_codSetorAgricola || '-' ||  c_codCultura || '-' || lucro);
     END LOOP;
     CLOSE c_cursor;
 end;
 /
-
