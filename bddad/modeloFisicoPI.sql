@@ -143,7 +143,7 @@ dataOcorrencia date constraint nnDataOcorrencia NOT NULL,
 create table Produtos(
 codProduto integer,
 codCultura integer,
--- codColheita integer,
+codColheita integer,
 precoKg float constraint nnPrecoKg NOT NULL,
 stockKg float constraint nnStockKg NOT NULL,
 designacaoProduto varchar(50) constraint unDesignacaoProduto UNIQUE,

@@ -8,16 +8,18 @@ qntNumSetor NUMBER;
 precoUmaUnidade NUMBER;
 c_codSetorAgricola SetoresAgricolas_Colheitas_Culturas.codSetorAgricola%type;
 c_codCultura SetoresAgricolas_Colheitas_Culturas.codCultura%type;
-c_lucro NUMBER;
+lucro NUMBER;
 
-CURSOR c_cursor (codColheitaA SetoresAgricolas_Colheitas_Culturas.codColheita%type,
-         codInstalacaoAgricolaA InstalacoesAgricolas.codInstalacaoAgricola%type) IS
+CURSOR c_cursor (codColheita SetoresAgricolas_Colheitas_Culturas.codColheita%type,
+         codInstalacaoAgricola InstalacoesAgricolas.codInstalacaoAgricola%type) IS
 
-         SELECT c_codSetorAgricola SetoresAgricolas_Colheitas_Culturas.codSetorAgricola%type,
-                c_codCultura SetoresAgricolas_Colheitas_Culturas.codCultura%type
-         FROM SetoresAgricolas_Colheitas_Culturas
-         WHERE codColheita = codColheitaA
-         AND codInstalacaoAgricola = codInstalacaoAgricolaA;
+        SELECT SetoresAgricolas_Colheitas_Culturas.codSetorAgricola,
+               SetoresAgricolas_Colheitas_Culturas.codCultura
+        FROM SetoresAgricolas_Colheitas_Culturas
+        WHERE codColheita = codColheita
+        AND codSetorAgricola IN (SELECT codSetorAgricola FROM SetoresAgricolas
+                                    WHERE codInstalacaoAgricola = codInstalacaoAgricola);
+
 
  begin
     OPEN c_cursor(search_codColheita, search_codInstalacaoAgricola);
@@ -35,14 +37,12 @@ CURSOR c_cursor (codColheitaA SetoresAgricolas_Colheitas_Culturas.codColheita%ty
                      ON InstalacoesAgricolas.codInstalacaoAgricola = search_codInstalacaoAgricola)
 
                      WHERE codColheita = search_codColheita
-                     AND codSetorAgricola = search_codSetor
                      AND codInstalacaoAgricola = search_codInstalacaoAgricola;
 
                      -- obter a area total de um setor agricola especifico de uma instalacao agricola especifica
                      SELECT areaSetorAgricola INTO denominador
                      FROM SetoresAgricolas
-                     WHERE codSetorAgricola = search_codSetor
-                     AND codInstalacaoAgricola = search_codInstalacaoAgricola;
+                     WHERE codInstalacaoAgricola = search_codInstalacaoAgricola;
 
                      -- o preco de uma unidade de produto daquela colheita especifica naquele setor especifico na instalacao agricola especifica
                      SELECT precoKg INTO precoUmaUnidade
@@ -54,10 +54,8 @@ CURSOR c_cursor (codColheitaA SetoresAgricolas_Colheitas_Culturas.codColheita%ty
                      FROM Produtos INNER JOIN SetoresAgricolas_Colheitas_Culturas
                      ON Produtos.codCultura = SetoresAgricolas_Colheitas_Culturas.codCultura)
 
-                     WHERE codColheita = search_codColheita
-                     AND codSetorAgricola = search_codSetor;
-
-        dbms_output.put_line(c_codSetorAgricola || '-' ||  c_codCultura || '-' || c_lucro);
+                     WHERE codColheita = search_codColheita;
+        dbms_output.put_line(c_codSetorAgricola || '-' ||  c_codCultura || '-' || lucro);
     END LOOP;
     CLOSE c_cursor;
 end;
