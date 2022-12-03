@@ -191,3 +191,33 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20000, 'Não foi encontrado o produto correspondente.');
 END;
 
+-- TRIGGER QUE ATUALIZA O ESTADO DO PEDIDO_PAGAMENTO_ENTREGA QUANDO ENTREGA É ATUALIZADA
+
+CREATE OR REPLACE TRIGGER updateEstadoPedidosPagamentosEntregasWhenEntrega_trg
+AFTER UPDATE ON Entregas
+FOR EACH ROW
+
+BEGIN
+
+    IF :new.dataEntrega IS NOT NULL THEN
+        UPDATE Pedidos_Pagamentos_Entregas ppe SET estadoAtual = 'Entregue'
+    WHERE ppe.codEntrega = :new.codEntrega;
+    END IF;
+
+END;
+
+-- TRIGGER QUE ATUALIZA O ESTADO DO PEDIDO_PAGAMENTO_ENTREGA QUANDO PAGAMENTO É ATUALIZADA
+
+CREATE OR REPLACE TRIGGER updateEstadoPedidosPagamentosEntregasWhenPagamento_trg
+AFTER UPDATE ON Pagamentos
+FOR EACH ROW
+
+BEGIN
+
+    IF :new.dataPagamento IS NOT NULL THEN
+        UPDATE Pedidos_Pagamentos_Entregas ppe SET estadoAtual = 'Paga'
+        WHERE ppe.codPagamento = :new.codPagamento;
+    END IF;
+
+END;
+

@@ -21,6 +21,7 @@ public class MSTNetworkController {
      * @return the minimum spanning tree of the graph
      */
     public Graph<Localizacao, Integer> getMSTNetwork(){
+        if (graph == null || graph.numVertices() == 0) throw new IllegalStateException("O grafo não pode ser nulo ou vazio");
         if (kruskallBetterToUse()) {
             return Algorithms.kruskall(graph, Integer::compare);
         } else {
