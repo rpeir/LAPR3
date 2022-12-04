@@ -1,20 +1,16 @@
 package UI;
 
 import Controller.App;
-import Controller.HubsDistribuicaoController;
-import domain.ClienteProdutorEmpresa;
-import domain.Distancia;
-import graph.Graph;
+import Controller.HubsDistributionController;
 
-import java.util.Map;
 import java.util.Scanner;
 
-public class HubsDistribuicaoUI {
+public class HubsDistributionUI {
 
     App app;
-    HubsDistribuicaoController ctrl = new HubsDistribuicaoController();
+    HubsDistributionController ctrl = new HubsDistributionController();
 
-    public HubsDistribuicaoUI() {
+    public HubsDistributionUI() {
         app = App.getInstance();
     }
 

@@ -1,7 +1,6 @@
 package Controller;
 
 import domain.Localizacao;
-import domain.WaterController.Sector;
 import domain.WaterController.WaterController;
 import graph.Graph;
 import graph.map.MapGraph;
