@@ -18,9 +18,9 @@ private final ConnectionsController CTRL;
     public void run() {
         int result = CTRL.minConnevtions();
         if(result == -1)
-            System.out.println("The graph isn't connect");
+            System.out.println("O grafo nao e conexo");
         else
-            System.out.println("The graph is connect, and with " + result + " connections we can reach any destination from any origin");
+            System.out.println("O grafo e conexo, e com " + result + " conecoes conseguimos atingir qualquer destino a partir de qualquer origem");
     }
 
 }
