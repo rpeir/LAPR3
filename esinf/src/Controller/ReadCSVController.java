@@ -101,6 +101,8 @@ public class ReadCSVController {
                 }
             }
 
+            if (!Localizacao.validateID(values[0]) || !Localizacao.validateID(values[1]))
+                throw new IOException("Invalid locID format");
             Localizacao lc1=localizacaoStore.getLocalizacao(values[0]);
             Localizacao lc2=localizacaoStore.getLocalizacao(values[1]);
             if(lc1!=null && lc2!=null){
