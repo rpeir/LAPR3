@@ -660,17 +660,231 @@ insert into AplicacaoFatorProducao(codOperacao,codFatorProducao,codSetorAgricola
 
 
 
--------FatoresAgricolas_Colheitas_Culturas-------
+-------SetoresAgricolas_Colheitas_Culturas-------
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,1); --(APROVADO)
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,1); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(,1,1,1); --(REPROVADO)
+--O código do setor agrícola não pode ser nulo, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(100000,1,1,1); --(REPROVADO)
+--O código do setor agrícola não existe, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,,1,1); --(REPROVADO)
+--O código da colheita não pode ser nulo, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,100000,1,1); --(REPROVADO)
+--O código da colheita não existe, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,,1); --(REPROVADO)
+--O código da cultura não pode ser nulo, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,100000,1); --(REPROVADO)
+--O código da cultura não existe, logo o insert não é executado
+
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,); --(REPROVADO)
+--O valor do setor não pode ser nulo, logo o insert não é executado
+
 -------Edificios-------
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'G'); --(APROVADO)
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'A'); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(,1,'G'); --(REPROVADO)
+--O código do edifício não pode ser nulo, logo o insert não é executado
+
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(100000,1,'G'); --(REPROVADO)
+--O código do edifício não existe, logo o insert não é executado
+
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,,G); --(REPROVADO)
+--O código da instalação agrícola não pode ser nulo, logo o insert não é executado
+
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,100000,'G'); --(REPROVADO)
+--O código da instalação agrícola não existe, logo o insert não é executado
+
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'O'); --(REPROVADO)
+--O tipo do edifício não pode ser diferente de G,A,E ou R, logo o insert não é executado
+
 -------FatoresProducao-------
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(1,'FE',1,'Fertilizante 1','G'); --(APROVADO)
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(1,'FE',1,'Fertilizante 2','G'); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(,1,'FE',1,'Fertilizante 1','G'); --(REPROVADO)
+--O código do fator de produção não pode ser nulo, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(100000,1,'FE',1,'Fertilizante 1','G'); --(REPROVADO)
+--O código do fator de produção não existe, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FB',1,'Fertilizante 1','G'); --(REPROVADO)
+--O tipo de fator de produção só pode ser FE,CO,FI ou AD, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',,'Fertilizante 1','G'); --(REPROVADO)
+--O preço do fator de produção não pode ser nulo, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',1,'Fertilizante 1','G'); --(REPROVADO)
+--O nome comercial é único, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',1, ,'G'); --(REPROVADO)
+--O nome comercial não pode ser nulo, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',1,'Fertilizante 1','O'); --(REPROVADO)
+--A formulação só pode ser G,P ou L, logo o insert não é executado
+
 ----------Restricoes-----------
----------TipoSensor------------
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(APROVADO)
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(REPROVADO)
+--O código da zona geográfica não pode ser nulo, logo o insert não é executado
+
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(100000,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(REPROVADO)
+--O código da zona geográfica não existe, logo o insert não é executado
+
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(REPROVADO)
+--O código do fator de produção não pode ser nulo, logo o insert não é executado
+
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,100000,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(REPROVADO)
+--O código do fator de produção não existe, logo o insert não é executado
+
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,,1); --(REPROVADO)
+--A data de início não pode ser nula, logo o insert não é executado
+
+insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),); --(REPROVADO)
+--A duração não pode ser nula, logo o insert não é executado
+
+
+---------Tipos Sensores------------
+insert into TiposSensores(codTipoSensor) values('HS'); --(APROVADO)
+insert into TiposSensores(codTipoSensor) values('HS'); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into TiposSensores(codTipoSensor) values(); --(REPROVADO)
+--O código do tipo de sensor não pode ser nulo, logo o insert não é executado
+
+insert into TiposSensores(codTipoSensor) values('KL'); --(REPROVADO)
+--O código do tipo de sensor só pode ser HS,VV,PI,TS,TA,HA ou PA, logo o insert não é executado
+
+
 ----------EstacaoesMeteorologicas-----------
+insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,1); --(APROVADO)
+insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,1); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(,1); --(REPROVADO)
+--O código da estação meteorológica não pode ser nulo, logo o insert não é executado
+
+insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,); --(REPROVADO)
+--O código da zona geográfica não pode ser nulo, logo o insert não é executado
+
+insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,100000); --(REPROVADO)
+--O código da zona geográfica não existe, logo o insert não é executado
+
 ----------Sensores-----------
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','HS',1,10); --(APROVADO)
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','HS',1,10); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values(,'HS',1,10); --(REPROVADO)
+--O id do sensor não pode ser nulo, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','LK',1,10); --(REPROVADO)
+--O código do tipo de sensor só pode ser HS,VV,PI,TS,TA,HA ou PA, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','HS',,10); --(REPROVADO)
+--O código da estação meteorológica não pode ser nulo, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','HS',100,10); --(REPROVADO)
+--O código da estação meteorológica não existe, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12355','HS',1,); --(REPROVADO)
+--O valor de referência não pode ser nulo, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12355','HS',1,10); --(REPROVADO)
+--O valor de referência não pode ser repetido, logo o insert não é executado
+
 ----------Leituras------------
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(1,'12345',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(APROVADO)
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(1,'12345',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(,,'12345',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(REPROVADO)
+--O código da leitura não pode ser nulo, logo o insert não é executado
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,,TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(REPROVADO)
+--O id do sensor não pode ser nulo, logo o insert não é executado
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(1,'11000',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(REPROVADO)
+--O id do sensor não existe, logo o insert não é executado
+
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,'12545',,10); --(REPROVADO)
+--O instante da leitura não pode ser nulo, logo o insert não é executado
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,'12545',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),); --(REPROVADO)
+--O valor lido não pode ser nulo, logo o insert não é executado
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,'12545',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),101); --(REPROVADO)
+--O valor lido não pode ser maior que o valor 100, logo o insert não é executado
+
+insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,'12545',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),-1); --(REPROVADO)
+--O valor lido não pode ser menor que o valor 0, logo o insert não é executado
+
 -----------FichasTecnicas-----------
+insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(1,1); --(APROVADO)
+insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(1,1); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(,1); --(REPROVADO)
+--O código da ficha técnica não pode ser nulo, logo o insert não é executado
+
+insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(2,); --(REPROVADO)
+--O código do fator de produção não pode ser nulo, logo o insert não é executado
+
+insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(2,100); --(REPROVADO)
+--O código do fator de produção não existe, logo o insert não é executado
+
 --------Componentes---------
+insert into Componentes(codComponente,substancia,categoria) values(1,'agua','categoria 1'); --(APROVADO)
+insert into Componentes(codComponente,substancia,categoria) values(1,'nitrogenio','categoria 2'); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into Componentes(codComponente,substancia,categoria) values(,,'agua','categoria 1'); --(REPROVADO)
+--O código do componente não pode ser nulo, logo o insert não é executado
+
+insert into Componentes(codComponente,substancia,categoria) values(2,'agua','categoria 1'); --(REPROVADO)
+--A substância não pode ser repetida, logo o insert não é executado
+
+insert into Componentes(codComponente,substancia,categoria) values(2,,'categoria 1'); --(REPROVADO)
+--A substância não pode ser nula, logo o insert não é executado
+
+insert into Componentes(codComponente,substancia,categoria) values(3,'açucar',); --(REPROVADO)
+--A categoria não pode ser nula, logo o insert não é executado
+
 ----------FichasTecnicas_Componentes-----------
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(1,1,'litros',10); --(APROVADO)
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(1,1,'litros',10); --(REPROVADO)
+--A chave primária não pode ser repetido, logo o insert não é executado
+
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(,1,'litros',10); --(REPROVADO)
+--O código da ficha técnica não pode ser nulo, logo o insert não é executado
+
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(2,,'litros',10); --(REPROVADO)
+--O código do componente não pode ser nulo, logo o insert não é executado
+
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(1000,1,'litros',10); --(REPROVADO)
+--O código da ficha técnica não existe, logo o insert não é executado
+
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(2,1000,'litros',10); --(REPROVADO)
+--O código do componente não existe, logo o insert não é executado
+
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(2,1,,10); --(REPROVADO)
+--A unidade não pode ser nula, logo o insert não é executado
+
+insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(2,1,'litros',); --(REPROVADO)
+--A quantidade não pode ser nula, logo o insert não é executado
 
 
 
