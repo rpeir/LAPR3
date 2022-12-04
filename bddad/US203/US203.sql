@@ -1,4 +1,4 @@
-create or replace procedure runConstraint
+----------------CONSTRAINT CHECKS----------------
 ---------------Clientes----------------
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES('','P','Joao','TEST1@sapo.pt',1000,'123456789'); --(REPROVADO)
     --O código interno não pode ser nulo, logo o insert não é executado
@@ -9,6 +9,9 @@ create or replace procedure runConstraint
 
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(2,'A','Maria','maria@sapo.pt',1000,'111111111'); --(REPROVADO)
     --O tipo tem de ser P ou E, logo o insert não é executado
+
+    insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(2,,'Maria','maria@sapo.pt',1000,'111111111'); --(REPROVADO)
+    --O tipo não pode ser nulo, logo o insert não é executado
 
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(2,'P','Maria','maria@sapo.pt',1000,'111111111'); --(APROVADO)
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(3,'P','','a1@sapo.pt',1000,'111111111'); --(REPROVADO)
@@ -132,6 +135,9 @@ create or replace procedure runConstraint
 
     insert into Pedidos(codPedido,codInterno,valorTotal,dataPedido,dataVencimento) VALUES(2,1,,TO_DATE('17/12/2015', 'DD/MM/YYYY'),TO_DATE('31/12/2015','DD/MM/YYYY')); --(REPROVADO)
     --O valor total não pode ser nulo, logo o insert não é executado
+
+    insert into Pedidos(codPedido,codInterno,valorTotal,dataPedido,dataVencimento) VALUES(2,1,0,TO_DATE('17/12/2015', 'DD/MM/YYYY'),TO_DATE('31/12/2015','DD/MM/YYYY')); --(REPROVADO)
+    --O valor total tem de ser maior que 0, logo o insert não é executado
 
     insert into Pedidos(codPedido,codInterno,valorTotal,dataPedido,dataVencimento) VALUES(2,1,110.2,,TO_DATE('31/12/2015','DD/MM/YYYY')); --(REPROVADO)
     --A data do pedido não pode ser nula, logo o insert não é executado
@@ -432,7 +438,7 @@ insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estado
 insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estadoAtual) VALUES(1,1,100000,'P'); --(REPROVADO)
 --O código da entrega não existe, logo o insert não é executado
 
---insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estadoAtual) VALUES(1,1,1,); --(REPROVADO)
+insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estadoAtual) VALUES(1,1,1,); --(REPROVADO)
 --O estado atual não pode ser nulo, logo o insert não é executado
 
 insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estadoAtual) VALUES(1,1,1,'A'); --(REPROVADO)
@@ -458,6 +464,9 @@ insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES
 
 insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES(1,1,); --(REPROVADO)
 --O valor total da colheita não pode ser nulo, logo o insert não é executado
+
+insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES(1,1,-1); --(REPROVADO)
+--O valor total da colheita não pode ser negativo, logo o insert não é executado
 
 ---------------SetoresAgricolas_Culturas-----------------
 insert into SetoresAgricolas_Culturas(codSetorAgricola,codCultura,dataPlantacao) VALUES(1,1,TO_DATE('07/09/2012', 'DD/MM/YYYY')); --(APROVADO)
@@ -686,6 +695,9 @@ insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,cod
 insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,); --(REPROVADO)
 --O valor do setor não pode ser nulo, logo o insert não é executado
 
+insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,-1); --(REPROVADO)
+--O valor do setor não pode ser negativo, logo o insert não é executado
+
 -------Edificios-------
 insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'G'); --(APROVADO)
 insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'A'); --(REPROVADO)
@@ -706,6 +718,8 @@ insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1
 insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'O'); --(REPROVADO)
 --O tipo do edifício não pode ser diferente de G,A,E ou R, logo o insert não é executado
 
+insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,); --(REPROVADO)
+--O tipo do edifício não pode ser nulo, logo o insert não é executado
 -------FatoresProducao-------
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(1,'FE',1,'Fertilizante 1','G'); --(APROVADO)
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(1,'FE',1,'Fertilizante 2','G'); --(REPROVADO)
@@ -720,6 +734,9 @@ insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComer
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FB',1,'Fertilizante 1','G'); --(REPROVADO)
 --O tipo de fator de produção só pode ser FE,CO,FI ou AD, logo o insert não é executado
 
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,,1,'Fertilizante 1','G'); --(REPROVADO)
+--O tipo de fator de produção não pode ser nulo, logo o insert não é executado
+
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',,'Fertilizante 1','G'); --(REPROVADO)
 --O preço do fator de produção não pode ser nulo, logo o insert não é executado
 
@@ -731,6 +748,9 @@ insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComer
 
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',1,'Fertilizante 1','O'); --(REPROVADO)
 --A formulação só pode ser G,P ou L, logo o insert não é executado
+
+insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',1,'Fertilizante 1',); --(REPROVADO)
+--A formulação não pode ser nula, logo o insert não é executado
 
 ----------Restricoes-----------
 insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(APROVADO)
@@ -804,6 +824,9 @@ insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferen
 
 insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12355','HS',1,10); --(REPROVADO)
 --O valor de referência não pode ser repetido, logo o insert não é executado
+
+insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12355','HS',1,-1); --(REPROVADO)
+--O valor de referência não pode ser negativo, logo o insert não é executado
 
 ----------Leituras------------
 insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(1,'12345',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(APROVADO)
