@@ -1,0 +1,1 @@
+Para o desenvolvimento da aplicação em PL/SQL requerida pelo cliente, foi adotado um modelo de base dados relacional, uma vez que fornece uma tecnologia bem definida e reconhecida, acompanhada de um bom suporte documental. Esta tecnologia garante ainda a existência de transações ACID (Atomicidade,Consistência,Isolamento,Durabilidade).
