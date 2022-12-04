@@ -7,12 +7,12 @@ import graph.Graph;
 
 import java.util.*;
 
-public class HubsDistribuicaoController {
+public class HubsDistributionController {
 
     App app;
 
 
-    public HubsDistribuicaoController() {
+    public HubsDistributionController() {
         app = App.getInstance();
     }
 
@@ -30,7 +30,7 @@ public class HubsDistribuicaoController {
     }
 
     public Map<ClienteProdutorEmpresa, Double> getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
-        if(n > getEmpresas().size()) System.out.println("O numero de hubs nao pode ser menor que o numero de empresas");
+        if(n > getEmpresas().size() || n < 1) System.out.println("O numero de hubs inserido e invalido");
         else {
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
         List<ClienteProdutorEmpresa> listaEmpresas = getEmpresas();
@@ -59,7 +59,7 @@ public class HubsDistribuicaoController {
             }
         }
 
-        System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media: ");
+        System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media:");
         // ordenar mapa por valor
         Map<ClienteProdutorEmpresa, Double> sorted = new LinkedHashMap<>();
         medias.entrySet()
