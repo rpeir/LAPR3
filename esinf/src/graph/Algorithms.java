@@ -171,12 +171,12 @@ public class Algorithms {
     /**
      * It returns the vertex with the minimum distance from the source vertex
      *
-     * @param g the graph
-     * @param dist an array of the same size as the number of vertices in the graph. It will contain the distance from the
-     * source vertex to each vertex in the graph.
+     * @param g       the graph
+     * @param dist    an array of the same size as the number of vertices in the graph. It will contain the distance from the
+     *                source vertex to each vertex in the graph.
      * @param visited an array of booleans that indicates whether a vertex has been visited or not.
-     * @param ce Comparator<E>
-     * @param zero the zero element of the type E.
+     * @param ce      Comparator<E>
+     * @param zero    the zero element of the type E.
      * @return The vertex with the minimum distance.
      */
     private static <V, E> V getVertMinDist(Graph<V, E> g, E[] dist, boolean[] visited, Comparator<E> ce, E zero) {
@@ -263,8 +263,8 @@ public class Algorithms {
 
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];
-        V[] pathKeys = (V[]) new Object [numVertices];
-        E[] dist = (E[]) new Object [numVertices];
+        V[] pathKeys = (V[]) new Object[numVertices];
+        E[] dist = (E[]) new Object[numVertices];
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
 
@@ -326,7 +326,7 @@ public class Algorithms {
                     for (int j = 0; j < n; j++) {
                         if (i != j && k != j && matrix.edge(k, j) != null) {
                             E newSum = sum.apply(matrix.edge(i, k).getWeight(), matrix.edge(k, j).getWeight());
-                            if (matrix.edge(i,j) == null || ce.compare(matrix.edge(i, j).getWeight(), newSum) > 0) {
+                            if (matrix.edge(i, j) == null || ce.compare(matrix.edge(i, j).getWeight(), newSum) > 0) {
                                 matrix.addEdge(matrix.vertex(i), matrix.vertex(j), newSum);
                             }
                         }
@@ -342,24 +342,33 @@ public class Algorithms {
      * This function takes a graph, a comparator, a binary operator, and a zero value, and returns the minimum number of
      * connections needed to connect all vertices in the graph
      *
-     * @param g The graph to be analyzed
-     * @param ce Comparator<E>
-     * @param sum a function that takes two edges and returns the sum of the two edges.
+     * @param g    The graph to be analyzed
+     * @param ce   Comparator<E>
+     * @param sum  a function that takes two edges and returns the sum of the two edges.
      * @param zero the zero element of the edge type.
      * @return The minimum number of connections between any two vertices in the graph.
      */
     public static <V, E> int minConnections(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
         int minConnections = 0;
+        boolean[] visited = new boolean[g.numVertices()];
         for (V vert : g.vertices()) {
             for (V vert2 : g.vertices()) {
                 if (!vert.equals(vert2)) {
-                    LinkedList<V> shortPath = new LinkedList<>();
-                    E lenpath = Algorithms.shortestPath(g, vert, vert2, ce, sum, zero, shortPath);
-                    if (lenpath == null){
+                    LinkedList<V> path = new LinkedList<>();
+                    ArrayList<LinkedList<V>> paths = new ArrayList<>();
+                    Algorithms.allPaths(g, vert, vert2, visited, path, paths);
+                    if (paths.size() == 0) {
                         return -1;
-                    }else {
-                        if (minConnections < shortPath.size() - 1){
-                            minConnections =  shortPath.size() - 1;
+                    } else {
+                        LinkedList<V> caminhoMin = null;
+                        for (LinkedList<V> caminho : paths) {
+                            if (caminhoMin == null)
+                                caminhoMin = caminho;
+                            else if (caminhoMin.size() -1 > caminho.size() - 1)
+                                caminhoMin = caminho;
+                        }
+                        if (minConnections < caminhoMin.size() - 1) {
+                            minConnections = caminhoMin.size() - 1;
                         }
                     }
                 }
@@ -371,7 +380,7 @@ public class Algorithms {
     /**
      * Determines a Minimum Spanning Tree using Kruskal's algorithm
      *
-     * @param g The graph to be processed
+     * @param g  The graph to be processed
      * @param ce Comparator<E>
      * @return A minimum spanning tree
      */
@@ -398,7 +407,7 @@ public class Algorithms {
             V vDest = edge.getVDest();
             List<V> connectedVerts = DepthFirstSearch(mst, vOrig);
             if (connectedVerts != null && !connectedVerts.contains(vDest)) {
-                mst.addEdge(vOrig,vDest,edge.getWeight());
+                mst.addEdge(vOrig, vDest, edge.getWeight());
             }
         }
         return mst;
@@ -407,8 +416,8 @@ public class Algorithms {
     /**
      * Determines a Minimum Spanning Tree using Prim's algorithm
      *
-     * @param g the graph
-     * @param ce Comparator<E>
+     * @param g    the graph
+     * @param ce   Comparator<E>
      * @param zero the zero value for the edge weights.
      * @return A minimum spanning tree.
      */
@@ -418,8 +427,8 @@ public class Algorithms {
 
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];
-        V[] pathKeys = (V[]) new Object [numVertices];
-        E[] dist = (E[]) new Object [numVertices];
+        V[] pathKeys = (V[]) new Object[numVertices];
+        E[] dist = (E[]) new Object[numVertices];
 
         int vOrigKey = 0;
         V vOrig = g.vertex(0);
@@ -448,12 +457,12 @@ public class Algorithms {
     /**
      * Builds a minimum spanning tree from a graph and a pathKeys array and a dist array
      *
-     * @param g the graph to find the MST of
+     * @param g        the graph to find the MST of
      * @param pathKeys An array of vertices that represent the path from the source vertex to the current vertex.
-     * @param dist The array of distances from the source vertex to each vertex in the graph.
+     * @param dist     The array of distances from the source vertex to each vertex in the graph.
      * @return A minimum spanning tree of the graph.
      */
-    private static <V, E> Graph<V,E> buildMst(Graph<V,E> g, V[] pathKeys, E[] dist) {
+    private static <V, E> Graph<V, E> buildMst(Graph<V, E> g, V[] pathKeys, E[] dist) {
         Graph<V, E> mst = new MatrixGraph<>(false);
         for (V vert : g.vertices()) {
             mst.addVertex(vert);
@@ -472,12 +481,13 @@ public class Algorithms {
 
     /**
      * Gets the total weight of a graph
-     * @param g The graph to get the weight of
-     * @param sum The sum function
+     *
+     * @param g    The graph to get the weight of
+     * @param sum  The sum function
      * @param zero The zero value for the edge weights
+     * @param <V>  The vertex type
+     * @param <E>  The edge type
      * @return The total weight of the graph
-     * @param <V> The vertex type
-     * @param <E> The edge type
      */
     public static <V, E> E totalWeight(Graph<V, E> g, BinaryOperator<E> sum, E zero) {
         E totalWeight = zero;
