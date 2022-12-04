@@ -2,11 +2,7 @@ package UI;
 
 import Controller.App;
 import Controller.HubsDistribuicaoController;
-import domain.ClienteProdutorEmpresa;
-import domain.Distancia;
-import graph.Graph;
 
-import java.util.Map;
 import java.util.Scanner;
 
 public class HubsDistribuicaoUI {
