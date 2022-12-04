@@ -1,16 +1,16 @@
 package UI;
 
 import Controller.App;
-import Controller.HubsDistribuicaoController;
+import Controller.HubsDistributionController;
 
 import java.util.Scanner;
 
-public class HubsDistribuicaoUI {
+public class HubsDistributionUI {
 
     App app;
-    HubsDistribuicaoController ctrl = new HubsDistribuicaoController();
+    HubsDistributionController ctrl = new HubsDistributionController();
 
-    public HubsDistribuicaoUI() {
+    public HubsDistributionUI() {
         app = App.getInstance();
     }
 

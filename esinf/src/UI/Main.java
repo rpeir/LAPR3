@@ -29,7 +29,7 @@ public class Main {
                     connectionsUI.run();
                     break;
                 case "3":
-                    HubsDistribuicaoUI hubsDistribuicaoUI = new HubsDistribuicaoUI();
+                    HubsDistributionUI hubsDistribuicaoUI = new HubsDistributionUI();
                     hubsDistribuicaoUI.run();
                     break;
                 case "4":

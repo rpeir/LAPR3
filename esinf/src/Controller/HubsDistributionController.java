@@ -7,12 +7,12 @@ import graph.Graph;
 
 import java.util.*;
 
-public class HubsDistribuicaoController {
+public class HubsDistributionController {
 
     App app;
 
 
-    public HubsDistribuicaoController() {
+    public HubsDistributionController() {
         app = App.getInstance();
     }
 
