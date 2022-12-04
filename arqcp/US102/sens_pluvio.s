@@ -7,9 +7,9 @@ sens_pluvio:
 movl $0, %eax
 
 cmpb $23, %sil
-jg back
+jg normalizar2
 cmpb $5, %sil
-jl back
+jl normalizar2
 
 testarNormalizacao:
 cmpb $5, %dl
@@ -31,6 +31,15 @@ normalizar:
 movb %dl, %al
 cbw 
 movb $5, %cl
+idivb %cl
+movb %ah, %al
+movb %al, %dl
+jmp back
+
+normalizar2:
+movb %dl, %al
+cbw
+movb $2, %cl
 idivb %cl
 movb %ah, %al
 movb %al, %dl

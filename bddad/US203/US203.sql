@@ -1,5 +1,5 @@
-----------------CONSTRAINT CHECKS----------------
----------------Clientes----------------
+--CONSTRAINTS CHECK
+--##Clientes##
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES('','P','Joao','TEST1@sapo.pt',1000,'123456789'); --(REPROVADO)
     --O código interno não pode ser nulo, logo o insert não é executado
 
@@ -17,7 +17,7 @@
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(3,'P','','a1@sapo.pt',1000,'111111111'); --(REPROVADO)
     --O nome não pode ser nulo, logo o insert não é executado
 
-    insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(3,'P','Maria','a1@sapo.pt',1000,'111111112'); --(APROVADO)
+    insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(3,'P','Maria','a1@sapo.pt',1000,'111111112'); --(APROVADO)A
     insert into Clientes (codInterno,tipo,nome,emailCliente,plafond,nrFiscal) VALUES(4,'P','Maria','a1@sapo.pt',1000,'111111113');  --(REPROVADO)
     --O email tem de ser único, pelo que o segundo insert não é aceite
 
@@ -30,7 +30,7 @@
 
 
 
----------------Moradas----------------
+--##Moradas##
     insert into Moradas (codMorada,rua,nrEdificio,andar,porta,codPostal,localidade,pais) VALUES('','Rua da Alegria',1,1,'1D','5400-093','Porto','Portugal'); --(REPROVADO)
     --O código da morada não pode ser nulo, logo o insert não é executado
     insert into Moradas (codMorada,rua,nrEdificio,andar,porta,codPostal,localidade,pais) VALUES(1,'',1,1,'1D','5400-093','Porto','Portugal'); --(REPROVADO)
@@ -47,7 +47,7 @@
     --O país não pode ser nulo, logo o insert não é executado
     insert into Moradas (codMorada,rua,nrEdificio,andar,porta,codPostal,localidade,pais) VALUES(1,'Rua da Alegria',1,1,'1D','5400-093','Porto','Portugal'); --(APROVADO)
 
----------------MoradasCorrespondencia----------------
+--##MoradasCorrespondencia##
     insert into MoradasCorrespondencia(codInterno,codMorada) VALUES(,1); --(REPROVADO)
     --O código interno não pode ser nulo, logo o insert não é executado
     insert into MoradasCorrespondencia(codInterno,codMorada) VALUES(1,); --(REPROVADO)
@@ -62,7 +62,7 @@
     insert into MoradasCorrespondencia(codInterno,codMorada) VALUES(1,1); --(REPROVADO)
     --O código interno já existe, logo o insert não é executado
 
----------------MoradasEntrega----------------
+--##MoradasEntrega##
     insert into MoradasEntrega(codInterno,codMorada) VALUES(,1); --(REPROVADO)
     --O código interno não pode ser nulo, logo o insert não é executado
     insert into MoradasEntrega(codInterno,codMorada) VALUES(1,); --(REPROVADO)
@@ -78,7 +78,7 @@
     --O código interno e o código de morada já existem, logo o insert não é executado
 
 
----------------Niveis----------------    
+--##Niveis##    
     insert into Niveis(codNivel,designacaoNivel) VALUES(1,'A'); --(APROVADO)
     insert into Niveis(codNivel,designacaoNivel) VALUES(,'B'); --(REROVADO)
     --O código do nível não pode ser nulo, logo o insert não é executado
@@ -92,7 +92,7 @@
     insert into Niveis(codNivel,designacaoNivel) VALUES(2,'D'); --(REPROVADO)
     -- A designação do nível tem de ser A,B ou C logo o insert não é executado
 
----------------Clientes_Niveis----------------    
+--##Clientes_Niveis##    
 
     insert into Clientes_Niveis(codInterno,codNivel,dataAtribuicao) VALUES(1,1,TO_DATE('17/12/2015', 'DD/MM/YYYY'));; --(APROVADO)
     insert into Clientes_Niveis(codInterno,codNivel,dataAtribuicao) VALUES(1,1,TO_DATE('17/12/2015', 'DD/MM/YYYY'));; --(REPROVADO)
@@ -113,8 +113,7 @@
     --A data de atribuição não pode ser nula, logo o insert não é executado
 
 
----------------Pedidos----------------
-
+--##Pedidos##
     insert into Pedidos(codPedido,codInterno,valorTotal,dataPedido,dataVencimento) VALUES(1,1,110.2,TO_DATE('17/12/2015', 'DD/MM/YYYY'),TO_DATE('31/12/2015','DD/MM/YYYY')); --(APROVADO)
     insert into Pedidos(codPedido,codInterno,valorTotal,dataPedido,dataVencimento) VALUES(1,1,110.2,TO_DATE('17/12/2015', 'DD/MM/YYYY'),TO_DATE('31/12/2015','DD/MM/YYYY')); --(REPROVADO)
     --A chave primária já existe, logo o insert não é executado
@@ -145,7 +144,7 @@
     insert into Pedidos(codPedido,codInterno,valorTotal,dataPedido,dataVencimento) VALUES(2,1,110.2,TO_DATE('17/12/2015', 'DD/MM/YYYY'),); --(REPROVADO)
     --A data de vencimento não pode ser nula, logo o insert não é executado
 
----------------Pagamentos----------------    
+--##Pagamentos##    
 
     insert into Pagamentos(codPagamento,dataPagamento) VALUES(1,TO_DATE('13/11/2015', 'DD/MM/YYYY')); --(APROVADO)
     insert into Pagamentos(codPagamento,dataPagamento) VALUES(1,TO_DATE('13/11/2015', 'DD/MM/YYYY')); --(REPROVADO)
@@ -154,7 +153,7 @@
     --O código do pagamento não pode ser nulo, logo o insert não é executado
 
 
----------------Colheitas----------------
+--##Colheitas##
     insert into Colheitas(codColheita,anoColheita) VALUES(1,2015); --(APROVADO)
     insert into Colheitas(codColheita,anoColheita) VALUES(1,2015); --(REPROVADO)
     --A chave primária já existe, logo o insert não é executado
@@ -164,7 +163,7 @@
     --O ano da colheita não pode ser nulo, logo o insert não é executado
 
 
-----------------Culturas----------------
+--##Culturas##
     insert into Culturas(codCultura,designacaoCultura,tipoCultura,objetivoCultura,tempoCrescimento) VALUES(1,'Cultura 1','P','C',1); --(APROVADO)
     insert into Culturas(codCultura,designacaoCultura,tipoCultura,objetivoCultura,tempoCrescimento) VALUES(1,'Cultura 1','P','C',1); --(REPROVADO)
     --A chave primária já existe, logo o insert não é executado
@@ -188,7 +187,7 @@
     --O tempo de crescimento não pode ser nulo, logo o insert não é executado
 
 
----------------Regas----------------
+--##Regas##
 insert into Regas(codRega,codOperacao,tempoRega) VALUES(1,1,1); --(APROVADO)
 insert into Regas(codRega,codOperacao,tempoRega) VALUES(1,1,1); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -208,7 +207,7 @@ insert into Regas(codRega,codOperacao,tempoRega) VALUES(1,20,1); --(REPROVADO)
 insert into Regas(codRega,codOperacao,tempoRega) VALUES(1,1,); --(REPROVADO)
 --O tempo da rega não pode ser nulo, logo o insert não é executado 
 
----------------Instalações Agrícolas----------------
+--##Instalações Agrícolas##
 insert into InstalacoesAgricolas(codInstalacaoAgricola,codMorada,designacao) VALUES(1,1,'Instalação Agrícola 1'); --(APROVADO)
 insert into InstalacoesAgricolas(codInstalacaoAgricola,codMorada,designacao) VALUES(1,1,'Instalação Agrícola 1'); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -231,7 +230,7 @@ insert into InstalacoesAgricolas(codInstalacaoAgricola,codMorada,designacao) VAL
 insert into InstalacoesAgricolas(codInstalacaoAgricola,codMorada,designacao) VALUES(1,1000,'Instalação Agrícola 1'); --(REPROVADO)
 --O código da morada não existe, logo o insert não é executado
 
----------------Zonas Geograficas----------------
+--##Zonas Geograficas##
 insert into ZonasGeograficas(codZonaGeografica,codInstalacaoAgricola,designacaoZonaGeografica) VALUES(1,1,'Zona Geográfica 1'); --(APROVADO)
 insert into ZonasGeograficas(codZonaGeografica,codInstalacaoAgricola,designacaoZonaGeografica) VALUES(1,1,'Zona Geográfica 1'); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -249,7 +248,7 @@ insert into ZonasGeograficas(codZonaGeografica,codInstalacaoAgricola,designacaoZ
 insert into ZonasGeograficas(codZonaGeografica,codInstalacaoAgricola,designacaoZonaGeografica) VALUES(1,1,); --(REPROVADO)
 --A designação da zona geográfica não pode ser nula, logo o insert não é executado
 
----------------Setores Agrícolas----------------
+--##Setores Agrícolas##
 insert into SetoresAgricolas(codSetorAgricola,codZonaGeografica,codInstalacaoAgricola,designacaoSetorAgricola,areaSetorAgricola) VALUES(1,1,1,'Setor Agrícola 1',1); --(APROVADO)
 insert into SetoresAgricolas(codSetorAgricola,codZonaGeografica,codInstalacaoAgricola,designacaoSetorAgricola,areaSetorAgricola) VALUES(1,1,1,'Setor Agrícola 1',1); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -278,7 +277,7 @@ insert into SetoresAgricolas(codSetorAgricola,codZonaGeografica,codInstalacaoAgr
 insert into SetoresAgricolas(codSetorAgricola,codZonaGeografica,codInstalacaoAgricola,designacaoSetorAgricola,areaSetorAgricola) VALUES(1,1,1,'Setor Agrícola 1',); --(REPROVADO)
 --A área do setor agrícola não pode ser nula, logo o insert não é executado
 
----------------Aplicação Regas-----------------
+--##Aplicação Regas##
 insert into AplicacaoRegas(codRega,CodCultura,CodSetorAgricola,tipoRega) VALUES(1,1,1,'G'); --(APROVADO)
 insert into AplicacaoRegas(codRega,CodCultura,CodSetorAgricola,tipoRega) VALUES(1,1,1,'G'); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -303,7 +302,7 @@ insert into AplicacaoRegas(codRega,CodCultura,CodSetorAgricola,tipoRega) VALUES(
 insert into AplicacaoRegas(codRega,CodCultura,CodSetorAgricola,tipoRega) VALUES(1,1,1,'A'); --(REPROVADO)
 --O tipo de rega assume o valor G ou B, logo o insert não é executado
 
----------------Incidentes-----------------
+--##Incidentes##
 insert into Incidentes(codIncidente,codPedido,codInterno,codPagamento,dataOcorrencia) VALUES(1,1,1,1,TO_DATE('2018-01-01', 'DD/MM/YYYY')); --(APROVADO)
 insert into Incidentes(codIncidente,codPedido,codInterno,codPagamento,dataOcorrencia) VALUES(1,1,1,1,TO_DATE('2018-01-01', 'DD/MM/YYYY')); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -336,7 +335,7 @@ insert into Incidentes(codIncidente,codPedido,codInterno,codPagamento,dataOcorre
 --A data de ocorrência não pode ser nula, logo o insert não é executado
 
 
----------------Produtos-----------------
+--##Produtos##
 insert into Produtos(codProduto,codCultura,codColheita,precoKg,stockKg,designacaoProduto) VALUES(1,1,1,1,1,'Produto 1'); --(APROVADO)
 insert into Produtos(codProduto,codCultura,codColheita,precoKg,stockKg,designacaoProduto) VALUES(1,1,1,1,1,'Produto 2'); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -372,7 +371,7 @@ insert into Produtos(codProduto,codCultura,codColheita,precoKg,stockKg,designaca
 insert into Produtos(codProduto,codCultura,codColheita,precoKg,stockKg,designacaoProduto) VALUES(1,1,100000,1,1,'Produto 2'); --(REPROVADO)
 --O código da colheita não existe, logo o insert não é executado
 
----------------Pedidos_Produtos----------------
+--##Pedidos_Produtos##
 insert into Pedidos_Produtos(codPedido,codProduto,quantidadeProduto,precoPedido) VALUES(1,1,1,1); --(APROVADO)
 insert into Pedidos_Produtos(codPedido,codProduto,quantidadeProduto,precoPedido) VALUES(1,1,1,1); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -398,7 +397,7 @@ insert into Pedidos_Produtos(codPedido,codProduto,quantidadeProduto,precoPedido)
 insert into Pedidos_Produtos(codPedido,codProduto,quantidadeProduto,precoPedido) VALUES(1,1,1,); --(REPROVADO)
 --O preço do pedido não pode ser nulo, logo o insert não é executado
 
----------------Entregas----------------
+--##Entregas##
 insert into Entregas(codEntrega,codMorada,dataEntrega) VALUES(1,1,TO_DATE('17/10/2015', 'DD/MM/YYYY')); --(APROVADO)
 insert into Entregas(codEntrega,codMorada,dataEntrega) VALUES(1,1,TO_DATE('17/10/2015', 'DD/MM/YYYY')); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -415,7 +414,7 @@ insert into Entregas(codEntrega,codMorada,dataEntrega) VALUES(1,,TO_DATE('17/10/
 insert into Entregas(codEntrega,codMorada,dataEntrega) VALUES(1,100000,TO_DATE('17/10/2015', 'DD/MM/YYYY')); --(REPROVADO)
 --O código da morada não existe, logo o insert não é executado
 
----------------Pedidos_Pagamentos_Entregas----------------
+--##6Pedidos_Pagamentos_Entregas##
 insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estadoAtual) VALUES(1,1,1,'P'); --(APROVADO)
 insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estadoAtual) VALUES(1,1,1,'P'); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -445,7 +444,7 @@ insert into Pedidos_Pagamentos_Entregas(codPedido,codPagamento,codEntrega,estado
 --O estado atual não pode ser diferente de R,E ou P, logo o insert não é executado
 
 
----------------Colheitas_Culturas----------------
+--##Colheitas_Culturas##
 insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES(1,1,1); --(APROVADO)
 insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES(1,1,1); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -468,7 +467,7 @@ insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES
 insert into Colheitas_Culturas(codColheita,codCultura,valorTotalColheita) VALUES(1,1,-1); --(REPROVADO)
 --O valor total da colheita não pode ser negativo, logo o insert não é executado
 
----------------SetoresAgricolas_Culturas-----------------
+--##SetoresAgricolas_Culturas##
 insert into SetoresAgricolas_Culturas(codSetorAgricola,codCultura,dataPlantacao) VALUES(1,1,TO_DATE('07/09/2012', 'DD/MM/YYYY')); --(APROVADO)
 insert into SetoresAgricolas_Culturas(codSetorAgricola,codCultura,dataPlantacao) VALUES(1,1,TO_DATE('07/09/2012', 'DD/MM/YYYY')); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -492,7 +491,7 @@ insert into SetoresAgricolas_Culturas(codSetorAgricola,codCultura,dataPlantacao)
 --A data de plantação não pode ser nula, logo o insert não é executado
 
 
----------------Plano Anual-----------------
+--##Plano Anual##
 insert into PlanoAnual(anoPlanoAnual) VALUES(2000); --(APROVADO)
 insert into PlanoAnual(anoPlanoAnual) VALUES(2000); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -501,7 +500,7 @@ insert into PlanoAnual(anoPlanoAnual) VALUES(); --(REPROVADO)
 --O ano do plano anual não pode ser nulo, logo o insert não é executado
 
 
-----------------Calendario Operações----------------
+--##Calendario Operações##
 insert into CalendariosOperacoes(codCalendarioOperacao,anoCalendarioOperacao) VALUES(1,2000); --(APROVADO)
 insert into CalendariosOperacoes(codCalendarioOperacao,anoCalendarioOperacao) VALUES(1,2020); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -518,7 +517,7 @@ insert into CalendariosOperacoes(codCalendarioOperacao,anoCalendarioOperacao) VA
 insert into CalendariosOperacoes(codCalendarioOperacao,anoCalendarioOperacao) VALUES(2,2000); --(REPROVADO)
 --O ano do calendário de operações é único, logo o insert não é executado
 
----------------Operações-----------------
+--##Operações##
 insert into Operacoes(codOperacao,anoPlanoAnual,codCalendarioOperacoes,dataPrevistaPlano,dataOperacao,formaAplicacao,estadoOperacao) values(1,2000,1,TO_DATE('07/09/2012', 'DD/MM/YYYY'),TO_DATE('07/09/2012', 'DD/MM/YYYY'),'F','M'); --(APROVADO)
 insert into Operacoes(codOperacao,anoPlanoAnual,codCalendarioOperacoes,dataPrevistaPlano,dataOperacao,formaAplicacao,estadoOperacao) values(1,2000,1,TO_DATE('07/09/2012', 'DD/MM/YYYY'),TO_DATE('07/09/2012', 'DD/MM/YYYY'),'F','C'); --(REPROVADO)
 --A chave primária já existe, logo o insert não é executado
@@ -559,7 +558,7 @@ insert into Operacoes(codOperacao,anoPlanoAnual,codCalendarioOperacoes,dataPrevi
 insert into Operacoes(codOperacao,anoPlanoAnual,codCalendarioOperacoes,dataPrevistaPlano,dataOperacao,formaAplicacao,estadoOperacao) values(1,2000,1,TO_DATE('07/09/2012', 'DD/MM/YYYY'),TO_DATE('07/09/2012', 'DD/MM/YYYY'),'F','D'); --(REPROVADO)
 --O estado da operação só pode ser C ou M, logo o insert não é executado
 
--------------Planos Rega----------------
+--##Planos Rega##
 insert into PlanosRega(anoPlanoAnual,codSetorAgricola,codCultura,codRega) values(2000,1,1,1); --(APROVADO)
 insert into PlanosRega(anoPlanoAnual,codSetorAgricola,codCultura,codRega) values(2000,1,1,1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -588,7 +587,7 @@ insert into PlanosRega(anoPlanoAnual,codSetorAgricola,codCultura,codRega) values
 insert into PlanosRega(anoPlanoAnual,codSetorAgricola,codCultura,codRega) values(2000,1,1,100000); --(REPROVADO)
 --O código da rega não existe, logo o insert não é executado
 
--------------Culturas Regas---------------
+--##Culturas Regas##
 insert into(codCultura,codRega,tipoDistribuicao) values(1,1,'A'); --(APROVADO)  --A;G;P
 insert into CulturasRegas(codCultura,codRega,tipoDistribuicao) values(1,1,'A'); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -611,7 +610,7 @@ insert into CulturasRegas(codCultura,codRega,tipoDistribuicao) values(1,1,''); -
 insert into CulturasRegas(codCultura,codRega,tipoDistribuicao) values(1,1,'B'); --(REPROVADO)
 --O tipo de distribuição só pode ser A;G;P, logo o insert não é executado
 
--------------Planos Anuais setores Agricolas---------------
+--##Planos Anuais setores Agricolas##
 insert into PlanosAnuais_SetoresAgricolas(anoPlanoAnual,codSetorAgricola,ordemRega,periodicidadeRegaSetor) values(2000,1,1,1); --(APROVADO)
 insert into PlanosAnuais_SetoresAgricolas(anoPlanoAnual,codSetorAgricola,ordemRega,periodicidadeRegaSetor) values(2000,1,1,1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -634,7 +633,7 @@ insert into PlanosAnuais_SetoresAgricolas(anoPlanoAnual,codSetorAgricola,ordemRe
 insert into PlanosAnuais_SetoresAgricolas(anoPlanoAnual,codSetorAgricola,ordemRega,periodicidadeRegaSetor) values(2000,1,1,); --(REPROVADO)
 --A periodicidade de rega do setor não pode ser nula, logo o insert não é executado
 
--------Aplicação Fatores de Produção-------
+--##Aplicação Fatores de Produção##
 insert into AplicacaoFatorProducao(codOperacao,codFatorProducao,codSetorAgricola,codCultura,qtFatorProducao) values(1,1,1,1,1); --(APROVADO)
 insert into AplicacaoFatorProducao(codOperacao,codFatorProducao,codSetorAgricola,codCultura,qtFatorProducao) values(1,1,1,1,1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -669,7 +668,7 @@ insert into AplicacaoFatorProducao(codOperacao,codFatorProducao,codSetorAgricola
 
 
 
--------SetoresAgricolas_Colheitas_Culturas-------
+--##SetoresAgricolas_Colheitas_Culturas##
 insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,1); --(APROVADO)
 insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -698,7 +697,7 @@ insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,cod
 insert into SetoresAgricolas_Colheitas_Culturas(codSetorAgricola,codColheita,codCultura,valorSetor) values(1,1,1,-1); --(REPROVADO)
 --O valor do setor não pode ser negativo, logo o insert não é executado
 
--------Edificios-------
+--##Edificios##
 insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'G'); --(APROVADO)
 insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,'A'); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -720,7 +719,7 @@ insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1
 
 insert into Edificios(codEdificio,codInstalacaoAgricola,tipoEdificio) values(1,1,); --(REPROVADO)
 --O tipo do edifício não pode ser nulo, logo o insert não é executado
--------FatoresProducao-------
+--##FatoresProducao##
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(1,'FE',1,'Fertilizante 1','G'); --(APROVADO)
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(1,'FE',1,'Fertilizante 2','G'); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -752,7 +751,7 @@ insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComer
 insert into FatoresProducao(codFatorProducao,tipoFatorProducao,precoKg,nomeComercial,formulacao) values(2,'FE',1,'Fertilizante 1',); --(REPROVADO)
 --A formulação não pode ser nula, logo o insert não é executado
 
-----------Restricoes-----------
+--##Restricoes##
 insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(APROVADO)
 insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) values(1,1,TO_DATE('2019-01-01', 'DD/MM/YYYY'),1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -776,7 +775,7 @@ insert into Restricoes(codZonaGeografica,codFatorProducao,dataInicio,duracao) va
 --A duração não pode ser nula, logo o insert não é executado
 
 
----------Tipos Sensores------------
+--##Tipos Sensores##
 insert into TiposSensores(codTipoSensor) values('HS'); --(APROVADO)
 insert into TiposSensores(codTipoSensor) values('HS'); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -788,7 +787,7 @@ insert into TiposSensores(codTipoSensor) values('KL'); --(REPROVADO)
 --O código do tipo de sensor só pode ser HS,VV,PI,TS,TA,HA ou PA, logo o insert não é executado
 
 
-----------EstacaoesMeteorologicas-----------
+--##EstacaoesMeteorologicas##
 insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,1); --(APROVADO)
 insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -802,7 +801,7 @@ insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VA
 insert into EstacoesMeteorologicas(codEstacaoMeteorologica,codZonaGeografica) VALUES(1,100000); --(REPROVADO)
 --O código da zona geográfica não existe, logo o insert não é executado
 
-----------Sensores-----------
+--##Sensores##
 insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','HS',1,10); --(APROVADO)
 insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12345','HS',1,10); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -828,7 +827,7 @@ insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferen
 insert into Sensores(idSensor,codTipoSensor,codEstacaoMeteorologica,valorReferencia) Values('12355','HS',1,-1); --(REPROVADO)
 --O valor de referência não pode ser negativo, logo o insert não é executado
 
-----------Leituras------------
+--##Leituras##
 insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(1,'12345',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(APROVADO)
 insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(1,'12345',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),10); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -855,7 +854,7 @@ insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,'12
 insert into Leituras(codLeitura,idSensor,instanteLeitura,valorLido) values(2,'12545',TO_DATE('01-01-2019, 12:19:31', 'dd/MM/yyyy, hh:mm:ss '),-1); --(REPROVADO)
 --O valor lido não pode ser menor que o valor 0, logo o insert não é executado
 
------------FichasTecnicas-----------
+--##FichasTecnicas##
 insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(1,1); --(APROVADO)
 insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(1,1); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -869,7 +868,7 @@ insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(2,); --(REPR
 insert into FichasTecnicas(codFichaTecnica,codFatorProducao) values(2,100); --(REPROVADO)
 --O código do fator de produção não existe, logo o insert não é executado
 
---------Componentes---------
+--##Componentes##
 insert into Componentes(codComponente,substancia,categoria) values(1,'agua','categoria 1'); --(APROVADO)
 insert into Componentes(codComponente,substancia,categoria) values(1,'nitrogenio','categoria 2'); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
@@ -886,7 +885,7 @@ insert into Componentes(codComponente,substancia,categoria) values(2,,'categoria
 insert into Componentes(codComponente,substancia,categoria) values(3,'açucar',); --(REPROVADO)
 --A categoria não pode ser nula, logo o insert não é executado
 
-----------FichasTecnicas_Componentes-----------
+--##FichasTecnicas_Componentes##
 insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(1,1,'litros',10); --(APROVADO)
 insert into FichasTecnicas_Componentes(codFichaTecnica,codComponente,unidade,quantidade) values(1,1,'litros',10); --(REPROVADO)
 --A chave primária não pode ser repetido, logo o insert não é executado
