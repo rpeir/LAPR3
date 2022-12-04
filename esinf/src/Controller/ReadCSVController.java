@@ -82,7 +82,7 @@ public class ReadCSVController {
         }
     }
     /**
-     * It reads a file refering to the connections between Clients and Producers and puts it in a graph
+     * It reads a file refering to the distances between two locations and puts it in a graph
      *
      * @param filename The file to be read
      */
