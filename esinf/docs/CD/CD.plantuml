@@ -1,0 +1,255 @@
+@startuml
+
+
+top to bottom direction
+skinparam linetype ortho
+
+class Algorithms {
+  + allPaths(Graph<V, E>, V, V): ArrayList<LinkedList<V>>
+  + DepthFirstSearch(Graph<V, E>, V): LinkedList<V>?
+  + shortestPaths(Graph<V, E>, V, Comparator<E>, BinaryOperator<E>, E, ArrayList<LinkedList<V>>, ArrayList<E>): boolean
+  + shortestPath(Graph<V, E>, V, V, Comparator<E>, BinaryOperator<E>, E, LinkedList<V>): E?
+  + minDistGraph(Graph<V, E>, Comparator<E>, BinaryOperator<E>): MatrixGraph<V, E>
+  + minConnections(Graph<V, E>, Comparator<E>, BinaryOperator<E>, E): int
+  + kruskall(Graph<V, E>, Comparator<E>): Graph<V, E>
+  + BreadthFirstSearch(Graph<V, E>, V): LinkedList<V>?
+  + totalWeight(Graph<V, E>, BinaryOperator<E>, E): E
+  + prim(Graph<V, E>, Comparator<E>, E): Graph<V, E>
+}
+class App {
+  + getGraph(): Graph<Localizacao, Integer>
+  + setGraph(Graph<Localizacao, Integer>): void
+  + getSectorStore(): SectorStore
+  + getInstance(): App
+  + getLocalizacaoStore(): LocalizacaoStore
+  + getWaterController(): WaterController
+  + getProdutoStore(): ProdutoStore
+  + getClienteProdutorEmpresaStore(): ClienteProdutorEmpresaStore
+}
+class ClienteProdutorEmpresa {
+  + toString(): String
+  + setNotHub(): void
+  + setId(String): void
+  + validateClienteID(String): boolean
+  + isHub(): boolean
+  + setLocalizacao(String, float, float): void
+  + setDesignacao(String): void
+  + validateEmpresaID(String): boolean
+  + validateProdutorID(String): boolean
+  + setHub(): void
+  + getLocalizacao(): Localizacao
+  + getId(): String
+  + setLocalizacao(Localizacao): void
+  + hashCode(): int
+  + equals(Object): boolean
+  + isEmpresa(): boolean
+  + setEmpresa(boolean): void
+  + getDesignacao(): String
+}
+class ClienteProdutorEmpresaStore {
+  + toString(): String
+  + getMapCPE(): Map<String, ClienteProdutorEmpresa>
+  + isEmpty(): boolean
+  + addCPE(ClienteProdutorEmpresa): void
+  + getCPE(String): ClienteProdutorEmpresa
+  + containsCPE(String): boolean
+  + removeCPE(String): void
+  + clear(): void
+  + size(): int
+}
+class ClosestHubController {
+  + getClosestHub(ClienteProdutorEmpresa): ClienteProdutorEmpresa
+  + getAllClosestHubs(): HashMap<ClienteProdutorEmpresa, ClienteProdutorEmpresa>
+}
+class ClosestHubUI {
+  + run(): void
+}
+class CommonGraph<V, E> {
+  + isDirected(): boolean
+  + validVertex(V): boolean
+  + vertices(): ArrayList<V>
+  + edgeExists(V, V): boolean
+  + numEdges(): int
+  + vertex(int): V
+  + hashCode(): int
+  + numVertices(): int
+  + vertex(Predicate<V>): V
+  + equals(Object): boolean
+  + clone(): Graph<V, E>
+  + key(V): int
+}
+class ConnectionsController {
+  + minConnevtions(): int
+}
+class ConnectionsUI {
+  + run(): void
+}
+class Edge<V, E> {
+  + getVOrig(): V
+  + setWeight(E): void
+  + toString(): String
+  + hashCode(): int
+  + getWeight(): E
+  + getVDest(): V
+  + equals(Object): boolean
+}
+interface Graph<V, E> << interface >> {
+  + inDegree(V): int
+  + vertices(): ArrayList<V>
+  + numEdges(): int
+  + addEdge(V, V, E): boolean
+  + clone(): Graph<V, E>
+  + outDegree(V): int
+  + incomingEdges(V): Collection<Edge<V, E>>
+  + removeEdge(V, V): boolean
+  + vertex(Predicate<V>): V
+  + outgoingEdges(V): Collection<Edge<V, E>>
+  + edge(int, int): Edge<V, E>
+  + numVertices(): int
+  + validVertex(V): boolean
+  + edges(): Collection<Edge<V, E>>
+  + edgeExists(V, V): boolean
+  + adjVertices(V): Collection<V>
+  + edge(V, V): Edge<V, E>
+  + addVertex(V): boolean
+  + removeVertex(V): boolean
+  + isDirected(): boolean
+  + key(V): int
+  + vertex(int): V
+}
+class HubsDistributionController {
+  ~ app: App
+  + getMediaDistancia(Graph<Localizacao, Integer>, int): Map<ClienteProdutorEmpresa, Double>
+  + getEmpresas(): List<ClienteProdutorEmpresa>
+}
+class HubsDistributionUI {
+  ~ app: App
+  ~ ctrl: HubsDistributionController
+  + run(): void
+}
+class ImportCSVUI {
+  ~ app: App
+  + run(): void
+}
+class ImportWaterControllerUI {
+  ~ app: App
+  + run(): void
+}
+class Localizacao {
+  + equals(Object): boolean
+  + getLocID(): String
+  + hashCode(): int
+  + getLatitude(): float
+  + setLongitude(float): void
+  + validateID(String): boolean
+  + getLongitude(): float
+  + setLatitude(float): void
+  + setLocID(String): void
+  + toString(): String
+}
+class LocalizacaoStore {
+  + removeLocalizacao(Localizacao): void
+  + clear(): void
+  + addLocalizacao(Localizacao): void
+  + removeLocalizacao(String): void
+  + getLocalizacao(String): Localizacao
+  + size(): int
+}
+class MSTNetworkController {
+  + getMSTNetworkDistance(Graph<Localizacao, Integer>): int
+  + getMSTNetwork(): Graph<Localizacao, Integer>
+}
+class MSTNetworkUI {
+  + run(): void
+}
+class Main {
+  + main(String[]): void
+}
+class MapGraph<V, E> {
+  + toString(): String
+  + clone(): MapGraph<V, E>
+  + edges(): Collection<Edge<V, E>>
+  + outgoingEdges(V): Collection<Edge<V, E>>
+  + removeVertex(V): boolean
+  + incomingEdges(V): Collection<Edge<V, E>>
+  + removeEdge(V, V): boolean
+  + inDegree(V): int
+  + addVertex(V): boolean
+  + validVertex(V): boolean
+  + addEdge(V, V, E): boolean
+  + outDegree(V): int
+  + edge(int, int): Edge<V, E>
+  + edge(V, V): Edge<V, E>
+  + adjVertices(V): Collection<V>
+}
+class MapVertex<V, E> {
+  + getElement(): V
+  + getAllAdjVerts(): Collection<V>
+  + toString(): String
+  + remAdjVert(V): void
+  + getAllOutEdges(): Collection<Edge<V, E>>
+  + addAdjVert(V, Edge<V, E>): void
+  + getEdge(V): Edge<V, E>
+  + numAdjVerts(): int
+}
+class MatrixGraph<V, E> {
+  ~ edgeMatrix: Edge<V, E>[][]
+  + RESIZE_FACTOR: float
+  + INITIAL_CAPACITY: int
+  + inDegree(V): int
+  + edge(V, V): Edge<V, E>
+  + removeVertex(V): boolean
+  + edge(int, int): Edge<V, E>
+  + outgoingEdges(V): Collection<Edge<V, E>>
+  + addEdge(V, V, E): boolean
+  + removeEdge(V, V): boolean
+  + addVertex(V): boolean
+  + outDegree(V): int
+  + incomingEdges(V): Collection<Edge<V, E>>
+  + adjVertices(V): Collection<V>
+  + clone(): MatrixGraph<V, E>
+  + toString(): String
+  + edges(): Collection<Edge<V, E>>
+}
+class ProdutoStore {
+  + produtos: List<Produto>
+  + addProduto(Produto): void
+  + getProduto(int): Produto
+  + getProdutos(): List<Produto>
+  + setNProdutos(int): void
+  + setProdutos(List<Produto>): void
+}
+class ReadCSVController {
+  + readClientesProdutoresFile(File): void
+  + readDistancesFile(File): void
+}
+
+App                         "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore 
+App                         "1" *-[#595959,plain]-> "graph\n1" Graph                       
+App                         "1" *-[#595959,plain]-> "localizacaoStore\n1" LocalizacaoStore            
+App                         "1" *-[#595959,plain]-> "produtoStore\n1" ProdutoStore                
+ClienteProdutorEmpresa      "1" *-[#595959,plain]-> "localizacao\n1" Localizacao                 
+ClienteProdutorEmpresaStore "1" *-[#595959,plain]-> "mapCPE\n*" ClienteProdutorEmpresa      
+ClosestHubController        "1" *-[#595959,plain]-> "graph\n1" Graph                       
+ClosestHubUI                "1" *-[#595959,plain]-> "CTRL\n1" ClosestHubController        
+CommonGraph                  -[#008200,dashed]-^  Graph                       
+ConnectionsController       "1" *-[#595959,plain]-> "app\n1" App                         
+ConnectionsUI               "1" *-[#595959,plain]-> "CTRL\n1" ConnectionsController       
+HubsDistributionController  "1" *-[#595959,plain]-> "app\n1" App                         
+HubsDistributionUI          "1" *-[#595959,plain]-> "app\n1" App                         
+HubsDistributionUI          "1" *-[#595959,plain]-> "ctrl\n1" HubsDistributionController  
+ImportCSVUI                 "1" *-[#595959,plain]-> "app\n1" App                         
+ImportCSVUI                 "1" *-[#595959,plain]-> "controller\n1" ReadCSVController           
+ImportWaterControllerUI     "1" *-[#595959,plain]-> "app\n1" App                         
+LocalizacaoStore            "1" *-[#595959,plain]-> "localizacoes\n*" Localizacao                 
+MSTNetworkController        "1" *-[#595959,plain]-> "graph\n1" Graph                       
+MSTNetworkUI                "1" *-[#595959,plain]-> "CTRL\n1" MSTNetworkController        
+MapGraph                     -[#000082,plain]-^  CommonGraph                 
+MapGraph                    "1" *-[#595959,plain]-> "mapVertices\n*" MapVertex                   
+MapVertex                   "1" *-[#595959,plain]-> "outVerts\n*" Edge                        
+MatrixGraph                  -[#000082,plain]-^  CommonGraph                 
+MatrixGraph                 "1" *-[#595959,plain]-> "edgeMatrix\n*" Edge                        
+ReadCSVController           "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore 
+ReadCSVController           "1" *-[#595959,plain]-> "graph\n1" Graph                       
+ReadCSVController           "1" *-[#595959,plain]-> "localizacaoStore\n1" LocalizacaoStore            
+@enduml
