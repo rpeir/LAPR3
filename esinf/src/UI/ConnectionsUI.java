@@ -20,7 +20,7 @@ private final ConnectionsController CTRL;
         if(result == -1)
             System.out.println("O grafo nao e conexo");
         else
-            System.out.println("O grafo e conexo, e com " + result + " conecoes conseguimos atingir qualquer destino a partir de qualquer origem");
+            System.out.println("O grafo é conexo, e com " + result + " conexões conseguimos atingir qualquer Destino a partir de qualquer Origem.");
     }
 
 }
