@@ -22,6 +22,7 @@ public class HubsDistributionController {
         List<ClienteProdutorEmpresa> listaEmpresas = new ArrayList<>();
         for (Map.Entry<String, ClienteProdutorEmpresa> entry : mapCPE.entrySet()) {
             if (entry.getValue().isEmpresa()) {
+                entry.getValue().setNotHub();
                 listaEmpresas.add(entry.getValue());
             }
         }
@@ -57,6 +58,7 @@ public class HubsDistributionController {
                 double m = soma / numeroCPE;
                 medias.put(e, m);
             }
+
         }
 
         System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media:");
