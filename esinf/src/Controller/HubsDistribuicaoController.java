@@ -30,7 +30,7 @@ public class HubsDistribuicaoController {
     }
 
     public Map<ClienteProdutorEmpresa, Double> getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
-        if(n > getEmpresas().size()) System.out.println("O numero de hubs nao pode ser menor que o numero de empresas");
+        if(n > getEmpresas().size() || n < 1) System.out.println("O numero de hubs inserido e invalido");
         else {
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
         List<ClienteProdutorEmpresa> listaEmpresas = getEmpresas();
