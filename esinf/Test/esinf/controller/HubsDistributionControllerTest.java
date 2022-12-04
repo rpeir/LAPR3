@@ -4,6 +4,9 @@ import Controller.App;
 import Controller.HubsDistributionController;
 import Controller.ReadCSVController;
 import domain.ClienteProdutorEmpresa;
+import domain.Localizacao;
+import graph.Graph;
+import graph.map.MapGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,7 @@ public class HubsDistributionControllerTest {
     // class to test HubsDistribuicaoController
     private HubsDistributionController controller;
     private ReadCSVController readCSVController;
-    App app;
+    App app = new App();
 
     public HubsDistributionControllerTest() {
         controller = new HubsDistributionController();
@@ -32,18 +35,20 @@ public class HubsDistributionControllerTest {
     }
 
     @BeforeEach
-    public void setUp() {
-    }
+    public void setUp() throws IOException {
 
-    @Test
-    public void testGetEmpresas() throws IOException {
-        String smallCpe = "C:\\Users\\joana\\IdeaProjects\\sem3pi2022_23_g011\\esinf\\grafos\\grafos\\Small\\clientes-produtores_small.csv";
-        String smallDis = "C:\\Users\\joana\\IdeaProjects\\sem3pi2022_23_g011\\esinf\\grafos\\grafos\\Small\\distancias_small.csv";
+        String smallCpe = "esinf/grafos/grafos/Small/clientes-produtores_small.csv";
+        String smallDis = "esinf/grafos/grafos/Small/distancias_small.csv";
 
         File file1 = new File(smallCpe);
         readCSVController.readClientesProdutoresFile(file1);
         File file2 = new File(smallDis);
         readCSVController.readDistancesFile(file2);
+    }
+
+    @Test
+    public void testGetEmpresas() {
+
 
         List<ClienteProdutorEmpresa> listaEmpresasActual = controller.getEmpresas();
         List<ClienteProdutorEmpresa> listaEmpresasExpected = new ArrayList<>();
@@ -66,14 +71,6 @@ public class HubsDistributionControllerTest {
 
     @Test
     public void testGetMediaDistancia() throws IOException {
-        String smallCpe = "C:\\Users\\joana\\IdeaProjects\\sem3pi2022_23_g011\\esinf\\grafos\\grafos\\Small\\clientes-produtores_small.csv";
-        String smallDis = "C:\\Users\\joana\\IdeaProjects\\sem3pi2022_23_g011\\esinf\\grafos\\grafos\\Small\\distancias_small.csv";
-
-        File file1 = new File(smallCpe);
-        readCSVController.readClientesProdutoresFile(file1);
-        File file2 = new File(smallDis);
-        readCSVController.readDistancesFile(file2);
-        controller.getMediaDistancia(app.getGraph(), 3);
 
         Map<ClienteProdutorEmpresa, Double> mapActual = controller.getMediaDistancia(app.getGraph(), 3);
         Map<ClienteProdutorEmpresa, Double> mapExpected = new HashMap<>();

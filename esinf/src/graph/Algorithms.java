@@ -386,7 +386,7 @@ public class Algorithms {
      */
     public static <V, E> Graph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
         if (g.isDirected())
-            throw new RuntimeException("Graph must be undirected");
+            throw new IllegalArgumentException("Graph must be undirected");
 
         Graph<V, E> mst = new MatrixGraph<>(false, g.numVertices());
 
@@ -423,7 +423,7 @@ public class Algorithms {
      */
     public static <V, E> Graph<V, E> prim(Graph<V, E> g, Comparator<E> ce, E zero) {
         if (g.isDirected())
-            throw new RuntimeException("Graph must be undirected");
+            throw new IllegalArgumentException("Graph must be undirected");
 
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];

@@ -6,9 +6,9 @@
 sens_dir_vento:
 movl $0, %eax
 
-cmpb $5, %sil
+cmpb $2, %sil
 jg normalizar
-cmpb $-5, %sil
+cmpb $-2, %sil
 jl normalizar
 movb %sil, %al
 
@@ -34,7 +34,7 @@ jmp end
 normalizar:
 movb %sil, %al
 cbw 
-movb $5, %cl
+movb $2, %cl
 idivb %cl
 movb %ah, %al
 movb %al, %sil

@@ -1,5 +1,6 @@
 package esinf.controller;
 
+import graph.map.MapGraph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ public class MSTNetworkControllerTest {
     private final MSTNetworkController instance;
     public MSTNetworkControllerTest() {
         instance = new MSTNetworkController();
-        g=App.getInstance().getGraph();
+        g = new MapGraph<>(false);
+        App.getInstance().setGraph(g);
     }
 
     private final String pathCPbig = "esinf/grafos/grafos/Big/clientes-produtores_big.csv";
@@ -38,12 +40,12 @@ public class MSTNetworkControllerTest {
     public void setUp() {
         ReadCSVController readCSVController = new ReadCSVController();
         try {
-            readCSVController.readClientesProdutoresFile(new File(pathCPbig));
+            readCSVController.readClientesProdutoresFile(new File(pathCPsmall));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste clientes-produtores_big.csv");
         }
         try {
-            readCSVController.readDistancesFile(new File(pathDbig));
+            readCSVController.readDistancesFile(new File(pathDsmall));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste distancias_big.csv");
         }
@@ -75,7 +77,7 @@ public class MSTNetworkControllerTest {
     }
 
     private void testMST(Graph<?, ?> mst) {
-        assertEquals(App.getInstance().getGraph().numVertices(), mst.numVertices(), "The number of vertices in the MST is not the same as the original graph");
+        assertEquals(g.numVertices(), mst.numVertices(), "The number of vertices in the MST is not the same as the original graph");
         assertEquals((App.getInstance().getGraph().numVertices()-1)*2, mst.numEdges(), "The number of edges in the MST is not the number of vertices - 1");
     }
 
