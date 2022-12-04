@@ -4,7 +4,6 @@ import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
-import graph.map.MapGraph;
 
 import java.util.*;
 
@@ -31,53 +30,32 @@ public class HubsDistribuicaoController {
     }
 
     public void getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
-        Graph<ClienteProdutorEmpresa, Integer> grafoEmpresas2 = new MapGraph<>(false);
+        if(n > getEmpresas().size()) System.out.println("O numero de hubs nao pode ser menor que o numero de empresas");
+        else {
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
-        double media;
-        for (ClienteProdutorEmpresa e : getEmpresas()) {
-            grafoEmpresas2.addVertex(e);
-            for (Map.Entry<String, ClienteProdutorEmpresa> cpe : app.getClienteProdutorEmpresaStore().getMapCPE().entrySet()) {
-                if (!cpe.getValue().getId().contains("E")) {
-                    if (grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()) != null) {
-                        grafoEmpresas2.addEdge(e, cpe.getValue(), grafo.edge(e.getLocalizacao(), cpe.getValue().getLocalizacao()).getWeight());
-                    }
+        List<ClienteProdutorEmpresa> listaEmpresas = getEmpresas();
+        ArrayList<LinkedList<Localizacao>> listaCaminhos = new ArrayList<>();
+        for (ClienteProdutorEmpresa e : listaEmpresas) {
+            ArrayList<Integer> distancias = new ArrayList<>();
+            Double soma = (double) 0;
+            Double numeroCPE = (double) 0;
+            Algorithms.shortestPaths(grafo,
+                    e.getLocalizacao(),
+                    Integer::compare,
+                    Integer::sum,
+                    0,
+                    listaCaminhos,
+                    distancias);
+
+            for (Integer value : distancias) {
+                if (value != 0) {
+                    soma += value;
+                    numeroCPE++;
                 }
             }
-        }
-        System.out.println(grafoEmpresas2);
-
-        LinkedList<ClienteProdutorEmpresa> caminho = new LinkedList<>();
-        for(ClienteProdutorEmpresa cpe1 : grafoEmpresas2.vertices()){
-            if(cpe1.getDesignacao().contains("E")) {
-
-                Double soma = (double)0;
-                Double numeroCPE = (double)0;
-
-                for (ClienteProdutorEmpresa cpe2 : grafoEmpresas2.vertices()) {
-                    if (!(cpe2.getDesignacao().contains("E"))) {
-
-                        if (Algorithms.shortestPath(grafoEmpresas2, cpe1, cpe2, Integer::compare, Integer::sum, 0, caminho) != null) {
-                            soma += Algorithms.shortestPath(
-                                    grafoEmpresas2,
-                                    cpe1,
-                                    cpe2,
-                                    Integer::compare,
-                                    Integer::sum,
-                                    0,
-                                    caminho
-                            );
-
-
-                            numeroCPE++;
-                        }
-
-                    }
-                }
-
-                if (numeroCPE != 0) {
-                    media = soma / numeroCPE;
-                    medias.put(cpe1, media);
-                }
+            if(numeroCPE != 0) {
+                double m = soma / numeroCPE;
+                medias.put(e, m);
             }
         }
 
@@ -100,7 +78,9 @@ public class HubsDistribuicaoController {
                 entry.getKey().setHub();
                 System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
                 i++;
+                }
             }
         }
     }
 }
+
