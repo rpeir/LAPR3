@@ -40,12 +40,12 @@ public class MSTNetworkControllerTest {
     public void setUp() {
         ReadCSVController readCSVController = new ReadCSVController();
         try {
-            readCSVController.readClientesProdutoresFile(new File(pathCPbig));
+            readCSVController.readClientesProdutoresFile(new File(pathCPsmall));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste clientes-produtores_big.csv");
         }
         try {
-            readCSVController.readDistancesFile(new File(pathDbig));
+            readCSVController.readDistancesFile(new File(pathDsmall));
         } catch (IOException e) {
             System.out.println("Erro ao ler o ficheiro de teste distancias_big.csv");
         }

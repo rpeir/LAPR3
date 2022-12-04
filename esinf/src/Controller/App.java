@@ -35,7 +35,7 @@ public class App {
         this.graph = graph;
     }
 
-    private App() {
+    public App() {
         bootstrap();
     }
 
