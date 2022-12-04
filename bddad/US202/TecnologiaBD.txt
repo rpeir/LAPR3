@@ -1,1 +1,13 @@
 Para o desenvolvimento da aplicação em PL/SQL requerida pelo cliente, foi adotado um modelo de base dados relacional, uma vez que fornece uma tecnologia bem definida e reconhecida, acompanhada de um bom suporte documental. Esta tecnologia garante ainda a existência de transações ACID (Atomicidade,Consistência,Isolamento,Durabilidade).
+
+Atomicidade:
+Cada instrução numa transação (leitura, escrita, atualização ou deleção) é tratada como singular. Ou é executada a totalidade da instrução, ou a instrução não é executada de todo, o que previne a perda e/ou corrupção da informação.
+
+Consistência:
+Assegura que as transações apenas irão afetar as tabelas de forma esperada e pretendida. A consistência das transações garante que eventuais corrupções ou erros na informação não comprometem a integridade da tabela.
+
+Isolamento:
+Quando a mesma tabela está a ser alterada por vários utilizadores, o isolamento protege as transações de inteferirem umas com as outras.
+
+Durabilidade:
+Mesmo em casos de falha de sistema, permite guardar as alterações provocadas com sucesso por transações. 
