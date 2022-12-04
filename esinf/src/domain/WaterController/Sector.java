@@ -1,7 +1,22 @@
 package domain.WaterController;
 
+import java.util.Objects;
+
 public class Sector {
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sector sector)) return false;
+        return duration == sector.duration && Objects.equals(name, sector.name) && Objects.equals(regularity, sector.regularity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, duration, regularity);
+    }
+
     private int duration;
     private String regularity;
 
