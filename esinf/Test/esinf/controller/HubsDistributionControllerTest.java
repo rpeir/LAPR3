@@ -37,8 +37,8 @@ public class HubsDistributionControllerTest {
 
     @Test
     public void testGetEmpresas() throws IOException {
-        String smallCpe = "C:\\Users\\joana\\IdeaProjects\\sem3pi2022_23_g011\\esinf\\grafos\\grafos\\Small\\clientes-produtores_small.csv";
-        String smallDis = "C:\\Users\\joana\\IdeaProjects\\sem3pi2022_23_g011\\esinf\\grafos\\grafos\\Small\\distancias_small.csv";
+        String smallCpe = "esinf/grafos/grafos/Small/clientes-produtores_small.csv";
+        String smallDis = "esinf/grafos/grafos/Small/distancias_small.csv";
 
         File file1 = new File(smallCpe);
         readCSVController.readClientesProdutoresFile(file1);
