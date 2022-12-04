@@ -59,7 +59,7 @@ public class HubsDistribuicaoController {
             }
         }
 
-        System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media: ");
+        System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media:");
         // ordenar mapa por valor
         Map<ClienteProdutorEmpresa, Double> sorted = new LinkedHashMap<>();
         medias.entrySet()
