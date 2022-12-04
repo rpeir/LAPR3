@@ -35,9 +35,14 @@ public class ClosestHubController {
                 }
                 else{
                     Integer tempLenPath = Algorithms.shortestPath(graph, cpe.getLocalizacao(), cpe2.getLocalizacao(), Integer::compare,Integer::sum, 0,list );
-                    if (tempLenPath < minlenpath) {
-                        minlenpath = tempLenPath;
-                        result = cpe2;
+
+                    try{
+                        if (tempLenPath < minlenpath) {
+                            minlenpath = tempLenPath;
+                            result = cpe2;
+                        }
+                    }catch (NullPointerException e){
+                        System.out.println("Não existe caminho entre " + cpe.getLocalizacao() + " e " + cpe2.getLocalizacao());
                     }
                 }
             }
