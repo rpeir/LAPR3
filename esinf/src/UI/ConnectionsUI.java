@@ -20,7 +20,7 @@ private final ConnectionsController CTRL;
         if(result == -1)
             System.out.println("The graph isn't connect");
         else
-            System.out.println("The graph is connect, and with %d connections we can reach any destination from any origin");
+            System.out.println("The graph is connect, and with " + result + " connections we can reach any destination from any origin");
     }
 
 }
