@@ -20,13 +20,7 @@ class ConnectionsControllerTest {
         ctrl = new ConnectionsController();
     }
 
-
-    private final String pathCPbig = "esinf/grafos/grafos/Big/clientes-produtores_big.csv";
-
     private final String pathCPsmall = "esinf/grafos/grafos/Small/clientes-produtores_small.csv";
-
-    private final String pathDbig = "esinf/grafos/grafos/Big/distancias_big.csv";
-
     private final String pathDsmall = "esinf/grafos/grafos/Small/distancias_small.csv";
 
 
