@@ -1,5 +1,7 @@
+package esinf.controller;
+
 import Controller.App;
-import Controller.HubsDistribuicaoController;
+import Controller.HubsDistributionController;
 import Controller.ReadCSVController;
 import domain.ClienteProdutorEmpresa;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,15 +18,15 @@ import java.util.List;
 import java.util.Map;
 
 
-public class HubsDistribuicaoControllerTest {
+public class HubsDistributionControllerTest {
 
     // class to test HubsDistribuicaoController
-    private HubsDistribuicaoController controller;
+    private HubsDistributionController controller;
     private ReadCSVController readCSVController;
     App app;
 
-    public TestTemp() {
-        controller = new HubsDistribuicaoController();
+    public HubsDistributionControllerTest() {
+        controller = new HubsDistributionController();
         readCSVController = new ReadCSVController();
         app = App.getInstance();
     }
