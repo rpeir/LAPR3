@@ -1,5 +1,5 @@
-const char MAX_TEMP = 100;
-const char MIN_TEMP = -20;
+const char MAX_TEMP = 30;
+const char MIN_TEMP = -5;
 const unsigned char MAX_WVEL = 150;
 const unsigned char MIN_WVEL = 0;
 const unsigned short MAX_WINDDEG = 359;
@@ -8,7 +8,7 @@ const unsigned char MAX_ATMHUM = 100;
 const unsigned char MIN_ATMHUM = 0;
 const unsigned char MAX_SOILHUM = 100;
 const unsigned char MIN_SOILHUM = 0;
-const unsigned char MAX_PLUV = 30000;
+const unsigned char MAX_PLUV = 150;
 const unsigned char MIN_PLUV = 0;
 const unsigned int FREQ_TEMP = 20;
 const unsigned int FREQ_WVEL = 20;
