@@ -29,7 +29,7 @@ public class HubsDistribuicaoController {
         // 5 empresas - small
     }
 
-    public void getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
+    public Map<ClienteProdutorEmpresa, Double> getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
         if(n > getEmpresas().size()) System.out.println("O numero de hubs nao pode ser menor que o numero de empresas");
         else {
         Map<ClienteProdutorEmpresa, Double> medias = new HashMap<>();
@@ -59,11 +59,6 @@ public class HubsDistribuicaoController {
             }
         }
 
-        System.out.println("\nMedia dos caminhos mais curtos: ");
-        for (Map.Entry<ClienteProdutorEmpresa, Double> entry : medias.entrySet()) {
-            System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
-        }
-
         System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media: ");
         // ordenar mapa por valor
         Map<ClienteProdutorEmpresa, Double> sorted = new LinkedHashMap<>();
@@ -80,7 +75,9 @@ public class HubsDistribuicaoController {
                 i++;
                 }
             }
+            return sorted;
         }
+        return null;
     }
 }
 
