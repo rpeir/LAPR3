@@ -77,6 +77,7 @@ public class HubsDistributionController {
         System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media:");
         // ordenar mapa por valor
         Map<ClienteProdutorEmpresa, Double> sorted = new LinkedHashMap<>();
+        Map<ClienteProdutorEmpresa, Double> nHubs = new LinkedHashMap<>();
         medias.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
@@ -86,11 +87,12 @@ public class HubsDistributionController {
         for (Map.Entry<ClienteProdutorEmpresa, Double> entry : sorted.entrySet()) {
             if (i < n) {
                 entry.getKey().setHub();
+                nHubs.put(entry.getKey(), entry.getValue());
                 System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
                 i++;
                 }
             }
-            return sorted;
+            return nHubs;
         }
         return null;
     }
