@@ -16,7 +16,6 @@ public class ClienteProdutorEmpresaStore {
 
     public ClienteProdutorEmpresaStore() {
        mapCPE = new HashMap<>();
-         listCabazes = new ArrayList<>();
     }
     public void addCPE(ClienteProdutorEmpresa cpe) {
         mapCPE.put(cpe.getId(), cpe);

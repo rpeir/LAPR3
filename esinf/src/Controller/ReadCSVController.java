@@ -39,11 +39,6 @@ public class ReadCSVController {
     private final LocalizacaoStore localizacaoStore;
 
     /**
-     * List of quantities of each product
-     */
-    private ArrayList<Float> listProdutos;
-
-    /**
      * Graph object
      */
     private final Graph<Localizacao, Integer> graph;
@@ -149,11 +144,14 @@ public class ReadCSVController {
                         values[i] = values[i].replace("\"", "");
                     }
                 }
+                ArrayList<Float> listProdutos = new ArrayList<>();
                 for (int i = 2; i <values.length; i++) {
                     listProdutos.add(Float.parseFloat(values[i]));
                 }
                 Cabaz cabaz=new Cabaz(values[0], Integer.parseInt(values[1]),listProdutos);
-                cpe.setCabaz(cabaz);
+                if(cpeStore.containsCPE(cabaz.getClienteProdutor())){
+                    cpeStore.getCPE(cabaz.getClienteProdutor()).setCabaz(cabaz);
+                }
                 line = br.readLine();
             }
         } catch (NumberFormatException e) {
