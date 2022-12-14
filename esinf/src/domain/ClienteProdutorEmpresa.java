@@ -126,6 +126,14 @@ public class ClienteProdutorEmpresa {
         }
     }
 
+    public boolean isCliente() {
+        return validateClienteID(this.id);
+    }
+
+    public boolean isProdutor() {
+        return validateProdutorID(this.id);
+    }
+
     public static boolean validateEmpresaID(String id) {
         return Pattern.matches("E[0-9]+", id);
     }

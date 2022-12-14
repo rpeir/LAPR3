@@ -17,6 +17,11 @@ public class HubsDistributionController {
     }
 
 
+    /**
+     * It returns a list of all the companies
+     *
+     * @return A list of ClienteProdutorEmpresa objects.
+     */
     public List<ClienteProdutorEmpresa> getEmpresas() {
         Map<String, ClienteProdutorEmpresa> mapCPE = app.getClienteProdutorEmpresaStore().getMapCPE();
         List<ClienteProdutorEmpresa> listaEmpresas = new ArrayList<>();
@@ -30,6 +35,14 @@ public class HubsDistributionController {
         // 5 empresas - small
     }
 
+    /**
+     * It calculates the average distance between each client/producer and the hubs, and returns a map with the hubs and
+     * their average distance
+     *
+     * @param grafo the graph we want to use
+     * @param n number of hubs to be selected
+     * @return A map with the distance between each client/producer and the hubs.
+     */
     public Map<ClienteProdutorEmpresa, Double> getMediaDistancia(Graph<Localizacao, Integer> grafo, int n) {
         if(n > getEmpresas().size() || n < 1) System.out.println("O numero de hubs inserido e invalido");
         else {
@@ -64,6 +77,7 @@ public class HubsDistributionController {
         System.out.println("\nAs n empresas mais proximas de cada cliente/produtora sao, em media:");
         // ordenar mapa por valor
         Map<ClienteProdutorEmpresa, Double> sorted = new LinkedHashMap<>();
+        Map<ClienteProdutorEmpresa, Double> nHubs = new LinkedHashMap<>();
         medias.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
@@ -73,11 +87,12 @@ public class HubsDistributionController {
         for (Map.Entry<ClienteProdutorEmpresa, Double> entry : sorted.entrySet()) {
             if (i < n) {
                 entry.getKey().setHub();
+                nHubs.put(entry.getKey(), entry.getValue());
                 System.out.println(entry.getKey().getDesignacao() + " -> " + entry.getValue());
                 i++;
                 }
             }
-            return sorted;
+            return nHubs;
         }
         return null;
     }
