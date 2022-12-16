@@ -1,25 +1,40 @@
 package domain;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.RandomAccess;
+import java.util.List;
+import java.util.Objects;
 
 public class ListaExpedicoes {
-    private ArrayList<ListaExpedicoes> listaExpedicoes;
+    int diaExpedicao;
+    private List<Cabaz> listaExpedicoes;
 
-    public ListaExpedicoes() {
-        listaExpedicoes = new ArrayList<>();
+    public ListaExpedicoes(int dia) {
+        this.listaExpedicoes = new ArrayList<>();
+        this.diaExpedicao = dia;
     }
-    public ArrayList<ListaExpedicoes> get_listaExpedicoes() {
+
+    public int getDiaExpedicao() {
+        return diaExpedicao;
+    }
+
+    public boolean checkDiaExpedicao(Cabaz expedicao) {
+        return expedicao.getDiaDeProducao()==diaExpedicao;
+    }
+
+    public void setDiaExpedicao(int diaExpedicao) {
+        this.diaExpedicao = diaExpedicao;
+    }
+
+    public List<Cabaz> get_listaExpedicoes() {
         return listaExpedicoes;
     }
-    public void set_listaExpedicoes(ArrayList<ListaExpedicoes> listaExpedicoes) {
+    public void set_listaExpedicoes(ArrayList<Cabaz> listaExpedicoes) {
         this.listaExpedicoes = listaExpedicoes;
     }
-    public void addExpedicao(ListaExpedicoes expedicao) {
+    public void addExpedicao(Cabaz expedicao) {
         listaExpedicoes.add(expedicao);
     }
-    public void removeExpedicao(ListaExpedicoes expedicao) {
+    public void removeExpedicao(Cabaz expedicao) {
         listaExpedicoes.remove(expedicao);
     }
     public void removeExpedicao(int index) {
@@ -28,7 +43,20 @@ public class ListaExpedicoes {
     public int size() {
         return listaExpedicoes.size();
     }
-    public ListaExpedicoes getExpedicao(int index) {
+    public Cabaz getExpedicao(int index) {
         return listaExpedicoes.get(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ListaExpedicoes that = (ListaExpedicoes) o;
+        return diaExpedicao == that.diaExpedicao && Objects.equals(listaExpedicoes, that.listaExpedicoes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(diaExpedicao);
     }
 }

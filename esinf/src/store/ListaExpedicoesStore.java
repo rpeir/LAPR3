@@ -2,32 +2,42 @@ package store;
 
 import domain.ListaExpedicoes;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ListaExpedicoesStore {
-    private ListaExpedicoes listaExpedicoes;
+    private Map<Integer, ListaExpedicoes> expedicoes;
 
     public ListaExpedicoesStore() {
-        listaExpedicoes = new ListaExpedicoes();
+        expedicoes = new HashMap<>();
     }
-    public ListaExpedicoes get_listaExpedicoes() {
-        return listaExpedicoes;
+    public Map<Integer, ListaExpedicoes> getExpedicoes() {
+        return expedicoes;
     }
-    public void set_listaExpedicoes(ListaExpedicoes listaExpedicoes) {
-        this.listaExpedicoes = listaExpedicoes;
+    public void setExpedicoes(Map<Integer, ListaExpedicoes> expedicoes) {
+        this.expedicoes = expedicoes;
+    }
+
+    public void addExpedicoes(List<ListaExpedicoes> expedicoes) {
+        for (ListaExpedicoes exp : expedicoes) {
+            this.expedicoes.put(exp.getDiaExpedicao(), exp);
+        }
     }
     public void addExpedicao(ListaExpedicoes expedicao) {
-        listaExpedicoes.addExpedicao(expedicao);
+        expedicoes.put(expedicao.getDiaExpedicao(), expedicao);
     }
     public void removeExpedicao(ListaExpedicoes expedicao) {
-        listaExpedicoes.removeExpedicao(expedicao);
+        expedicoes.remove(expedicao.getDiaExpedicao());
     }
-    public void removeExpedicao(int index) {
-        listaExpedicoes.removeExpedicao(index);
+    public void removeExpedicao(int dia) {
+        expedicoes.remove(dia);
     }
     public int size() {
-        return listaExpedicoes.size();
+        return expedicoes.size();
     }
-    public ListaExpedicoes getExpedicao(int index) {
-        return listaExpedicoes.getExpedicao(index);
+    public ListaExpedicoes getExpedicao(int dia) {
+        return expedicoes.get(dia);
     }
 }
 
