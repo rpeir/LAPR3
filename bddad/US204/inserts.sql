@@ -222,6 +222,11 @@ INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataP
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (1,1,60);
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (2,2,60);
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (3,3,60);
+INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (4,4,60);
+INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (5,5,60);
+INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (6,6,60);
+INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (7,7,60);
+INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (8,8,60);
 
 
 --Tabela AplicacaoRegas
