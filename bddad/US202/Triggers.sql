@@ -6,17 +6,17 @@ FOR EACH ROW
 
 DECLARE
 
-    l_newValorTotal Colheitas_Culturas.valorTotal%TYPE;
+    l_newValorTotal Colheitas_Culturas.valorTotalColheita%TYPE;
 
 BEGIN
 
-    SELECT valorTotal INTO l_newValorTotal
+    SELECT valorTotalColheita INTO l_newValorTotal
     FROM Colheitas_Culturas cc
     WHERE cc.codColheita = :new.codColheita 
     AND cc.codCultura = :new.codCultura;
     l_newValorTotal := l_newValorTotal + :new.valorSetor;
 
-    UPDATE Colheitas_Culturas cc SET valorTotal = l_newValorTotal
+    UPDATE Colheitas_Culturas cc SET valorTotalColheita = l_newValorTotal
     WHERE cc.codColheita = :new.codColheita
     AND cc.codCultura = :new.codCultura;
 
@@ -33,17 +33,17 @@ FOR EACH ROW
 
 DECLARE
 
-    l_newValorTotal Colheitas_Culturas.valorTotal%TYPE;
+    l_newValorTotal Colheitas_Culturas.valorTotalColheita%TYPE;
 
 BEGIN
 
-    SELECT valorTotal INTO l_newValorTotal
+    SELECT valorTotalColheita INTO l_newValorTotal
     FROM Colheitas_Culturas cc
     WHERE cc.codColheita = :new.codColheita 
     AND cc.codCultura = :new.codCultura;
     l_newValorTotal := l_newValorTotal + :new.valorSetor - :old.valorSetor;
 
-    UPDATE Colheitas_Culturas cc SET valorTotal = l_newValorTotal
+    UPDATE Colheitas_Culturas cc SET valorTotalColheita = l_newValorTotal
     WHERE cc.codColheita = :new.codColheita
     AND cc.codCultura = :new.codCultura;
 
@@ -130,7 +130,7 @@ FOR EACH ROW
 
 DECLARE
 
-    l_precoProduto Produto.precokg%TYPE;
+    l_precoProduto Produtos.precokg%TYPE;
 
 BEGIN
 
@@ -149,16 +149,16 @@ FOR EACH ROW
 
 DECLARE
 
-    newStock Produto.stockkg%TYPE;
+    newStock Produtos.stockkg%TYPE;
 
 BEGIN
 
     SELECT stockkg INTO newStock
-    FROM Produto p
+    FROM Produtos p
     WHERE p.codProduto = :new.codProduto;
     newStock := newStock - :new.quantidadeProduto;
 
-    UPDATE Produto p SET stock = newStock
+    UPDATE Produtos p SET stockkg = newStock
     WHERE p.codProduto = :new.codProduto;
 
 EXCEPTION
@@ -174,16 +174,16 @@ FOR EACH ROW
 
 DECLARE
 
-    newStock Produto.stockkg%TYPE;
+    newStock Produtos.stockkg%TYPE;
 
 BEGIN
 
     SELECT stockkg INTO newStock
-    FROM Produto p
+    FROM Produtos p
     WHERE p.codProduto = :new.codProduto;
     newStock := newStock - (:new.quantidadeProduto - :old.quantidadeProduto);
 
-    UPDATE Produto p SET stock = newStock
+    UPDATE Produtos p SET stockkg = newStock
     WHERE p.codProduto = :new.codProduto;
 
 EXCEPTION

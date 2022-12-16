@@ -224,10 +224,6 @@ INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (2,2,60);
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (3,3,60);
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (4,4,60);
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (5,5,60);
-INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (6,6,60);
-INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (7,7,60);
-INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (8,8,60);
-
 
 --Tabela AplicacaoRegas
 INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (1, 1, 1, 'G');
@@ -235,9 +231,6 @@ INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALU
 INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (3, 3, 3, 'G');
 INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (4, 4, 4, 'G');
 INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (5, 5, 5, 'G');
-INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (6, 6, 6, 'B');
-INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (7, 7, 7, 'B');
-INSERT INTO AplicacaoRegas(codRega, codCultura, codSetorAgricola, tipoRega) VALUES (8, 8, 8, 'B');
 
 --Tabela PlanosRega
 INSERT INTO PlanosRega (anoPlanoAnual, codSetorAgricola, codCultura, codRega) VALUES (2021, 1, 1, 1);
