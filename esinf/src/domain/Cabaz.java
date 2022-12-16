@@ -9,15 +9,15 @@ public class Cabaz {
 
     private int diaDeProducao;
 
-    private List<Integer> produtos;
+    private List<Float> produtos;
 
-    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Integer> produtos) {
+    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos) {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
         this.produtos = produtos;
     }
 
-    private List<Integer> getProdutos() {
+    List<Float> getProdutos() {
         return produtos;
     }
 
@@ -37,7 +37,7 @@ public class Cabaz {
         this.diaDeProducao = diaDeProducao;
     }
 
-    public void setProdutos(List<Integer> produtos) {
+    public void setProdutos(List<Float> produtos) {
         this.produtos = produtos;
     }
 
@@ -58,4 +58,9 @@ public class Cabaz {
     public String toString() {
         return String.format("%s, dia %d", clienteProdutorEmpresa, diaDeProducao);
     }
+
+    public Float getProduto(int i) {
+        return produtos.get(i);
+    }
 }
+

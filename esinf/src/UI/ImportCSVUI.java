@@ -39,6 +39,14 @@ public class ImportCSVUI implements Runnable {
                     System.out.println("Ficheiro importado corretamente!");
 
                 }
+                System.out.println("\nPor favor insira o ficheiro de cabazes que quer importar, ou \"0\" para voltar");
+                path = sc.nextLine();
+                if (!path.equals("0")) {
+                    controller.readCabazesFile(new File(path));
+                    System.out.println();
+                    System.out.println("Ficheiro importado corretamente!");
+
+                }
                 fileNotValid = false;
             } catch (FileNotFoundException e) {
                 System.out.println();

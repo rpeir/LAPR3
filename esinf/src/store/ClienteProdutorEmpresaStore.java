@@ -1,12 +1,19 @@
 package store;
 
+import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
+import domain.Produto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ClienteProdutorEmpresaStore {
     private Map<String, ClienteProdutorEmpresa> mapCPE;
+
+    private ArrayList<Cabaz> listCabazes;
+
     public ClienteProdutorEmpresaStore() {
        mapCPE = new HashMap<>();
     }
