@@ -1,11 +1,11 @@
-DROP TABLE CASCADE CONSTRAINTS Estatistica;
-DROP TABLE CASCADE CONSTRAINTS Cliente;
-DROP TABLE CASCADE CONSTRAINTS Produto;
-DROP TABLE CASCADE CONSTRAINTS Hub;
-DROP TABLE CASCADE CONSTRAINTS Cultura;
-DROP TABLE CASCADE CONSTRAINTS SetorAgricola_Cultura;
-DROP TABLE CASCADE CONSTRAINTS SetorAgricola;
-DROP TABLE CASCADE CONSTRAINTS Tempo;
+DROP TABLE Estatistica;
+DROP TABLE Cliente;
+DROP TABLE Produto;
+DROP TABLE Hub;
+DROP TABLE Cultura;
+DROP TABLE SetorAgricola_Cultura;
+DROP TABLE SetorAgricola;
+DROP TABLE Tempo;
 
 CREATE TABLE Tempo (
     codTempo INTEGER NOT NULL,
@@ -54,8 +54,23 @@ CREATE TABLE Cliente (
     constraint pk_codCliente PRIMARY KEY (codCliente)
 );
 
-alter table Clientes add CONSTRAINT ckemailvalidation CHECK ( REGEXP_LIKE ( emailCliente, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$' ) );
-alter table Clientes add constraint ck_nrFiscal CHECK(REGEXP_LIKE(nrFiscal,'^[0-9]{9}$'));
-alter table SetoresAgricolas_Culturas add constraint fk_SetoresAgricolas_Culturas_codSetorAgricola FOREIGN KEY (codSetorAgricola) references SetoresAgricolas (codSetorAgricola);
-alter table SetoresAgricolas_Culturas add constraint fk_SetoresAgricolas_Culturas_codCultura FOREIGN KEY (codCultura) references Culturas (codCultura);
-alter table Produtos add constraint fk_Produtos_CodCultura FOREIGN KEY (codCultura) references Culturas (codCultura);
+CREATE TABLE Estatistica (
+    codTempo INTEGER NOT NULL,
+    codSetorAgricola INTEGER NOT NULL,
+    codProduto INTEGER NOT NULL,
+    codCliente INTEGER NOT NULL,
+    codHub INTEGER NOT NULL,
+    producaoToneladas INTEGER NOT NULL,
+    vendasMilharesEuros INTEGER NOT NULL
+);
+
+alter table Cliente add CONSTRAINT ckemailvalidation CHECK ( REGEXP_LIKE ( emailCliente, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$' ) );
+alter table Cliente add constraint ck_nrFiscal CHECK(REGEXP_LIKE(nrFiscal,'^[0-9]{9}$'));
+alter table SetorAgricola_Cultura add constraint fk_SetoresAgricolas_Culturas_codSetorAgricola FOREIGN KEY (codSetorAgricola) references SetorAgricola (codSetorAgricola);
+alter table SetorAgricola_Cultura add constraint fk_SetoresAgricolas_Culturas_codCultura FOREIGN KEY (codCultura) references Cultura (codCultura);
+alter table Produto add constraint fk_Produtos_CodCultura FOREIGN KEY (codCultura) references Cultura (codCultura);
+alter table Estatistica add constraint fk_Estatisticas_codTempo FOREIGN KEY (codTempo) references Tempo (codTempo);
+alter table Estatistica add constraint fk_Estatisticas_codSetorAgricola FOREIGN KEY (codSetorAgricola) references SetorAgricola (codSetorAgricola);
+alter table Estatistica add constraint fk_Estatisticas_codProduto FOREIGN KEY (codProduto) references Produto (codProduto);
+alter table Estatistica add constraint fk_Estatisticas_codCliente FOREIGN KEY (codCliente) references Cliente (codCliente);
+alter table Estatistica add constraint fk_Estatisticas_codHub FOREIGN KEY (codHub) references Hub (codHub);
