@@ -3,7 +3,7 @@ CREATE OR REPLACE TRIGGER trg_prevent_update_cancel
 BEFORE UPDATE OR DELETE ON Operacoes
 FOR EACH ROW
 BEGIN
-    IF :OLD.estadoOperacao = 'M' THEN
+    IF :OLD.estadoOperacao = 'R' THEN
         RAISE_APPLICATION_ERROR(-20001, 'Uma operacao ja realizada nao pode ser alterada ou cancelada');
     END IF;
 END;
