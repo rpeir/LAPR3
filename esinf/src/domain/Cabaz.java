@@ -10,7 +10,7 @@ public class Cabaz {
     private int diaDeProducao;
 
     private List<Float> produtos;
-
+    // private List<ProdutorProduto> produtos;
     public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos) {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
