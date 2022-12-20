@@ -17,6 +17,7 @@ public class ClienteProdutorEmpresa {
     private boolean empresa;
 
     private boolean hub;
+    private boolean flag;
 
     private List<Cabaz> cabazes;
     public ClienteProdutorEmpresa(Localizacao localizacao, String id, String designacao) {
@@ -25,6 +26,7 @@ public class ClienteProdutorEmpresa {
         this.designacao = designacao;
         setId(id);
         this.hub = false;
+        this.flag = false;
     }
 
     public ClienteProdutorEmpresa(Localizacao localizacao,String id) {
@@ -41,6 +43,7 @@ public class ClienteProdutorEmpresa {
         this.designacao = designacao;
         setId(id);
         this.hub = false;
+        this.flag = false;
     }
 
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude, String id) {
@@ -49,6 +52,7 @@ public class ClienteProdutorEmpresa {
         this.designacao = id;
         setId(id);
         this.hub = false;
+        this.flag = false;
     }
 
     public Localizacao getLocalizacao() {
@@ -106,6 +110,10 @@ public class ClienteProdutorEmpresa {
         return empresa;
     }
 
+    public boolean isSatisfied() {
+        return flag;
+    }
+
     public void setEmpresa(boolean bool) {
         this.empresa = bool;
     }
@@ -123,6 +131,14 @@ public class ClienteProdutorEmpresa {
             this.hub = true;
         }else{
             throw new IllegalArgumentException("Only companies can be hubs.");
+        }
+    }
+
+    public void setSatisfied() {
+        if (!this.empresa) {
+            this.flag = true;
+        }else{
+            throw new IllegalArgumentException("Only clients can be satisfied.");
         }
     }
 

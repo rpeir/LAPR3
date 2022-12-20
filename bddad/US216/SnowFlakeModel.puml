@@ -1,0 +1,76 @@
+@startuml
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+' Zero or One	|o--
+' Exactly One	||--
+' Zero or Many	}o--
+' One or Many	}|--
+
+table( Hub ) {
+    primary_key( codHub ): INTEGER
+    column( nomeHub ): VARCHAR
+    column( tipoHub ): VARCHAR
+}
+
+table( Estatistica ) {
+    foreign_key(primary_key( codCliente )): INTEGER
+    foreign_key(primary_key( codHub )): INTEGER
+    foreign_key(primary_key( codProduto )): INTEGER
+    foreign_key(primary_key( codSetorAgricola )): INTEGER
+    foreign_key(primary_key( codTempo )): INTEGER
+    column( producaoToneladas ): INTEGER
+    column( vendasMilharesEuros ): INTEGER
+}
+
+table( Produto ) {
+    primary_key( codProduto ): INTEGER
+    foreign_key( codCultura ): INTEGER
+    column( designacaoProduto ): VARCHAR
+}
+
+table( SetorAgricola ) {
+    primary_key( codSetorAgricola ): INTEGER
+    column( designacaoSetorAgricola ): VARCHAR
+}
+
+table( Cliente ) {
+     primary_key( codInterno ): INTEGER
+     column( nome ): VARCHAR
+     column( emailCliente ): VARCHAR
+     column( nrFiscal ): INTEGER
+}
+
+table( Cultura ) {
+    primary_key( codCultura ): INTEGER
+    column( designacaoCultura ): VARCHAR
+    column( tipoCultura ): VARCHAR
+}
+
+table( SetorAgricola_Cultura ) {
+    foreign_key(primary_key( codSetorAgricola )): INTEGER
+    foreign_key(primary_key( codCultura )): INTEGER
+}
+
+table( Tempo ) {
+    primary_key( codTempo ): INTEGER
+    column( ano ): INTEGER
+    column( mes ): INTEGER
+}
+
+' nao fazer tabela tipoHub nem ClientesProdutores porque gasta espaco na base dados
+' quando para obter todos os clientes produtores basta fazer um select distinct
+' ou constraint
+
+Estatistica }|--|| Cliente
+Estatistica }|--|| Hub
+Estatistica }|--|| Produto
+Estatistica }|--|| SetorAgricola
+Estatistica }|--|| Tempo
+Produto }|--|| Cultura
+Cultura ||--|{ SetorAgricola_Cultura
+SetorAgricola_Cultura }|--|| SetorAgricola
+
+@enduml
