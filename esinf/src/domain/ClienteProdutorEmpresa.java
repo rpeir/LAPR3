@@ -1,5 +1,8 @@
 package domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -15,6 +18,7 @@ public class ClienteProdutorEmpresa {
 
     private boolean hub;
 
+    private List<Cabaz> cabazes;
     public ClienteProdutorEmpresa(Localizacao localizacao, String id, String designacao) {
         this.empresa=false;
         this.localizacao = localizacao;
@@ -140,5 +144,18 @@ public class ClienteProdutorEmpresa {
 
     public static boolean validateClienteID(String id) {
         return Pattern.matches("C[0-9]+", id);
+    }
+
+    public void setCabaz(Cabaz cabaz){
+        this.cabazes.set(cabaz.getDiaDeProducao()-1, cabaz);
+    }
+    public List<Cabaz> getCabazes(){
+        return this.cabazes;
+    }
+    public void setCabazes(List<Cabaz> cabazes){
+        this.cabazes=cabazes;
+    }
+    public Cabaz getCabaz(int dia){
+        return this.cabazes.get(dia-1);
     }
 }
