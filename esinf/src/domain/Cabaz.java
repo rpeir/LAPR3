@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,9 +10,9 @@ public class Cabaz {
 
     private int diaDeProducao;
 
-    private List<Float> produtos;
+    private ArrayList<Float> produtos;
 
-    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos) {
+    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, ArrayList<Float> produtos) {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
         this.produtos = produtos;
@@ -37,7 +38,7 @@ public class Cabaz {
         this.diaDeProducao = diaDeProducao;
     }
 
-    public void setProdutos(List<Float> produtos) {
+    public void setProdutos(ArrayList<Float> produtos) {
         this.produtos = produtos;
     }
 
