@@ -1,12 +1,3 @@
-DROP TABLE Estatistica;
-DROP TABLE Cliente;
-DROP TABLE Produto;
-DROP TABLE Hub;
-DROP TABLE Cultura;
-DROP TABLE SetorAgricola_Cultura;
-DROP TABLE SetorAgricola;
-DROP TABLE Tempo;
-
 CREATE TABLE Tempo (
     codTempo INTEGER NOT NULL,
     ano INTEGER NOT NULL,
