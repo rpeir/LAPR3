@@ -1,13 +1,12 @@
 package Controller;
 
-import domain.Cabaz;
+import domain.Pedido;
 import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Graph;
 import store.ClienteProdutorEmpresaStore;
 import store.LocalizacaoStore;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -148,9 +147,9 @@ public class ReadCSVController {
                 for (int i = 2; i <values.length; i++) {
                     listProdutos.add(Float.parseFloat(values[i]));
                 }
-                Cabaz cabaz=new Cabaz(values[0], Integer.parseInt(values[1]),listProdutos);
-                if(cpeStore.containsCPE(cabaz.getClienteProdutor())){
-                    cpeStore.getCPE(cabaz.getClienteProdutor()).setCabaz(cabaz);
+                Pedido pedido =new Pedido(values[0], Integer.parseInt(values[1]),listProdutos);
+                if(cpeStore.containsCPE(pedido.getClienteProdutor())){
+                    cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
                 }
                 line = br.readLine();
             }
