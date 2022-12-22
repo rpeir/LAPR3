@@ -1,7 +1,9 @@
 package store;
 
+import domain.Pedido;
 import domain.ListaExpedicoes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,15 @@ public class ListaExpedicoesStore {
     }
     public ListaExpedicoes getExpedicao(int dia) {
         return expedicoes.get(dia);
+    }
+    public List<Pedido> getListaExpedicoesDia(int dia, HashMap<Integer,ListaExpedicoes>expedicoes) {
+        List<Pedido> listaExpedicoesDia = new ArrayList<>();
+        for (Pedido pedido : listaCabazes) {
+            if (pedido.getDiaDeProducao() == dia) {
+                listaExpedicoesDia.add(pedido);
+            }
+        }
+        return listaExpedicoesDia;
     }
 }
 
