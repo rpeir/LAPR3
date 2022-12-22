@@ -50,7 +50,7 @@ public class ListStatistics {
 
     public String toStringDetailed() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%s's stats:\n", owner));
+        sb.append(String.format("%s\n",this));
         for (Statistic<?> stat : stats) {
             sb.append(String.format("\t%s\n", stat));
         }
