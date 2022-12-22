@@ -10,15 +10,15 @@ public class Cabaz {
 
     private int diaDeProducao;
 
-    private ArrayList<Float> produtos;
+    private List<Float> produtos;
 
-    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, ArrayList<Float> produtos) {
+    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos) {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
         this.produtos = produtos;
     }
 
-        public ArrayList<Float> getProdutos() {
+    public List<Float> getProdutos() {
             return produtos;
         }
 
