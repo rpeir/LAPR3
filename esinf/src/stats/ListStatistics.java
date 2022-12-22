@@ -48,4 +48,12 @@ public class ListStatistics {
         return String.format("%s's stats", owner);
     }
 
+    public String toStringDetailed() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%s's stats:\n", owner));
+        for (Statistic<?> stat : stats) {
+            sb.append(String.format("\t%s\n", stat));
+        }
+        return sb.toString();
+    }
 }
