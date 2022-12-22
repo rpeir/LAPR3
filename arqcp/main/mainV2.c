@@ -28,6 +28,7 @@ int main() {
         unsigned char* humSolos = createArrayHumSolo(MAX_SOILHUM, MIN_SOILHUM, FREQ_SOILHUM, n, pluvios);
 
         char* tempsValues = dailyCharValues(temps, FREQ_TEMP);
+        // readings arrays
         unsigned char* pluviosValues = dailyUCharValues(pluvios, FREQ_PLUV);
         unsigned char* humAtmsValues = dailyUCharValues(humAtms, FREQ_ATMHUM);
         unsigned char* humSolosValues = dailyUCharValues(humSolos, FREQ_SOILHUM);
@@ -70,7 +71,9 @@ int main() {
         sensors[i].readings_size = readingsSize;
         sensors[i].readings = calloc(readingsSize, sizeof(unsigned short));
         // fill the readings array
-
+        for (int j = 0; j < readingsSize; j++) {
+            sensors[i].readings[j] =
+        }
     }
 
 
