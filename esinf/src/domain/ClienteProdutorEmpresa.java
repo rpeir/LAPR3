@@ -1,7 +1,6 @@
 package domain;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class ClienteProdutorEmpresa {
@@ -17,7 +16,7 @@ public class ClienteProdutorEmpresa {
     private boolean hub;
     private boolean flag;
 
-    private List<Pedido> cabazes;
+    private Map<Integer, Pedido> cabazes;
     public ClienteProdutorEmpresa(Localizacao localizacao, String id, String designacao) {
         this.empresa=false;
         this.localizacao = localizacao;
@@ -25,6 +24,7 @@ public class ClienteProdutorEmpresa {
         setId(id);
         this.hub = false;
         this.flag = false;
+        this.cabazes = new HashMap<>();
     }
 
     public ClienteProdutorEmpresa(Localizacao localizacao,String id) {
@@ -33,6 +33,7 @@ public class ClienteProdutorEmpresa {
         this.localizacao = localizacao;
         this.designacao=id;
         this.hub = false;
+        this.cabazes = new HashMap<>();
     }
 
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude,String id, String designacao) {
@@ -42,6 +43,7 @@ public class ClienteProdutorEmpresa {
         setId(id);
         this.hub = false;
         this.flag = false;
+        this.cabazes = new HashMap<>();
     }
 
     public ClienteProdutorEmpresa(String locId, float latitude, float longitude, String id) {
@@ -51,6 +53,7 @@ public class ClienteProdutorEmpresa {
         setId(id);
         this.hub = false;
         this.flag = false;
+        this.cabazes = new HashMap<>();
     }
 
     public Localizacao getLocalizacao() {
@@ -161,13 +164,15 @@ public class ClienteProdutorEmpresa {
     }
 
     public void setCabaz(Pedido pedido){
-        this.cabazes.set(pedido.getDiaDeProducao()-1, pedido);
+        this.cabazes.put(pedido.getDiaDeProducao()-1, pedido);
     }
     public List<Pedido> getCabazes(){
-        return this.cabazes;
+        return this.cabazes.values().stream().toList();
     }
     public void setCabazes(List<Pedido> cabazes){
-        this.cabazes=cabazes;
+        for (Pedido cabaz : cabazes) {
+            this.cabazes.put(cabaz.getDiaDeProducao()-1, cabaz);
+        }
     }
     public Pedido getCabaz(int dia){
         return this.cabazes.get(dia-1);
