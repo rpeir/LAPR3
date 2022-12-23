@@ -37,11 +37,12 @@ public class ExpListStatsUI implements Runnable{
                     case "2" -> printStats(CTRL.getStatsByCliente());
                     case "3" -> printStats(CTRL.getStatsByProdutor());
                     case "4" -> printStats(CTRL.getStatsByHub());
-                    default -> System.out.println("Opçao inválida!\nTente novanmente");
+                    default -> System.out.println("Opçao inválida!\nTente novamente");
                 }
             } catch (Exception e) {
                 System.out.println("Ocorreu um erro!");
                 System.out.println("Tente novamente");
+                System.out.printf("Erro: %s\n",e.getMessage());
             }
             
         } while (!exit);
@@ -49,6 +50,8 @@ public class ExpListStatsUI implements Runnable{
     }
 
     private void printStats(List<ListStatistics> stats) {
+        if (stats.isEmpty()) throw new IllegalStateException("Sem estatatísticas calculadas");
+
         for (ListStatistics stat : stats) {
             stat.toStringDetailed();
         }
