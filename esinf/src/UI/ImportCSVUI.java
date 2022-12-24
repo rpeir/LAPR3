@@ -118,7 +118,7 @@ public class ImportCSVUI implements Runnable {
 
     @Override
     public void run() {
-        boolean fileNotValid = false;
+        boolean exit = false;
         do {
             try {
                 System.out.println("\nEscolha o ficheiro que pretende importar\n");
@@ -131,19 +131,17 @@ public class ImportCSVUI implements Runnable {
                     case "1" -> readClientesProdutorasEmpresasFile();
                     case "2" -> readDistancesFile();
                     case "3" -> readCabazesFile();
-                    case "0" -> fileNotValid = false;
+                    case "0" -> exit = true;
                     default -> {
                         System.out.println("\nOpçao inválida!");
-                        fileNotValid = true;
                     }
                 }
             } catch (Exception e) {
                 System.out.println();
                 System.out.println("Ocorreu um erro, por favor, tente novamente!");
                 e.printStackTrace();
-                fileNotValid = true;
             }
-        } while (fileNotValid);
+        } while (!exit);
     }
 }
 
