@@ -45,7 +45,7 @@ FROM ras.Culturas;
 
 -- SetoresAgricolas to SetorAgricola table
 INSERT INTO SetorAgricola (codSetorAgricola, designacaoSetorAgricola)
-SELECT codInterno, designacaoSetorAgricola
+SELECT codSetorAgricola, designacaoSetorAgricola
 FROM ras.SetoresAgricolas;
 
 -- SetoresAgricolas_Culturas to SetorAgricola_Cultura table
