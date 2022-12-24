@@ -35,7 +35,7 @@ FROM ras.Clientes;
 
 -- Produtos to Produto table
 INSERT INTO Produto (codProduto, codCultura, designacaoProduto)
-SELECT codInterno, codCultura, designacaoProduto
+SELECT codProduto, codCultura, designacaoProduto
 FROM ras.Produtos;
 
 -- Culturas to Cultura table
