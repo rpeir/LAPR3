@@ -15,30 +15,18 @@ GRANT RESOURCE TO snowflake;
 GRANT DBA TO snowflake;
 
 -- on ras session
-DECLARE
-  cursor c1 is
-    SELECT table_name
-    FROM all_tables
-    WHERE owner = 'ras';
-BEGIN
-  FOR r1 IN c1 LOOP
-    EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON Joana.' || r1.table_name || ' TO snowflake';
-  END LOOP;
-END;
-/
+GRANT SELECT, INSERT, UPDATE, DELETE ON Clientes TO snowflake;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Culturas TO snowflake;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Produtos TO snowflake;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas TO snowflake;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas_Culturas TO snowflake;
 
 -- on snowflake session
-DECLARE
-  cursor c1 is
-    SELECT table_name
-    FROM all_tables
-    WHERE owner = 'snowflake';
-BEGIN
-  FOR r1 IN c1 LOOP
-    EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON snowflake.' || r1.table_name || ' TO ras';
-  END LOOP;
-END;
-/
+GRANT SELECT, INSERT, UPDATE, DELETE ON Cliente TO ras;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Cultura TO ras;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Produto TO ras;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SetorAgricola TO ras;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SetorAgricola_Cultura TO ras;
 
 -- on snowflake session
 INSERT INTO Cliente (codCliente, nome, emailCliente, nrFiscal)
