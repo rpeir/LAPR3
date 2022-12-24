@@ -1,5 +1,5 @@
 -- create new session
-CREATE USER Snowflake IDENTIFIED BY abcd1234;
+CREATE USER snowflake IDENTIFIED BY abcd1234;
 GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, create procedure, create trigger, create sequence to snowflake;
 alter user snowflake quota unlimited on users;
 
@@ -9,11 +9,17 @@ FROM V$SESSION
 WHERE USERNAME IS NOT NULL;
 
 -- on ras session
+SELECT * FROM USER_ROLE_PRIVS;
+GRANT CONNECT TO snowflake;
+GRANT RESOURCE TO snowflake;
+GRANT DBA TO snowflake;
+
+-- on ras session
 DECLARE
   cursor c1 is
     SELECT table_name
     FROM all_tables
-    --WHERE owner = 'ras'; ?
+    WHERE owner = 'ras';
 BEGIN
   FOR r1 IN c1 LOOP
     EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON Joana.' || r1.table_name || ' TO snowflake';
@@ -26,7 +32,7 @@ DECLARE
   cursor c1 is
     SELECT table_name
     FROM all_tables
-    --WHERE owner = 'snowflake'; ?
+    WHERE owner = 'snowflake';
 BEGIN
   FOR r1 IN c1 LOOP
     EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON snowflake.' || r1.table_name || ' TO ras';
@@ -34,7 +40,7 @@ BEGIN
 END;
 /
 
--- database name = XEPDB1
+-- on snowflake session
 INSERT INTO Cliente (codCliente, nome, emailCliente, nrFiscal)
 SELECT codInterno, nome, emailCliente, nrFiscal
 FROM ras.Clientes;
@@ -84,17 +90,14 @@ INSERT INTO Tempo (codTempo, ano, mes)
 VALUES (5, 2021, 5);
 
 -- insert 5 values into Estatistica table
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (1, 1, 1, 1, 1, 1000, 2000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (2, 2, 2, 2, 2, 2000, 3000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (3, 3, 3, 3, 3, 3000, 4000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (4, 4, 4, 4, 4, 4000, 5000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (5, 5, 5, 5, 5, 5000, 6000);
-
-
-
+--INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+--VALUES (1, 1, 1, 1, 1, 1000, 2000);
+--INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+--VALUES (2, 2, 2, 2, 2, 2000, 3000);
+--INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+--VALUES (3, 3, 3, 3, 3, 3000, 4000);
+--INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+--VALUES (4, 4, 4, 4, 4, 4000, 5000);
+--INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+--VALUES (5, 5, 5, 5, 5, 5000, 6000);
 
