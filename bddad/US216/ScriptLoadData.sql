@@ -40,7 +40,7 @@ FROM ras.Produtos;
 
 -- Culturas to Cultura table
 INSERT INTO Cultura (codCultura, designacaoCultura, tipoCultura)
-SELECT codInterno, designacaoCultura, tipoCultura
+SELECT codCultura, designacaoCultura, tipoCultura
 FROM ras.Culturas;
 
 -- SetoresAgricolas to SetorAgricola table
