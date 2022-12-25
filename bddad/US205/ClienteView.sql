@@ -26,9 +26,9 @@ CREATE VIEW EncomendasEntreguesNaoPagas AS SELECT codInterno "Codigo Interno", (
 ) AS "Encomendas entregues mas nao pagas"
 FROM Clientes c;
 
-CREATE VIEW NivelCliente AS SELECT codInterno "Codigo Interno", (
-    SELECT codInterno FROM(SELECT Clientes_Niveis.codInterno, Clientes_Niveis.codNivel, Niveis.designacaoNivel FROM Clientes_Niveis INNER JOIN Niveis ON Clientes_Niveis.codNivel = Niveis.codNivel)
-    WHERE codInterno = c.codInterno
-) AS "Nivel do cliente"
-FROM Clientes c;
+CREATE VIEW NivelCliente AS
+SELECT c.codInterno, c.nome, n.designacaoNivel
+FROM Clientes c
+INNER JOIN Clientes_Niveis cn ON c.codInterno = cn.codInterno
+INNER JOIN Niveis n ON cn.codNivel = n.codNivel;
 
