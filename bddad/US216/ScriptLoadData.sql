@@ -9,7 +9,9 @@ FROM V$SESSION
 WHERE USERNAME IS NOT NULL;
 
 -- on ras session
+-- list roles from ras session
 SELECT * FROM USER_ROLE_PRIVS;
+-- grant roles to snowflake
 GRANT CONNECT TO snowflake;
 GRANT RESOURCE TO snowflake;
 GRANT DBA TO snowflake;
@@ -78,14 +80,12 @@ INSERT INTO Tempo (codTempo, ano, mes)
 VALUES (5, 2021, 5);
 
 -- insert 5 values into Estatistica table
---INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
---VALUES (1, 1, 1, 1, 1, 1000, 2000);
---INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
---VALUES (2, 2, 2, 2, 2, 2000, 3000);
---INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
---VALUES (3, 3, 3, 3, 3, 3000, 4000);
---INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
---VALUES (4, 4, 4, 4, 4, 4000, 5000);
---INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
---VALUES (5, 5, 5, 5, 5, 5000, 6000);
+INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+VALUES (1, 1, 1, 1, 1, 1000, 2000);
+INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+VALUES (2, 2, 2, 2, 2, 2000, 3000);
+INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+VALUES (3, 3, 3, 3, 3, 3000, 4000);
+INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
+VALUES (5, 5, 5, 5, 5, 5000, 6000);
 
