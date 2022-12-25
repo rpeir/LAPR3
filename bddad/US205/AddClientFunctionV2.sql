@@ -147,7 +147,6 @@ CREATE OR REPLACE FUNCTION criarCliente (
     c_plafond Clientes.plafond%TYPE,
     c_nrFiscal Clientes.nrFiscal%TYPE,
     -- atributos que tem de ser passados por parametro da morada
-    m_codMorada Moradas.codMorada%TYPE,
     m_codPostal Moradas.codPostal%TYPE,
     m_rua Moradas.rua%TYPE,
     m_nrEdificio Moradas.nrEdificio%TYPE,
@@ -198,3 +197,5 @@ begin
 
 end;
 /
+
+
