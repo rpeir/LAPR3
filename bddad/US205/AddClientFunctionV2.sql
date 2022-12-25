@@ -194,8 +194,13 @@ begin
 end;
 /
 
-begin
+    DELETE FROM Utilizador;
+    DELETE FROM Clientes;
+    DELETE FROM Moradas;
+    DELETE FROM MoradasEntrega;
+    DELETE FROM MoradasCorrespondencia;
 
+begin
     criarClientes('user1234@gmail.com',
                 'abcd1234',
                 'E',
