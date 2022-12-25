@@ -16,10 +16,9 @@ begin
     AND dataOcorrencia BETWEEN SYSDATE AND add_months(SYSDATE, -12);
 
     -- obter a data do ultimo incidente
-    SELECT dataOcorrencia
-    INTO dataUltimoIncidente
-    FROM Incidentes
-    WHERE codIncidente=(SELECT max(codIncidente) FROM Incidentes);
+    SELECT max(TO_CHAR(dataOcorrencia, 'DD-MM-YYYY')) INTO dataUltimoIncidente
+                      FROM incidentes i
+                      WHERE i.codInterno = search_codInterno;
 
     -- obter o numero de encomendas por pagar depois do ultimo incidente
     SELECT COUNT(codPedido) INTO numeroEncomendasDepoisUltimoIncidente
