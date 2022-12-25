@@ -130,13 +130,13 @@ is
 begin
     if (pass is NULL) then
         RAISE_APPLICATION_ERROR(-20000, 'password não pode ser nula!');
-    elsif NOT (REGEXP_LIKE(pass, '[a-zA-Z]{5}')) then
+    elsif NOT (REGEXP_LIKE(pass, '^.{5,}$')) then
         RAISE_APPLICATION_ERROR(-20000, 'password invalida!');
     end if;
 end;
 /
 
-CREATE OR REPLACE FUNCTION criarCliente (
+CREATE OR REPLACE PROCEDURE criarClientes (
     -- atributos que tem de ser passados por parametro do utilizador
     u_email Utilizador.email%TYPE,
     u_pass Utilizador.pass%TYPE,
@@ -154,7 +154,7 @@ CREATE OR REPLACE FUNCTION criarCliente (
     m_pais Moradas.pais%TYPE,
     m_nrPorta Moradas.porta%TYPE,
     m_localidade Moradas.localidade%TYPE
-)   return Clientes.codInterno%TYPE
+)
 
 is
     c_codInt Clientes.codInterno%type;
@@ -171,7 +171,8 @@ begin
     --atribuicao do nivel
     n_letra := 'C';
     --obter o codigo do nivel
-    n_codNivel := adicionarNivel(n_letra);
+    --n_codNivel := adicionarNivel(n_letra);
+
     --obter o codigo do utilizador
     c_codUtilizador := adicionarNovoUtilizador(u_email, u_pass);
     --obter o codigo da morada
@@ -181,21 +182,34 @@ begin
     --obter a data de atribuicao do nivel
     cn_dataAtribuicao := sysdate;
     --obter codiogo ClienteNivel
-    adicionarClienteNiveis(c_codInt, n_codNivel, cn_dataAtribuicao);
+    --adicionarClienteNiveis(c_codInt, n_codNivel, cn_dataAtribuicao);
     --inserir na tabela MoradaEntrega
     adicionarMoradaEntrega(c_codMorada, c_codInt);
     --inserir na tabela MoradaCorresponencia
     adicionarMoradaCorrespondencia(c_codMorada, c_codInt);
 
     dbms_output.put_line('Cliente inserido com id: ' || c_codInt);
-    return c_codInt;
 
-    EXCEPTION
-    WHEN OTHERS THEN
-        dbms_output.put_line('Cliente nao foi inserido');
-        RETURN NULL;
 
 end;
 /
 
+begin
 
+    criarClientes('user1234@gmail.com',
+                'abcd1234',
+                'E',
+                'nomeCliente',
+                'cliente1234@gmail.com',
+                1000,
+                987654321,
+                '4445-320',
+                'rua',
+                5,
+                5,
+                'portugal',
+                '5',
+                'porto');
+
+end;
+/
