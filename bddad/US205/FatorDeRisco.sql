@@ -1,7 +1,6 @@
-CREATE OR REPLACE FUNCTION FatorDeRisco (
+CREATE OR REPLACE procedure FatorDeRisco (
     search_codInterno IN Clientes.codInterno%TYPE    -- Codigo Interno do Cliente
-) RETURN NUMBER
-
+)
 is
 fatorDeRisco NUMBER; -- variavel de retorno
 valorTotalIncidentesUltimosDozeMeses NUMBER;
@@ -26,7 +25,7 @@ begin
     SELECT COUNT(codPedido) INTO numeroEncomendasDepoisUltimoIncidente
     FROM(SELECT Pedidos_Pagamentos_Entregas.codPedido, Pedidos_Pagamentos_Entregas.estadoAtual, Pedidos.codInterno, Pedidos.dataPedido FROM Pedidos INNER JOIN Pedidos_Pagamentos_Entregas ON Pedidos.codPedido = Pedidos_Pagamentos_Entregas.codPedido)
     WHERE codInterno = search_codInterno
-    AND estadoAtual = 'Nao Pago'
+    AND estadoAtual = 'R'
     AND dataPedido >= dataUltimoIncidente;
 
     -- obter o fator de risco
@@ -38,7 +37,10 @@ begin
         dbms_output.put_line('Fator de risco: ' || fatorDeRisco);
     end if;
 
-    return fatorDeRisco;
+end;
+/
 
+begin
+fatorderisco(3);
 end;
 /
