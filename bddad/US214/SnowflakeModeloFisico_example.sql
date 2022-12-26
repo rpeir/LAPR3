@@ -43,7 +43,6 @@ CREATE TABLE Estatistica (
     codSetorAgricola INTEGER NOT NULL,
     codProduto INTEGER NOT NULL,
     codCliente INTEGER NOT NULL,
-    codHub INTEGER NOT NULL,
     producaoToneladas INTEGER NOT NULL,
     vendasMilharesEuros INTEGER NOT NULL
 );
