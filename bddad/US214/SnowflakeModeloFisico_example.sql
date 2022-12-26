@@ -57,4 +57,3 @@ alter table Estatistica add constraint fk_Estatisticas_codTempo FOREIGN KEY (cod
 alter table Estatistica add constraint fk_Estatisticas_codSetorAgricola FOREIGN KEY (codSetorAgricola) references SetorAgricola (codSetorAgricola);
 alter table Estatistica add constraint fk_Estatisticas_codProduto FOREIGN KEY (codProduto) references Produto (codProduto);
 alter table Estatistica add constraint fk_Estatisticas_codCliente FOREIGN KEY (codCliente) references Cliente (codCliente);
-alter table Estatistica add constraint fk_Estatisticas_codHub FOREIGN KEY (codHub) references Hub (codHub);
