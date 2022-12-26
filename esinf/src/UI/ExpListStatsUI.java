@@ -46,7 +46,7 @@ public class ExpListStatsUI implements Runnable{
                         break;
                 }
                 if (valid) {
-                    System.out.println("\nEscolha o dia da lista de expedição que pretende analisar\n");
+                    System.out.println("\nEscolha o dia da lista de expedição que pretende analisar");
                     int day = Integer.parseInt(sc.nextLine());
                     switch (inputStat) {
                         case "1" -> printStats(CTRL.getStatsByCabaz(day));
@@ -56,9 +56,9 @@ public class ExpListStatsUI implements Runnable{
                     }
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("Opçao inválida!\nTente novamente");
+                System.out.println("\nErro: "+e.getMessage());
             } catch (Exception e) {
-                System.out.println("Ocorreu um erro!");
+                System.out.println("Ocorreu um erro inesperado!");
                 System.out.println("Tente novamente");
                 System.out.printf("Erro: %s\n",e.getMessage());
             }
