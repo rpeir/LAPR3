@@ -1,67 +1,56 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Cabaz {
+public class Cabaz extends Pedido{
 
-    private String clienteProdutorEmpresa;
+    private List<String> produtores;
 
-    private int diaDeProducao;
-
-    private List<Float> produtos;
-
-    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos) {
-        this.clienteProdutorEmpresa = clienteProdutorEmpresa;
-        this.diaDeProducao = diaDeProducao;
-        this.produtos = produtos;
+    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos, List<String> produtores) {
+        super(clienteProdutorEmpresa, diaDeProducao, produtos);
+        this.produtores = produtores;
     }
 
-    public List<Float> getProdutos() {
-            return produtos;
-        }
-
-    public String getClienteProdutor() {
-        return clienteProdutorEmpresa;
+    public List<String> getProdutores() {
+        return produtores;
     }
 
-    public int getDiaDeProducao() {
-        return diaDeProducao;
+    public void setProdutores(List<String> produtores) {
+        this.produtores = produtores;
     }
 
-    public void setClienteProdutorEmpresa(String clienteProdutorEmpresa) {
-        this.clienteProdutorEmpresa = clienteProdutorEmpresa;
-    }
-
-    public void setDiaDeProducao(int diaDeProducao) {
-        this.diaDeProducao = diaDeProducao;
-    }
-
-    public void setProdutos(ArrayList<Float> produtos) {
-        this.produtos = produtos;
+    public String getProdutor(int i){
+        return produtores.get(i);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Cabaz cabaz = (Cabaz) o;
-        return getDiaDeProducao() == cabaz.getDiaDeProducao() && Objects.equals(clienteProdutorEmpresa, cabaz.clienteProdutorEmpresa) && Objects.equals(getProdutos(), cabaz.getProdutos());
+        return Objects.equals(getProdutores(), cabaz.getProdutores());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(clienteProdutorEmpresa, getDiaDeProducao());
+    public boolean isSatisfied(Pedido pedido){
+        List<Float> thisProdutos = this.getProdutos();
+        List<Float> pedidoProdutos = pedido.getProdutos();
+        for (int i = 0; i < thisProdutos.size(); i++) {
+            if (!thisProdutos.get(i).equals(pedidoProdutos.get(i))) return false;
+        }
+        return true;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s, dia %d", clienteProdutorEmpresa, diaDeProducao);
+    public boolean isPartillySatisfied(Pedido pedido){
+        List<Float> thisProdutos = this.getProdutos();
+        List<Float> pedidoProdutos = pedido.getProdutos();
+        int count = 0;
+        for (int i = 0; i < thisProdutos.size(); i++) {
+            if (!thisProdutos.get(i).equals(pedidoProdutos.get(i))) count++;
+        }
+        return count > 0 && count < thisProdutos.size();
     }
 
-    public Float getProduto(int i) {
-        return produtos.get(i);
-    }
 }
 
