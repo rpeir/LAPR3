@@ -91,12 +91,60 @@ public class ExpListStatsController {
         }
     }
 
-    public List<ListStatistics> getStatsByProdutor(int dia) {
-        //TODO
-        return null;
+    /**
+     * Create a list of statistics for each cabaz for the given day
+     * @param dia day of the expeditions
+     * @return List of statistics for each cabaz
+     */
+    public List<ListStatistics> getStatsByCabaz(int dia) {
+        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+
+        HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
+        ListaExpedicoes listaExpedicoes = expedicoes.get(dia);
+
+        final String statNamePTS = "Nº de produtos totalmente satisfeitos"; // Nome da estatística "Produtos totalmente satisfeitos"
+        final String statNamePPS = "Nº de produtos parcialmente satisfeitos"; // Nome da estatística "Produtos parcialmente satisfeitos"
+        final String statNamePNS = "Nº de produtos nao satisfeitos"; // Nome da estatística "Produtos nao satisfeitos"
+        final String statNamePer = "Percentagem total do cabaz satisfeito"; // Nome da estatística "Percentagem total do cabaz satisfeito"
+        final String statNamePFC = "Nº de produtores distintos que forneceram o cabaz"; // Nome da estatística "Produtores distintos que forneceram o cabaz"
+
+        for (Cabaz cabaz : listaExpedicoes.get_listaExpedicoes()) {
+            ListStatistics stats = new ListStatistics(String.format("Cabaz de %s", cabaz.getClienteProdutor()));
+            List<Float> produtosCabaz = cabaz.getProdutos();
+            List<Float> produtosPedido = mapCPE.get(cabaz.getClienteProdutor()).getCabaz(dia).getProdutos();
+
+            int pts = 0; // Nº de produtos totalmente satisfeitos
+            int pps = 0; // Nº de produtos parcialmente satisfeitos
+            int pns = 0; // Nº de produtos nao satisfeitos
+            int qtPedida = 0; // Quantidade total pedida
+            int qtSatisfeita = 0; // Quantidade total satisfeita
+            for (int i = 0; i < produtosCabaz.size(); i++) {
+
+                float produtoCabaz = produtosCabaz.get(i);
+                float produtoPedido = produtosPedido.get(i);
+
+                qtSatisfeita += produtoCabaz;
+                qtPedida += produtoPedido;
+
+                if (produtoPedido != 0) {
+                    if (produtoCabaz == produtoPedido) pts++; // Se o produto do cabaz for igual ao do pedido, aumenta o valor de pts
+                    else if (produtoCabaz == 0) pns++; // Se o produto do cabaz for maior que o do pedido, aumenta o valor de pps
+                    else pps++; // Se o produto do cabaz for menor que o do pedido, aumenta o valor de pns
+                }
+            }
+
+            stats.addStat(statNamePTS, pts); // Cria a estatistica com o valor de produtos totalmente satisfeitos
+            stats.addStat(statNamePPS, pps); // Cria a estatistica com o valor de produtos parcialmente satisfeitos
+            stats.addStat(statNamePNS, pns); // Cria a estatistica com o valor de produtos nao satisfeitos
+            stats.addStat(statNamePer, String.format("%.2f %%", ((float) qtSatisfeita/qtPedida) * 100)) ; // Cria a estatistica com o valor da percentagem total do cabaz satisfeito
+            stats.addStat(statNamePFC, new HashSet<>(cabaz.getProdutores()).size()); // Cria a estatistica com o valor de produtores distintos que forneceram o cabaz
+            finalStats.put(cabaz.getClienteProdutor(), stats);
+        }
+
+        return new ArrayList<>(finalStats.values());
     }
 
-    public List<ListStatistics> getStatsByCabaz(int dia) {
+    public List<ListStatistics> getStatsByProdutor(int dia) {
         //TODO
         return null;
     }
