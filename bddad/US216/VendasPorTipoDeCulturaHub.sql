@@ -1,3 +1,5 @@
+-- on snowflae sesion
+
 -- opcao 1 - query que retorna a quantidade de vendas por tipo de cultura, agrupado por mês
 SELECT Tempo.mes, Cultura.tipoCultura, SUM(Estatistica.vendasMilharesEuros) as totalVendas
 FROM Estatistica

@@ -23,13 +23,6 @@ CREATE TABLE SetorAgricola_Cultura (
     codCultura INTEGER NOT NULL
 );
 
-CREATE TABLE Hub (
-    codHub INTEGER NOT NULL,
-    nomeHub VARCHAR(50) NOT NULL,
-    tipoHub VARCHAR(50) NOT NULL,
-    constraint pk_codHub PRIMARY KEY (codHub)
-);
-
 CREATE TABLE Produto (
     codProduto INTEGER NOT NULL,
     codCultura INTEGER NOT NULL,

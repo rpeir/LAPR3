@@ -55,18 +55,6 @@ INSERT INTO SetorAgricola_Cultura (codSetorAgricola, codCultura)
 SELECT codSetorAgricola, codCultura
 FROM ras.SetoresAgricolas_Culturas;
 
--- insert 5 values into Hub table
-INSERT INTO Hub (codHub, nomeHub, tipoHub)
-VALUES (1, 'nome1', 'tipo1');
-INSERT INTO Hub (codHub, nomeHub, tipoHub)
-VALUES (2, 'nome2', 'tipo2');
-INSERT INTO Hub (codHub, nomeHub, tipoHub)
-VALUES (3, 'nome3', 'tipo3');
-INSERT INTO Hub (codHub, nomeHub, tipoHub)
-VALUES (4, 'nome4', 'tipo4');
-INSERT INTO Hub (codHub, nomeHub, tipoHub)
-VALUES (5, 'nome5', 'tipo5');
-
 -- insert 5 values into Tempo table
 INSERT INTO Tempo (codTempo, ano, mes)
 VALUES (1, 2019, 1);
