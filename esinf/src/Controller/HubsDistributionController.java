@@ -4,16 +4,18 @@ import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
+import store.HubsStore;
 
 import java.util.*;
 
 public class HubsDistributionController {
 
     App app;
-
+    HubsStore hubsStore;
 
     public HubsDistributionController() {
         app = App.getInstance();
+        hubsStore = app.getHubsStore();
     }
 
 
@@ -92,6 +94,7 @@ public class HubsDistributionController {
                 i++;
                 }
             }
+            hubsStore.setHubs(nHubs);
             return nHubs;
         }
         return null;

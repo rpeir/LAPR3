@@ -48,6 +48,10 @@ public class Main {
                     ImportWaterControllerUI importWaterControllerUI = new ImportWaterControllerUI();
                     importWaterControllerUI.run();
                     break;
+                case "9":
+                    MinimumRouteUI minimumRouteUI = new MinimumRouteUI();
+                    minimumRouteUI.run();
+                    break;
                 case "10":
                     ExpListStatsUI expListStatsUI = new ExpListStatsUI();
                     expListStatsUI.run();

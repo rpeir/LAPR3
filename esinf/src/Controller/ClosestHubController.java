@@ -4,14 +4,18 @@ import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
+import store.HubsStore;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class ClosestHubController {
+
+    HubsStore hubsStore;
     private final Graph<Localizacao, Integer> graph;
     public ClosestHubController() {
         graph = App.getInstance().getGraph();
+        hubsStore = App.getInstance().getHubsStore();
     }
 
     public ClosestHubController(Graph<Localizacao, Integer> graph) {
@@ -65,6 +69,7 @@ public class ClosestHubController {
                 result.put(cpe,getClosestHub(cpe));
             }
         }
+        hubsStore.setClosestHubToEachClient(result);
         return result;
    }
 }

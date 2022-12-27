@@ -16,6 +16,10 @@ public class Cabaz extends Pedido{
         return produtores;
     }
 
+    public String getCliente() {
+        return this.getClienteProdutor();
+    }
+
     public void setProdutores(List<String> produtores) {
         this.produtores = produtores;
     }
@@ -50,6 +54,13 @@ public class Cabaz extends Pedido{
             if (!thisProdutos.get(i).equals(pedidoProdutos.get(i))) count++;
         }
         return count > 0 && count < thisProdutos.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Cabaz{" + super.toString() +
+                "produtores=" + produtores +
+                '}';
     }
 
 }

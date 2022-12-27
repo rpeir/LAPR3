@@ -135,14 +135,6 @@ public class ClienteProdutorEmpresa {
         }
     }
 
-    public void setSatisfied() {
-        if (!this.empresa) {
-            this.flag = true;
-        }else{
-            throw new IllegalArgumentException("Only clients can be satisfied.");
-        }
-    }
-
     public boolean isCliente() {
         return validateClienteID(this.id);
     }
