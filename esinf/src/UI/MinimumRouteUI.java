@@ -24,11 +24,11 @@ public class MinimumRouteUI {
             System.out.println(dia);
         }
         diaPretendido = sc.nextInt();
-        //if(app.getListaExpedicoesStore().getExpedicoes().containsKey(diaPretendido) && diaPretendido > 0) {
+        if(app.getListaExpedicoesStore().getExpedicoes().containsKey(diaPretendido) && diaPretendido > 0) {
             ctrl.getMinimumRoute(diaPretendido);
-        //} else {
-            //System.out.println("Dia inválido");
-            //run();
-        //}
+        } else {
+            System.out.println("Dia inválido");
+            run();
+        }
     }
 }

@@ -54,6 +54,7 @@ public class MinimumRouteController {
         Graph<Localizacao, Integer> grafo = app.getGraph();
         // numero de clientes e hubs
         int n = clientes.size();
+        int distanciaTotal = 0;
         for (int i = 0; i < n-1; i++) {
             LinkedList<Localizacao> percurso = new LinkedList<>();
             // distancia minina entre vorig e vdest
@@ -65,8 +66,13 @@ public class MinimumRouteController {
                                         0,
                                         percurso);
             if (distanciaMinima != null) {
+                distanciaTotal += distanciaMinima;
                 System.out.println("Distancia minima entre " + hubsCliente.get(i).getLocalizacao() + " e " + hubsCliente.get(i+1).getLocalizacao() + ": " + distanciaMinima);
                 System.out.println("Percurso: " + percurso);
+                System.out.println("Distancia entre cada ponto do percurso: ");
+                for (int j = 0; j < percurso.size()-1; j++) {
+                    //.......
+                }
                 System.out.println("Cabazes entregues em " + hubsCliente.get(i).getLocalizacao() + ":\n");
                 // ........
             }
@@ -74,6 +80,7 @@ public class MinimumRouteController {
                 System.out.println("Nao existe caminho entre " + hubsCliente.get(i).getLocalizacao() + " e " + hubsCliente.get(i+1).getLocalizacao());
             }
         }
+        System.out.println("Distancia total: " + distanciaTotal);
     }
 }
 
