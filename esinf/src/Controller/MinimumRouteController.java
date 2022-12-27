@@ -54,25 +54,7 @@ public class MinimumRouteController {
         Graph<Localizacao, Integer> grafo = app.getGraph();
         // numero de clientes e hubs
         int n = clientes.size();
-        for (int i = 0; i < n; i++) {
-            // linked list para guardar o caminho minimo
-            LinkedList<Localizacao> percursoMaisCurto = new LinkedList<>();
-            Algorithms.shortestPath(grafo,
-                    clientes.get(i).getLocalizacao(),
-                    hubsCliente.get(i).getLocalizacao(),
-                    Integer::compare,
-                    Integer::sum,
-                    0,
-                    percursoMaisCurto);
-            // obter a distancia do percurso
-            int distance = 0;
-            for (int j = 0; j < percursoMaisCurto.size() - 1; j++) {
-                // distancia entre 2 vertices
 
-            }
-            System.out.println("Caminho mais curto de " + clientes.get(0).getLocalizacao() + " a " + hubsCliente.get(0).getLocalizacao() + "e:\n");
-            System.out.println(Arrays.toString(percursoMaisCurto.toArray()));
-        }
     }
 }
 
