@@ -52,7 +52,7 @@ public class MinimumRouteController {
 
         // grafo geral
         Graph<Localizacao, Integer> grafo = app.getGraph();
-        // numero de clientes e hubs
+        // numero de hubs
         int n = clientes.size();
         int distanciaTotal = 0;
         for (int i = 0; i < n-1; i++) {
@@ -70,18 +70,30 @@ public class MinimumRouteController {
                 System.out.println("Distancia minima entre " + hubsCliente.get(i).getLocalizacao() + " e " + hubsCliente.get(i+1).getLocalizacao() + ": " + distanciaMinima);
                 System.out.println("Percurso: " + percurso);
                 System.out.println("Distancia entre cada ponto do percurso: ");
+                // obter distancia entre cada ponto do percurso
                 for (int j = 0; j < percurso.size()-1; j++) {
                     int peso = grafo.edge(percurso.get(j), percurso.get(j+1)).getWeight();
                     System.out.println(percurso.get(j) + " -> " + percurso.get(j+1) + ": " + peso);
                 }
-                System.out.println("Cabazes entregues em " + hubsCliente.get(i).getLocalizacao() + ":\n");
-                // ........
-            }
-            else {
-                System.out.println("Nao existe caminho entre " + hubsCliente.get(i).getLocalizacao() + " e " + hubsCliente.get(i+1).getLocalizacao());
+                System.out.println("Cabazes entregues em " + hubsCliente.get(i).getDesignacao() + ":\n");
+                for (ClienteProdutorEmpresa c : clientes) {
+                    if(ctrl.getClosestHub(c).equals(hubsCliente.get(i))) {
+                        for(Cabaz cabaz : cabazes) {
+                            if(cabaz.getCliente().equals(c.getDesignacao())) {
+                                System.out.println(cabaz);
+                            }
+                            else {
+                                System.out.println("Nao ha cabazes para entregar");
+                            }
+                        }
+                    }
+                    else {
+                        System.out.println("Nao ha cabazes para entregar");
+                    }
+                }
+                System.out.println("Distancia total: " + distanciaTotal);
             }
         }
-        System.out.println("Distancia total: " + distanciaTotal);
     }
 }
 
