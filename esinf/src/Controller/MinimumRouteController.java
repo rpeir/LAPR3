@@ -71,7 +71,8 @@ public class MinimumRouteController {
                 System.out.println("Percurso: " + percurso);
                 System.out.println("Distancia entre cada ponto do percurso: ");
                 for (int j = 0; j < percurso.size()-1; j++) {
-                    //.......
+                    int peso = grafo.edge(percurso.get(j), percurso.get(j+1)).getWeight();
+                    System.out.println(percurso.get(j) + " -> " + percurso.get(j+1) + ": " + peso);
                 }
                 System.out.println("Cabazes entregues em " + hubsCliente.get(i).getLocalizacao() + ":\n");
                 // ........
