@@ -52,9 +52,18 @@ public class MinimumRouteController {
 
         // grafo geral
         Graph<Localizacao, Integer> grafo = app.getGraph();
+        LinkedList<Localizacao> percurso = new LinkedList<>();
         // numero de clientes e hubs
         int n = clientes.size();
-
+        for (int i = 0; i < n-1; i++) {
+            Algorithms.shortestPath(grafo,
+                                    hubsCliente.get(i).getLocalizacao(),
+                                    hubsCliente.get(i+1).getLocalizacao(),
+                                    Integer::compare,
+                                    Integer::sum,
+                                    0,
+                                    percurso);
+        }
     }
 }
 
