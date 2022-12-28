@@ -8,6 +8,7 @@ import graph.Algorithms;
 import graph.Graph;
 import store.ClienteProdutorEmpresaStore;
 import store.HubsStore;
+import store.ListaExpedicoesStore;
 
 import java.util.*;
 
@@ -16,29 +17,32 @@ public class MinimumRouteController {
     ClosestHubController ctrl;
     HubsStore hubsStore;
     ClienteProdutorEmpresaStore cpeStore;
+    ListaExpedicoesStore listaExpedicoesStore;
 
     public MinimumRouteController() {
         app = App.getInstance();
         ctrl = new ClosestHubController();
         hubsStore = app.getHubsStore();
         cpeStore = app.getClienteProdutorEmpresaStore();
+        listaExpedicoesStore = app.getListaExpedicoesStore();
     }
 
     public void getMinimumRoute(int dia) {
         // lista de expedicao para o dia pretendido
-        ListaExpedicoes expedicao = app.getListaExpedicoesStore().getExpedicao(dia);
+        ListaExpedicoes expedicao = listaExpedicoesStore.getExpedicao(dia);
         // lista de cabazes para o dia pretendido
         List<Cabaz> cabazes = expedicao.get_listaExpedicoes();
         System.out.println("Cabazes para o dia " + dia + ":\n");
         for (Cabaz cabaz : cabazes) {
+
             System.out.println(cabaz.getCliente() + " -> " + cabaz.getProdutos());
         }
         // lista dos clientes para o dia pretendido
         List<ClienteProdutorEmpresa> clientes = new ArrayList<>();
         for (Cabaz cabaz : cabazes) {
-                if(cpeStore.containsCPE(cabaz.getCliente())) {
-                    clientes.add(cpeStore.getCPE(cabaz.getCliente()));
-                }
+            if (cpeStore.containsCPE(cabaz.getCliente())) {
+                clientes.add(cpeStore.getCPE(cabaz.getCliente()));
+            }
         }
         System.out.println("Clientes para o dia " + dia + ":\n");
         System.out.println(Arrays.toString(clientes.toArray()));
@@ -55,45 +59,7 @@ public class MinimumRouteController {
         // numero de hubs
         int n = clientes.size();
         int distanciaTotal = 0;
-        for (int i = 0; i < n-1; i++) {
-            LinkedList<Localizacao> percurso = new LinkedList<>();
-            // distancia minina entre vorig e vdest
-            Integer distanciaMinima = Algorithms.shortestPath(grafo,
-                                        hubsCliente.get(i).getLocalizacao(),
-                                        hubsCliente.get(i+1).getLocalizacao(),
-                                        Integer::compare,
-                                        Integer::sum,
-                                        0,
-                                        percurso);
-            if (distanciaMinima != null) {
-                distanciaTotal += distanciaMinima;
-                System.out.println("Distancia minima entre " + hubsCliente.get(i).getLocalizacao() + " e " + hubsCliente.get(i+1).getLocalizacao() + ": " + distanciaMinima);
-                System.out.println("Percurso: " + percurso);
-                System.out.println("Distancia entre cada ponto do percurso: ");
-                // obter distancia entre cada ponto do percurso
-                for (int j = 0; j < percurso.size()-1; j++) {
-                    int peso = grafo.edge(percurso.get(j), percurso.get(j+1)).getWeight();
-                    System.out.println(percurso.get(j) + " -> " + percurso.get(j+1) + ": " + peso);
-                }
-                System.out.println("Cabazes entregues em " + hubsCliente.get(i).getDesignacao() + ":\n");
-                for (ClienteProdutorEmpresa c : clientes) {
-                    if(ctrl.getClosestHub(c).equals(hubsCliente.get(i))) {
-                        for(Cabaz cabaz : cabazes) {
-                            if(cabaz.getCliente().equals(c.getDesignacao())) {
-                                System.out.println(cabaz);
-                            }
-                            else {
-                                System.out.println("Nao ha cabazes para entregar");
-                            }
-                        }
-                    }
-                    else {
-                        System.out.println("Nao ha cabazes para entregar");
-                    }
-                }
-                System.out.println("Distancia total: " + distanciaTotal);
-            }
-        }
+
     }
 }
 

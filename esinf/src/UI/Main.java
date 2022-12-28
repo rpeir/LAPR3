@@ -57,7 +57,6 @@ public class Main {
                     expListStatsUI.run();
                     break;
                 case "0":
-
                     run = false;
                     break;
                 default:

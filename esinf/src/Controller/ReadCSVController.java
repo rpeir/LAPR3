@@ -147,7 +147,7 @@ public class ReadCSVController {
                 for (int i = 2; i <values.length; i++) {
                     listProdutos.add(Float.parseFloat(values[i]));
                 }
-                Pedido pedido =new Pedido(values[0], Integer.parseInt(values[1]),listProdutos);
+                Pedido pedido = new Pedido(values[0], Integer.parseInt(values[1]),listProdutos);
                 if(cpeStore.containsCPE(pedido.getClienteProdutor())){
                     cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
                 }
