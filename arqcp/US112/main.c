@@ -11,5 +11,7 @@ int main(){
     unsigned short readings[3] = {1, 2, 3};
     sensor.readings = readings;
     write_sensor_file(&sensor);
+
+
     return 0;
 }
