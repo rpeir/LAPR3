@@ -16,10 +16,6 @@ public class Cabaz extends Pedido{
         return produtores;
     }
 
-    public String getCliente() {
-        return this.getClienteProdutor();
-    }
-
     public void setProdutores(List<String> produtores) {
         this.produtores = produtores;
     }
@@ -56,11 +52,22 @@ public class Cabaz extends Pedido{
         return count > 0 && count < thisProdutos.size();
     }
 
-    @Override
-    public String toString() {
-        return "Cabaz{" + super.toString() +
-                "produtores=" + produtores +
-                '}';
+
+    public boolean isSatisfiedByProdutor(ClienteProdutorEmpresa produtor){
+        List<String> thisProdutores = this.getProdutores();
+        for (String thisProdutor : thisProdutores) {
+            if (!thisProdutor.equals(produtor.getId())) return false;
+        }
+        return true;
+    }
+
+    public boolean isPartillySatisfiedByProdutor(ClienteProdutorEmpresa produtor){
+        List<String> thisProdutores = this.getProdutores();
+        int count = 0;
+        for (String thisProdutor : thisProdutores) {
+            if (thisProdutor.equals(produtor.getId())) count++;
+        }
+        return count > 0 && count < thisProdutores.size();
     }
 
 }
