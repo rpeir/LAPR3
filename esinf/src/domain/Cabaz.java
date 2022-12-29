@@ -52,5 +52,23 @@ public class Cabaz extends Pedido{
         return count > 0 && count < thisProdutos.size();
     }
 
+
+    public boolean isSatisfiedByProdutor(ClienteProdutorEmpresa produtor){
+        List<String> thisProdutores = this.getProdutores();
+        for (String thisProdutor : thisProdutores) {
+            if (!thisProdutor.equals(produtor.getId())) return false;
+        }
+        return true;
+    }
+
+    public boolean isPartillySatisfiedByProdutor(ClienteProdutorEmpresa produtor){
+        List<String> thisProdutores = this.getProdutores();
+        int count = 0;
+        for (String thisProdutor : thisProdutores) {
+            if (thisProdutor.equals(produtor.getId())) count++;
+        }
+        return count > 0 && count < thisProdutores.size();
+    }
+
 }
 
