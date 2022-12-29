@@ -1,5 +1,5 @@
-#ifndef EX08_H
-#define EX08_H
+#ifndef WRITE_SENSOR_FILE_H
+#define WRITE_SENSOR_FILE_H
 typedef struct
 {
     unsigned short id;
