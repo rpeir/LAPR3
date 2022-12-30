@@ -1,8 +1,6 @@
 package Controller;
 
-import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
-import domain.ListaExpedicoes;
 import domain.Localizacao;
 import graph.Algorithms;
 import graph.Graph;
@@ -125,17 +123,22 @@ public class MinimumRouteController {
             // remover os duplicados adjacentes
             int i = 1;
             while (i < totalPath.size()) {
-                if (totalPath.get(i).equals(totalPath.get(i-1))) {
+                if (totalPath.get(i).equals(totalPath.get(i - 1))) {
                     totalPath.remove(i);
                 } else {
                     i++;
                 }
-        }
+            }
             System.out.println("Distancia total: " + distanciaTotal);
             System.out.println("Caminho minimo para o produtor " + producer.getId());
-            for (Localizacao localizacao : totalPath) {
-                System.out.println(cpeStore.getCPEbyID(localizacao.getLocID()));
+            for (int j = 0; j < totalPath.size() - 1; j++) {
+                Localizacao current = totalPath.get(j);
+                Localizacao nextLocation = totalPath.get(j + 1);
+                System.out.println(cpeStore.getCPEbyID(current.getLocID()) + " -> " +
+                        cpeStore.getCPEbyID(nextLocation.getLocID()) + ": " +
+                        graph.edge(current, nextLocation).getWeight());
             }
-       }
+
+        }
     }
 }
