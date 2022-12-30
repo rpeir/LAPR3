@@ -73,7 +73,7 @@ public class MinimumRouteController {
 //        }
         // print info
         for (Map.Entry<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> entry : map.entrySet()) {
-            System.out.println(entry.getKey().getId() + " -> " + entry.getValue());
+            System.out.println(entry.getKey().getId() + " -> Hubs por onde tem de passar: " + entry.getValue());
         }
         // para cada produtor
         Graph<Localizacao, Integer> graph = app.getGraph();
@@ -131,6 +131,6 @@ public class MinimumRouteController {
             for (Localizacao localizacao : totalPath) {
                 System.out.println(localizacao.getLocID());
             }
-               }
+       }
     }
 }
