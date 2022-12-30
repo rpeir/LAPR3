@@ -39,8 +39,9 @@ public class MinimumRouteController {
         ClienteProdutorEmpresa hub2 = cpeStore.getCPE("E2");
         ClienteProdutorEmpresa hub3 = cpeStore.getCPE("E3");
         ClienteProdutorEmpresa hub4 = cpeStore.getCPE("E4");
+        ClienteProdutorEmpresa hub5 = cpeStore.getCPE("E5");
 
-        map.put(produtor, Arrays.asList(hub2, hub3, hub4));
+        map.put(produtor, Arrays.asList(hub2, hub3, hub4, hub5));
 //        //para cada produtor diferente na lista de cabazes
 //        for (Cabaz cabaz : listaDeCabazesDia) {
 //            produtores = cabaz.getProdutores();
@@ -119,6 +120,7 @@ public class MinimumRouteController {
                     break;
                 }
             }
+            // remover os duplicados adjacentes
             int i = 1;
             while (i < totalPath.size()) {
                 if (totalPath.get(i).equals(totalPath.get(i-1))) {
@@ -129,7 +131,7 @@ public class MinimumRouteController {
         }
             System.out.println("Caminho minimo para o produtor " + producer.getId());
             for (Localizacao localizacao : totalPath) {
-                System.out.println(localizacao.getLocID());
+                System.out.println(cpeStore.getCPEbyID(localizacao.getLocID()));
             }
        }
     }
