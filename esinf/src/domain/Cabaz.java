@@ -71,9 +71,9 @@ public class Cabaz extends Pedido{
     }
 
     @Override
-    public String toString() {
-        return "Cabaz{" +
-                "cliente=" + getClienteProdutor() +
-                '}';
+    public void toString(StringBuilder sb) {
+        sb.append("Cabaz{");
+        sb.append("cliente=").append(getClienteProdutor());
+        sb.append('}');
     }
 }
