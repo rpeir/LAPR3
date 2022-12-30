@@ -41,7 +41,7 @@ public class MinimumRouteController {
         ClienteProdutorEmpresa hub4 = cpeStore.getCPE("E4");
         ClienteProdutorEmpresa hub5 = cpeStore.getCPE("E5");
 
-        map.put(produtor, Arrays.asList(hub2, hub3, hub4, hub5));
+        map.put(produtor, Arrays.asList(hub2, hub3, hub4));
 //        //para cada produtor diferente na lista de cabazes
 //        for (Cabaz cabaz : listaDeCabazesDia) {
 //            produtores = cabaz.getProdutores();
@@ -91,6 +91,7 @@ public class MinimumRouteController {
             Localizacao currentLocation = producer.getLocalizacao();
             // contem o caminho final para este produtor
             List<Localizacao> totalPath = new ArrayList<>();
+            int distanciaTotal = 0;
             // enquanto nao tiver visitado todos os hubs
             while (!hubs.isEmpty()) {
                 // encontrar o menor dos menores caminhos desde o current location ate aos hubs
@@ -115,6 +116,7 @@ public class MinimumRouteController {
                     hubs.remove(nextHub);
                     // adicionar o caminho minimo encontrado a lista de caminhos
                     totalPath.addAll(caminhoMinimo);
+                    distanciaTotal += minDistance;
                 } else {
                     // sair do loop quando todos os hubs ja foram visitados
                     break;
@@ -129,6 +131,7 @@ public class MinimumRouteController {
                     i++;
                 }
         }
+            System.out.println("Distancia total: " + distanciaTotal);
             System.out.println("Caminho minimo para o produtor " + producer.getId());
             for (Localizacao localizacao : totalPath) {
                 System.out.println(cpeStore.getCPEbyID(localizacao.getLocID()));
