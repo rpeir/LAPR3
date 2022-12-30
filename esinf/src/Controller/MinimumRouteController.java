@@ -1,5 +1,6 @@
 package Controller;
 
+import domain.CaminhoMinimo;
 import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Algorithms;
@@ -25,7 +26,8 @@ public class MinimumRouteController {
         listaExpedicoesStore = app.getListaExpedicoesStore();
     }
 
-    public void getMinimumRoute(int dia) {
+    public List<CaminhoMinimo> getMinimumRoute(int dia) {
+        List<CaminhoMinimo> caminhos = new ArrayList<>();
 //        ListaExpedicoes listaExpedicoes = listaExpedicoesStore.getExpedicao(dia);
 //        List<String> produtores;
 //        List<Cabaz> listaDeCabazesDia = listaExpedicoes.get_listaExpedicoes();
@@ -129,16 +131,21 @@ public class MinimumRouteController {
                     i++;
                 }
             }
+            List<Integer> distances = new ArrayList<>();
+            CaminhoMinimo caminhoMinimoFinal = new CaminhoMinimo(cpeStore.getCPE(producer.getId()), totalPath, distanciaTotal, distances);
             System.out.println("Distancia total: " + distanciaTotal);
             System.out.println("Caminho minimo para o produtor " + producer.getId());
             for (int j = 0; j < totalPath.size() - 1; j++) {
                 Localizacao current = totalPath.get(j);
                 Localizacao nextLocation = totalPath.get(j + 1);
+                distances.add(graph.edge(current, nextLocation).getWeight());
                 System.out.println(cpeStore.getCPEbyID(current.getLocID()) + " -> " + cpeStore.getCPEbyID(nextLocation.getLocID()) +
                         //" Cabazes a entregar " + listaExpedicoesStore.cabazesASerEntregues(dia, cpeStore.getCPEbyID(nextLocation.getLocID()).getId(), producer.getId()) +
                         "Distancia : " + graph.edge(current, nextLocation).getWeight());
             }
-
+            caminhoMinimoFinal.setDistancias(distances);
+            caminhos.add(caminhoMinimoFinal);
         }
+        return caminhos;
     }
 }
