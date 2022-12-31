@@ -78,7 +78,7 @@ int main() {
     if(choice==1) {
 
     // Open the CSV file
-    FILE* file = fopen("sensors.csv", "r");
+    FILE* file = fopen("sensores.csv", "r");
     if (file == NULL) {
     perror("Error opening file");
     return 1;
