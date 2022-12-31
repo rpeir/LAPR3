@@ -62,32 +62,36 @@ void parse_sensor_line(char* line, Sensor* sensor) {
 
     // Calculate the size of the readings array
     sensor->readings_size = 86400 / sensor->frequency; // 86400 seconds in a day
-
+    int n = 5; //?
     //fill readings array here
     unsigned short* leituras;
     //switch case para cada tipo de sensor
     switch (sensor->sensor_type) {
         case 'T':
-            leituras = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, );
+            leituras = (unsigned short*)createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
             break;
         case 'V':
-
+            leituras = (unsigned short*)createArrayVelVento(sensor->max_limit, sensor->min_limit, sensor->frequency, n)
             break;
         case 'D':
-            leituras = createArrayDirVento(sensor->max_limit, sensor->min_limit, sensor->frequency, );
+            leituras = (unsigned short*)createArrayDirVento(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
             break;
         case 'H':
-
+            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            unsigned char pluvio = createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
+            leituras = (unsigned short*)createArrayHumdSolo(sensor->max_limit, sensor->min_limit, sensor->frequency, n, pluvio);
             break;
         case 'S':
-
+            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            unsigned char pluvio = createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
+            leituras = (unsigned short*)createArrayHumdSolo(sensor->max_limit, sensor->min_limit, sensor->frequency, n, pluvio);
             break;
         case 'P':
-            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, );
-            leituras = (unsigned short*)createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, ,temps);
+            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            leituras = (unsigned short*)createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
             break;
     }
-    sensor->readings =
+    sensor->readings = leituras;
 
     free(line_copy);
 }
@@ -138,29 +142,36 @@ int main() {
                 scanf("%d", &sensor.frequency);
                 sensor.readings_size = 86400 / sensor.frequency;
                 //fill readings array here
-                    //switch case para cada tipo de sensor
-                    switch (sensor->sensor_type) {
-                        case 'T':
+                //switch case para cada tipo de sensor
 
-                            break;
-                        case 'V':
-
-                            break;
-                        case 'D':
-
-                            break;
-                        case 'H':
-
-                            break;
-                        case 'S':
-
-                            break;
-                        case 'P':
-
-                            break;
-                    }
-                    sensor->readings =
-                    add_sensor_to_list(sensor);
+    int n = 5; //?
+    switch (sensor->sensor_type) {
+        case 'T':
+            leituras = (unsigned short*)createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            break;
+        case 'V':
+            leituras = (unsigned short*)createArrayVelVento(sensor->max_limit, sensor->min_limit, sensor->frequency, n)
+            break;
+        case 'D':
+            leituras = (unsigned short*)createArrayDirVento(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            break;
+        case 'H':
+            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            unsigned char pluvio = createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
+            leituras = (unsigned short*)createArrayHumdSolo(sensor->max_limit, sensor->min_limit, sensor->frequency, n, pluvio);
+            break;
+        case 'S':
+            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            unsigned char pluvio = createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
+            leituras = (unsigned short*)createArrayHumdSolo(sensor->max_limit, sensor->min_limit, sensor->frequency, n, pluvio);
+            break;
+        case 'P':
+            char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            leituras = (unsigned short*)createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
+            break;
+    }
+    sensor->readings = leituras;
+    add_sensor_to_list(sensor);
             }
         }
         else {
