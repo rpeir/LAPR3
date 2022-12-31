@@ -1,23 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-//////////////////////////////////////////////////////////////////////////////////
+#include "sens_temp.h"
+#include "sens_velc_vento.h"
+#include "sens_dir_vento.h"
+#include "sens_humd_atm.h"
+#include "sens_humd_solo.h"
+#include "sens_pluvio.h"
+#include "pcg32_random_r.h"
 #define INITIAL_ARRAY_SIZE 10
 
-Sensor* sensors = malloc(INITIAL_ARRAY_SIZE * sizeof(Sensor));
-int num_sensors = 0;
-int array_size = INITIAL_ARRAY_SIZE;
-
-void add_sensor_to_list(Sensor sensor) {
-    if (num_sensors == array_size) {
-    array_size *= 2;
-    sensors = realloc(sensors, array_size * sizeof(Sensor));
-    }
-
-    sensors[num_sensors] = sensor;
-    num_sensors++;
-}
 /////////////////////////////////////////////////////////////////////////////////
 
 typedef struct
@@ -31,7 +23,20 @@ typedef struct
     unsigned short *readings; // array de leituras diárias
     ... // adicionar o que acharem conveniente
 } Sensor;
+//////////////////////////////////////////////////////////////////////////////////
 
+void add_sensor_to_list(Sensor sensor) {
+    Sensor* sensors = malloc(INITIAL_ARRAY_SIZE * sizeof(Sensor));
+    int num_sensors = 0;
+    int array_size = INITIAL_ARRAY_SIZE;
+    if (num_sensors == array_size) {
+    array_size *= 2;
+    sensors = realloc(sensors, array_size * sizeof(Sensor));
+    }
+
+    sensors[num_sensors] = sensor;
+    num_sensors++;
+}
 
 void parse_sensor_line(char* line, Sensor* sensor) {
     char* token;
