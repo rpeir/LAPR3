@@ -63,6 +63,69 @@ void parse_sensor_line(char* line, Sensor* sensor) {
     sensor->readings = malloc(sensor->readings_size * sizeof(unsigned short));
 
     //fill readings array here
+    unsigned short leituras[sensor->readings_size];
+    //switch case para cada tipo de sensor
+    switch (sensor->sensor_type) {
+        case 'T':
+            char ult_temp = 14;
+            for (int i = 0; i < sensor->readings_size; i++) {
+                char comp_rand = (char) pcg32_random_r();
+                char nov_temp = sens_temp(ult_temp,comp_rand);
+                ult_temp = nov_temp;
+                leituras[i] = (unsigned short)nov_temp;
+            }
+            break;
+        case 'V':
+            char ult_velc_vento = 14;
+            for (int i = 0; i < sensor->readings_size; i++) {
+                char comp_rand = (char) pcg32_random_r();
+                char nov_velc_vento = sens_velc_vento(ult_velc_vento,comp_rand);
+                ult_velc_vento = nov_velc_vento;
+                leituras[i] = (unsigned short)nov_velc_vento;
+            }
+            break;
+        case 'D':
+            unsigned short ult_dir_vento = 14;
+            for (int i = 0; i < sensor->readings_size; i++) {
+                short comp_rand = (short) pcg32_random_r();
+                unsigned short nov_dir_vento = sens_dir_vento(ult_dir_vento,comp_rand);
+                ult_dir_vento = nov_dir_vento;
+                leituras[i] = (unsigned short)nov_dir_vento;
+            }
+            break;
+        case 'H':
+            unsigned char ult_hmd_atm = 14;
+            ult_pluvio = 0;
+            for (int i = 0; i < sensor->readings_size; i++) {
+                short comp_rand = (short) pcg32_random_r();
+                unsigned short nov_dir_vento = sens_dir_vento(ult_dir_vento, comp_rand);
+                ult_dir_vento = nov_dir_vento;
+                leituras[i] = (unsigned short)nov_dir_vento;
+            }
+            break;
+        case 'S':
+            unsigned char ult_hmd_solo = 14;
+            unsigned char ult_pluvio = 0;
+            for (int i = 0; i < sensor->readings_size; i++) {
+                char comp_rand = (char) pcg32_random_r();
+                unsigned char nov_hmd_solo = sens_humd_solo(ult_hmd_solo, ult_pluvio, comp_rand);
+                ult_hmd_solo = nov_hmd_solo;
+                leituras[i] = (unsigned short)nov_hmd_solo;
+            }
+            break;
+        case 'P':
+            ult_temp = 14;
+            ult_pluvio = 0;
+            for (int i = 0; i < sensor->readings_size; i++) {
+                char comp_rand = (char) pcg32_random_r();
+                unsigned char nov_pluvio = sens_pluvio(ult_hmd_solo, ult_temp, comp_rand);
+                ult_pluvio = nov_pluvio;
+                leituras[i] = (unsigned short)nov_pluvio;
+            }
+            break;
+    }
+    unsigned short* leituras_ptr = leituras;
+    sensor->readings = leituras_ptr;
 
     free(line_copy);
 }
