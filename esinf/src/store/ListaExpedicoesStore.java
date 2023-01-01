@@ -83,5 +83,30 @@ public class ListaExpedicoesStore {
 
         return cabazesASerEntregues;
     }
+
+    // mapa de Produtor, Lista de Hubs a serem visitados por esse produtor
+    public Map<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> hubsASerVisitados(ListaExpedicoes expedicao) {
+        Map<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> hubsASerVisitados = new HashMap<>();
+        List<Cabaz> cabazesDestaExp = expedicao.get_listaExpedicoes();
+        for (Cabaz cabaz : cabazesDestaExp) {
+            ClienteProdutorEmpresa cliente = cpeStore.getCPE(cabaz.getClienteProdutor());
+            ClienteProdutorEmpresa hubDoCliente = closestHubController.getClosestHub(cliente);
+            List<String> produtoresCabaz = cabaz.getProdutores();
+            for(String prod : produtoresCabaz) {
+                ClienteProdutorEmpresa produtor = cpeStore.getCPE(prod);
+                if(hubsASerVisitados.containsKey(produtor)) {
+                    List<ClienteProdutorEmpresa> hubs = hubsASerVisitados.get(produtor);
+                    if(!hubs.contains(hubDoCliente)) {
+                        hubs.add(hubDoCliente);
+                    }
+                } else {
+                    List<ClienteProdutorEmpresa> hubs = new ArrayList<>();
+                    hubs.add(hubDoCliente);
+                    hubsASerVisitados.put(produtor, hubs);
+                }
+            }
+        }
+        return hubsASerVisitados;
+    }
 }
 

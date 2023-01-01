@@ -145,6 +145,7 @@ int main() {
                 //switch case para cada tipo de sensor
 
     int n = 5; //?
+
     switch (sensor->sensor_type) {
         case 'T':
             leituras = (unsigned short*)createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);

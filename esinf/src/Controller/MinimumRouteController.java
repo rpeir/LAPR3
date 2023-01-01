@@ -28,10 +28,7 @@ public class MinimumRouteController {
 
     public List<CaminhoMinimo> getMinimumRoute(int dia) {
         List<CaminhoMinimo> caminhos = new ArrayList<>();
-//        ListaExpedicoes listaExpedicoes = listaExpedicoesStore.getExpedicao(dia);
-//        List<String> produtores;
-//        List<Cabaz> listaDeCabazesDia = listaExpedicoes.get_listaExpedicoes();
-//        List<Cabaz> listaDeCabazesDiaAux = listaExpedicoes.get_listaExpedicoes();
+
         // Produtor, Hub
         Map<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> map = new HashMap<>();
         // teste
@@ -40,38 +37,9 @@ public class MinimumRouteController {
         ClienteProdutorEmpresa hub3 = cpeStore.getCPE("E3");
         ClienteProdutorEmpresa hub4 = cpeStore.getCPE("E4");
         ClienteProdutorEmpresa hub5 = cpeStore.getCPE("E5");
-
         map.put(produtor, Arrays.asList(hub2, hub3, hub4));
-//        //para cada produtor diferente na lista de cabazes
-//        for (Cabaz cabaz : listaDeCabazesDia) {
-//            produtores = cabaz.getProdutores();
-//            String clienteString = cabaz.getClienteProdutor();
-//            //cliente do cabaz
-//            ClienteProdutorEmpresa cliente = cpeStore.getCPE(clienteString);
-//            // hub do cabaz
-//            ClienteProdutorEmpresa hubCabaz = ctrl.getClosestHub(cliente);
-//            for (String produtor : produtores) {
-//                ArrayList<ClienteProdutorEmpresa> listaHubsDoProdutor = new ArrayList<>();
-//                listaHubsDoProdutor.add(hubCabaz);
-//                //produtor do cabaz
-//                ClienteProdutorEmpresa cpe = cpeStore.getCPE(produtor);
-//                // se o produtor nao estiver na lista de produtores
-//                if (!map.containsKey(cpe)) {
-//                    // iterar sobre a lista de cabazes do dia
-//                    for(Cabaz cabazAux : listaDeCabazesDiaAux) {
-//                        // verificar se o produtor está em mais algum cabaz
-//                        if (cabazAux.getProdutores().contains(produtor)) {
-//                            // se estiver, adicionar o hub do cabaz a lista de hubs do produtor
-//                            ClienteProdutorEmpresa hubCabazAux = ctrl.getClosestHub(cpeStore.getCPE(cabazAux.getClienteProdutor()));
-//                            if (!listaHubsDoProdutor.contains(hubCabazAux)) {
-//                                listaHubsDoProdutor.add(hubCabazAux);
-//                            }
-//                        }
-//                    }
-//                    map.put(cpe, listaHubsDoProdutor);
-//                }
-//            }
-//        }
+        //
+        //map = listaExpedicoesStore.hubsASerVisitados(listaExpedicoesStore.getExpedicao(dia));
         // print info
         for (Map.Entry<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> entry : map.entrySet()) {
             System.out.println(entry.getKey().getId() + " -> Hubs por onde tem de passar: " + entry.getValue());
