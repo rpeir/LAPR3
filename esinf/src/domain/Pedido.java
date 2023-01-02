@@ -3,7 +3,7 @@ package domain;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Pedido {
+public class Pedido {
 
     private String clienteProdutorEmpresa;
 
@@ -63,6 +63,5 @@ public abstract class Pedido {
         return produtos.get(i);
     }
 
-    public abstract void toString(StringBuilder sb);
 }
 

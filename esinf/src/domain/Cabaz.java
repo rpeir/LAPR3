@@ -70,10 +70,4 @@ public class Cabaz extends Pedido{
         return count > 0 && count < thisProdutores.size();
     }
 
-    @Override
-    public void toString(StringBuilder sb) {
-        sb.append("Cabaz{");
-        sb.append("cliente=").append(getClienteProdutor());
-        sb.append('}');
-    }
 }
