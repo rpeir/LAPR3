@@ -1,9 +1,4 @@
 package store;
-
-import Controller.App;
-import Controller.ClosestHubController;
-import domain.Cabaz;
-import domain.ClienteProdutorEmpresa;
 import domain.Pedido;
 import domain.ListaExpedicoes;
 
@@ -11,15 +6,9 @@ import java.util.*;
 
 public class ListaExpedicoesStore {
     private Map<Integer, ListaExpedicoes> expedicoes;
-    ClienteProdutorEmpresaStore cpeStore;
-    App app;
-    ClosestHubController closestHubController;
 
     public ListaExpedicoesStore() {
-        app = App.getInstance();
         expedicoes = new HashMap<>();
-        cpeStore = app.getClienteProdutorEmpresaStore();
-        closestHubController = new ClosestHubController();
     }
     public Map<Integer, ListaExpedicoes> getExpedicoes() {
         return expedicoes;
@@ -58,55 +47,5 @@ public class ListaExpedicoesStore {
         return listaExpedicoesDia;
     }
 
-    public List<Cabaz> cabazesASerEntregues(int dia, String idHub, String idProd) {
-        List<Cabaz> cabazesASerEntregues = new ArrayList<>();
-        ListaExpedicoes espedicaoDia = expedicoes.get(dia);
-        List<Cabaz> cabazesDestaExp = espedicaoDia.get_listaExpedicoes();
-        List<Cabaz> cabazesDestaExpNesteHub = new ArrayList<>();
-        for (Cabaz cabaz : cabazesDestaExp) {
-            ClienteProdutorEmpresa cliente = cpeStore.getCPE(cabaz.getClienteProdutor());
-            ClienteProdutorEmpresa hubDoCliente = closestHubController.getClosestHub(cliente);
-            if(hubDoCliente.getId().equals(idHub)) {
-                cabazesDestaExpNesteHub.add(cabaz);
-            }
-
-        }
-        for (Cabaz cabaz : cabazesDestaExpNesteHub) {
-            List<String> produtoresCabaz = cabaz.getProdutores();
-            for(String prod : produtoresCabaz) {
-                if(prod.equals(idProd) && !cabazesASerEntregues.contains(cabaz)) {
-                    cabazesASerEntregues.add(cabaz);
-                }
-            }
-
-        }
-
-        return cabazesASerEntregues;
-    }
-
-    // mapa de Produtor, Lista de Hubs a serem visitados por esse produtor
-    public Map<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> hubsASerVisitados(ListaExpedicoes expedicao) {
-        Map<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> hubsASerVisitados = new HashMap<>();
-        List<Cabaz> cabazesDestaExp = expedicao.get_listaExpedicoes();
-        for (Cabaz cabaz : cabazesDestaExp) {
-            ClienteProdutorEmpresa cliente = cpeStore.getCPE(cabaz.getClienteProdutor());
-            ClienteProdutorEmpresa hubDoCliente = closestHubController.getClosestHub(cliente);
-            List<String> produtoresCabaz = cabaz.getProdutores();
-            for(String prod : produtoresCabaz) {
-                ClienteProdutorEmpresa produtor = cpeStore.getCPE(prod);
-                if(hubsASerVisitados.containsKey(produtor)) {
-                    List<ClienteProdutorEmpresa> hubs = hubsASerVisitados.get(produtor);
-                    if(!hubs.contains(hubDoCliente)) {
-                        hubs.add(hubDoCliente);
-                    }
-                } else {
-                    List<ClienteProdutorEmpresa> hubs = new ArrayList<>();
-                    hubs.add(hubDoCliente);
-                    hubsASerVisitados.put(produtor, hubs);
-                }
-            }
-        }
-        return hubsASerVisitados;
-    }
 }
 

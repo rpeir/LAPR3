@@ -108,7 +108,6 @@ public class MinimumRouteController {
                 Localizacao nextLocation = totalPath.get(j + 1);
                 distances.add(graph.edge(current, nextLocation).getWeight());
                 System.out.println(cpeStore.getCPEbyID(current.getLocID()) + " -> " + cpeStore.getCPEbyID(nextLocation.getLocID()) +
-                        //" Cabazes a entregar " + listaExpedicoesStore.cabazesASerEntregues(dia, cpeStore.getCPEbyID(nextLocation.getLocID()).getId(), producer.getId()) +
                         "Distancia : " + graph.edge(current, nextLocation).getWeight());
             }
             caminhoMinimoFinal.setDistancias(distances);
