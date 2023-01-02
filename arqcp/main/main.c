@@ -3,6 +3,8 @@
 #include "../US103/dailyValues.h"
 #include "../US103/createMatrix.h"
 #include "../Constants.h"
+#include "../US112/write_sensor_file.h"
+#include "../US112/write_matrix_file.h"
 
 int main() {
     int n = 5;
@@ -29,5 +31,30 @@ int main() {
     for (int sensor = 0; sensor < 6; sensor++) {
         printf("%s: %d, %d, %d %s\n", sens_names[sensor], matrix[sensor][0], matrix[sensor][1], matrix[sensor][2], sens_units[sensor]);
     }
+    //test write_sensor_file & write_matrix_file
+    Sensor sensor;
+    sensor.id = 1;
+    sensor.sensor_type = 'c';
+    sensor.max_limit = 100;
+    sensor.min_limit = 0;
+    sensor.frequency = 1;
+    sensor.readings_size = 3;
+    unsigned short readings[3] = {1, 2, 3};
+    sensor.readings = readings;
+
+    Sensor sensor2;
+    sensor2.id = 2;
+    sensor2.sensor_type = 'b';
+    sensor2.max_limit = 110;
+    sensor2.min_limit = 2;
+    sensor2.frequency = 2;
+    sensor2.readings_size = 4;
+    unsigned short readings2[4] = {1, 2, 3, 4};
+    sensor2.readings = readings2;
+
+    write_sensor_file(&sensor);
+    write_sensor_file(&sensor2);
+    write_matrix_file(matrix);
+    //end test
     return 0;
 }

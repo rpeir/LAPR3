@@ -43,7 +43,7 @@ public class ListaExpedicoesStore {
     }
     public List<Pedido> getListaExpedicoesDia(int dia, HashMap<Integer,ListaExpedicoes>expedicoes) {
         List<Pedido> listaExpedicoesDia = new ArrayList<>();
-        for (Pedido pedido : listaCabazes) {
+        for (Pedido pedido : listaExpedicoesDia) {
             if (pedido.getDiaDeProducao() == dia) {
                 listaExpedicoesDia.add(pedido);
             }

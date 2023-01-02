@@ -37,8 +37,16 @@ createMatrix.o: ../US103/createMatrix.c
 dailyValues.o: ../US103/dailyValues.c
 	gcc -Wall -c ../US103/dailyValues.c -g -o dailyValues.o
 
-main: main.o us102 us103 us104 Constants.o
-	gcc -g -Wall Constants.o main.o pcg32_random_r.o createMatrix.o dailyValues.o sens_pluvio.o sens_humd_solo.o sens_humd_atm.o sens_dir_vento.o sens_velc_vento.o sens_temp.o checkValueInRange.o createArray.o -o main
+us112: write_matrix_file.o write_sensor_file.o
+
+write_matrix_file.o: ../US112/write_matrix_file.c
+	gcc -Wall -c ../US112/write_matrix_file.c -g -o write_matrix_file.o
+
+write_sensor_file.o: ../US112/write_sensor_file.c
+	gcc -Wall -c ../US112/write_sensor_file.c -g -o write_sensor_file.o
+
+main: main.o us102 us103 us104 us112 Constants.o
+	gcc -g -Wall Constants.o main.o pcg32_random_r.o createMatrix.o dailyValues.o sens_pluvio.o sens_humd_solo.o sens_humd_atm.o sens_dir_vento.o sens_velc_vento.o sens_temp.o checkValueInRange.o createArray.o write_matrix_file.o write_sensor_file.o -o main
 	
 main.o: main.c
 	gcc -g -Wall -c main.c -o main.o
