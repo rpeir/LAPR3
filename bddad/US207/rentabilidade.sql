@@ -30,4 +30,3 @@ BEGIN
 	CLOSE c_culturas;
 	end if;
 END;
-/
