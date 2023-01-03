@@ -26,93 +26,130 @@ public class MinimumRouteController {
         listaExpedicoesStore = app.getListaExpedicoesStore();
     }
 
-    public List<CaminhoMinimo> getMinimumRoute(int dia) {
-        List<CaminhoMinimo> caminhos = new ArrayList<>();
-
+    public List<Localizacao> getMinimumRoute(int dia) {
         // Produtor, Hub
         Map<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> map = new HashMap<>();
         // teste
         ClienteProdutorEmpresa produtor = cpeStore.getCPE("P3");
+        ClienteProdutorEmpresa hub1 = cpeStore.getCPE("E1");
         ClienteProdutorEmpresa hub2 = cpeStore.getCPE("E2");
         ClienteProdutorEmpresa hub3 = cpeStore.getCPE("E3");
         ClienteProdutorEmpresa hub4 = cpeStore.getCPE("E4");
         ClienteProdutorEmpresa hub5 = cpeStore.getCPE("E5");
+        ClienteProdutorEmpresa produtor2 = cpeStore.getCPE("P2");
         map.put(produtor, Arrays.asList(hub2, hub3, hub4));
+        map.put(produtor2, Arrays.asList(hub2, hub3, hub5, hub1));
         //
         //map = listaExpedicoesStore.hubsASerVisitados(listaExpedicoesStore.getExpedicao(dia));
-        // print info
-        for (Map.Entry<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> entry : map.entrySet()) {
-            System.out.println(entry.getKey().getId() + " -> Hubs por onde tem de passar: " + entry.getValue());
-        }
         // para cada produtor
         Graph<Localizacao, Integer> graph = app.getGraph();
+        List<ClienteProdutorEmpresa> produtores = new ArrayList<>();
+        List<Localizacao> totalPath = new ArrayList<>();
         for (Map.Entry<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> entry : map.entrySet()) {
-            //para cada produtor
-            ClienteProdutorEmpresa producer = entry.getKey();
-            // criar um grafo com os hubs do produtor
-            List<ClienteProdutorEmpresa> hubs = new ArrayList<>(entry.getValue());
-            // criar um caminho minimo entre nodes
-            LinkedList<Localizacao> caminhoMinimo = new LinkedList<>();
-            // para cada produtor, criar uma lista de hubs ja visitados
-            List<ClienteProdutorEmpresa> hubsAlreadyVisited = new ArrayList<>();
-            // comecar com o produtor
-            Localizacao currentLocation = producer.getLocalizacao();
-            // contem o caminho final para este produtor
-            List<Localizacao> totalPath = new ArrayList<>();
-            int distanciaTotal = 0;
-            // enquanto nao tiver visitado todos os hubs
-            while (!hubs.isEmpty()) {
-                // encontrar o menor dos menores caminhos desde o current location ate aos hubs
-                ClienteProdutorEmpresa nextHub = null;
-                int minDistance = Integer.MAX_VALUE;
-                for (ClienteProdutorEmpresa hub : hubs) {
-                    if (!hubsAlreadyVisited.contains(hub)) {
-                        // short caminhoMinimo desde o current location ate ao hub
-                        LinkedList<Localizacao> shortPath = new LinkedList<>();
-                        Integer distance = Algorithms.shortestPath(graph, currentLocation, hub.getLocalizacao(), Integer::compare, Integer::sum, 0, shortPath);
-                        if (distance != null && distance < minDistance) {
-                            nextHub = hub;
-                            minDistance = distance;
-                            caminhoMinimo = shortPath;
-                        }
-                    }
-                }
-                if (nextHub != null) {
-                    // atualizar o current location e o hub visitado
-                    currentLocation = nextHub.getLocalizacao();
-                    hubsAlreadyVisited.add(nextHub);
-                    hubs.remove(nextHub);
-                    // adicionar o caminho minimo encontrado a lista de caminhos
-                    totalPath.addAll(caminhoMinimo);
-                    distanciaTotal += minDistance;
-                } else {
-                    // sair do loop quando todos os hubs ja foram visitados
-                    break;
-                }
-            }
-            // remover os duplicados adjacentes
-            int i = 1;
-            while (i < totalPath.size()) {
-                if (totalPath.get(i).equals(totalPath.get(i - 1))) {
-                    totalPath.remove(i);
-                } else {
-                    i++;
-                }
-            }
-            List<Integer> distances = new ArrayList<>();
-            CaminhoMinimo caminhoMinimoFinal = new CaminhoMinimo(cpeStore.getCPE(producer.getId()), totalPath, distanciaTotal, distances);
-            System.out.println("Distancia total: " + distanciaTotal);
-            System.out.println("Caminho minimo para o produtor " + producer.getId());
-            for (int j = 0; j < totalPath.size() - 1; j++) {
-                Localizacao current = totalPath.get(j);
-                Localizacao nextLocation = totalPath.get(j + 1);
-                distances.add(graph.edge(current, nextLocation).getWeight());
-                System.out.println(cpeStore.getCPEbyID(current.getLocID()) + " -> " + cpeStore.getCPEbyID(nextLocation.getLocID()) +
-                        "Distancia : " + graph.edge(current, nextLocation).getWeight());
-            }
-            caminhoMinimoFinal.setDistancias(distances);
-            caminhos.add(caminhoMinimoFinal);
+            //  colocar produtores numa lista
+            produtores.add(entry.getKey());
         }
-        return caminhos;
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        int distanciaTotal = 0;
+        LinkedList<Localizacao> caminhoMinimoEntreProdutores = new LinkedList<>();
+        //iterar sobre a lista de produtores
+        Localizacao current = produtores.get(0).getLocalizacao();
+        while (!produtores.isEmpty()) {
+            int minDistance = Integer.MAX_VALUE;
+            Localizacao nextProd = null;
+            LinkedList<Localizacao> path = new LinkedList<>();
+            for (int i = 0; i < produtores.size()-1; i++) {
+                Localizacao next = produtores.get(i+1).getLocalizacao();
+                LinkedList<Localizacao> shortPath = new LinkedList<>();
+                Integer distance = Algorithms.shortestPath(graph, current, next, Integer::compare, Integer::sum, 0, shortPath);
+                if (distance != null && distance < minDistance) {
+                    minDistance = distance;
+                    nextProd = next;
+                    path = shortPath;
+                }
+            }
+            if (nextProd != null) {
+                distanciaTotal += minDistance;
+                caminhoMinimoEntreProdutores.addAll(path);
+                current = nextProd;
+                produtores.remove(cpeStore.getCPEbyID(nextProd.getLocID()));
+                produtores.removeIf(p -> caminhoMinimoEntreProdutores.contains(p.getLocalizacao()));
+            }else {
+                // sair do loop quando todos os hubs ja foram visitados
+                break;
+            }
+        }
+        int i = 1;
+        while (i < caminhoMinimoEntreProdutores.size()) {
+            if (caminhoMinimoEntreProdutores.get(i).equals(caminhoMinimoEntreProdutores.get(i - 1))) {
+                caminhoMinimoEntreProdutores.remove(i);
+            } else {
+                i++;
+            }
+        }
+        totalPath.addAll(caminhoMinimoEntreProdutores);
+        List<ClienteProdutorEmpresa> hubs = new ArrayList<>();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        for (Map.Entry<ClienteProdutorEmpresa, List<ClienteProdutorEmpresa>> entry : map.entrySet()) {
+            for (ClienteProdutorEmpresa hub : entry.getValue()) {
+                if (!hubs.contains(hub)) {
+                    hubs.add(hub);
+                }
+            }
+        }
+        int distanciaTotal2 = 0;
+        LinkedList<Localizacao> caminhoMinimoEntreHubs = new LinkedList<>();
+        //ultima posicao do caminho minimo entre produtores
+        Localizacao current2 = totalPath.get(totalPath.size() - 1);
+        while (!hubs.isEmpty()) {
+            int minDistance2 = Integer.MAX_VALUE;
+            Localizacao nextHub = null;
+            LinkedList<Localizacao> path = new LinkedList<>();
+            for (int j = 0; j < hubs.size(); j++) {
+                Localizacao next2 = hubs.get(j).getLocalizacao();
+                LinkedList<Localizacao> shortPath = new LinkedList<>();
+                Integer distance2 = Algorithms.shortestPath(graph, current2, next2, Integer::compare, Integer::sum, 0, shortPath);
+                if (distance2 != null && distance2 < minDistance2) {
+                    minDistance2 = distance2;
+                    nextHub = next2;
+                    path = shortPath;
+                }
+            }
+            if (nextHub != null) {
+                distanciaTotal2 += minDistance2;
+                caminhoMinimoEntreHubs.addAll(path);
+                current2 = nextHub;
+                hubs.remove(cpeStore.getCPEbyID(nextHub.getLocID()));
+                hubs.removeIf(h -> caminhoMinimoEntreHubs.contains(h.getLocalizacao()));
+            }else {
+                // sair do loop quando todos os hubs ja foram visitados
+                break;
+            }
+        }
+        int j = 1;
+        while (j < caminhoMinimoEntreHubs.size()) {
+            if (caminhoMinimoEntreHubs.get(j).equals(caminhoMinimoEntreHubs.get(j - 1))) {
+                caminhoMinimoEntreHubs.remove(j);
+            } else {
+                j++;
+            }
+        }
+        totalPath.addAll(caminhoMinimoEntreHubs);
+        int y = 1;
+        while (y < totalPath.size()) {
+            if (totalPath.get(y).equals(totalPath.get(y - 1))) {
+                totalPath.remove(y);
+            } else {
+                y++;
+            }
+        }
+        int d = distanciaTotal + distanciaTotal2;
+        System.out.println("Distancia total: " + d);
+        System.out.print("Caminho Total: ");
+        for (Localizacao l : totalPath) {
+            System.out.print(cpeStore.getCPEbyID(l.getLocID()) + " ");
+        }
+        return totalPath;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
