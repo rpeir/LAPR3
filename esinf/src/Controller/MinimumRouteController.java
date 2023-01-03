@@ -148,7 +148,7 @@ public class MinimumRouteController {
         System.out.println("Distancia total: " + d);
         System.out.println("Caminho Total: ");
         for (int k = 0; k < totalPath.size(); k++) {
-            System.out.print(cpeStore.getCPEbyID(totalPath.get(k).getLocID()) + " ");
+            System.out.println(cpeStore.getCPEbyID(totalPath.get(k).getLocID()) + " ");
             //if l is in hubs list
             for(ClienteProdutorEmpresa h : hubs){
                 if(totalPath.get(k).equals(h.getLocalizacao())){
