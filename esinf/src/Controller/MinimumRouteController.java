@@ -143,11 +143,23 @@ public class MinimumRouteController {
                 y++;
             }
         }
+        int x = totalPath.size();
         int d = distanciaTotal + distanciaTotal2;
         System.out.println("Distancia total: " + d);
-        System.out.print("Caminho Total: ");
-        for (Localizacao l : totalPath) {
-            System.out.print(cpeStore.getCPEbyID(l.getLocID()) + " ");
+        System.out.println("Caminho Total: ");
+        for (int k = 0; k < totalPath.size(); k++) {
+            System.out.print(cpeStore.getCPEbyID(totalPath.get(k).getLocID()) + " ");
+            //if l is in hubs list
+            for(ClienteProdutorEmpresa h : hubs){
+                if(totalPath.get(k).equals(h.getLocalizacao())){
+                    //System.out.println("Entregar os Cabazes " + listaExpedicoesStore.getCabazPorHub(dia, h);
+                }
+            }
+            if(k < x-1){
+                System.out.println("(Distancia entre " + cpeStore.getCPEbyID(totalPath.get(k).getLocID()) + " e "
+                        + cpeStore.getCPEbyID(totalPath.get(k+1).getLocID()) + ": "
+                        + graph.edge(totalPath.get(k), totalPath.get(k+1)).getWeight() + ")");
+            }
         }
         return totalPath;
     }
