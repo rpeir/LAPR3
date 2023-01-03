@@ -1,6 +1,5 @@
 package Controller;
 
-import domain.CaminhoMinimo;
 import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Algorithms;
