@@ -4,10 +4,7 @@ import domain.Localizacao;
 import domain.WaterController.WaterController;
 import graph.Graph;
 import graph.map.MapGraph;
-import store.ClienteProdutorEmpresaStore;
-import store.HubsStore;
-import store.ListaExpedicoesStore;
-import store.LocalizacaoStore;
+import store.*;
 import store.WaterController.SectorStore;
 
 public class App {
@@ -21,6 +18,18 @@ public class App {
     private WaterController waterController;
     private SectorStore sectorStore;
     private HubsStore hubsStore;
+
+    private PedidosStore pedidosStore;
+
+    private Stock stock;
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public PedidosStore getPedidosStore() {
+        return pedidosStore;
+    }
 
     public SectorStore getSectorStore() {
         return sectorStore;
@@ -50,6 +59,8 @@ public class App {
         sectorStore = new SectorStore();
         leStore = new ListaExpedicoesStore();
         hubsStore = new HubsStore();
+        pedidosStore = new PedidosStore();
+        stock = new Stock();
 
     }
 
