@@ -2,14 +2,15 @@ package UI;
 
 import Controller.ConnectionsController;
 
+import java.util.Scanner;
+
 public class ConnectionsUI implements  Runnable{
 private final ConnectionsController CTRL;
 
     public ConnectionsUI(ConnectionsController CTRL) {
         this.CTRL = CTRL;
     }
-
-    public ConnectionsUI() {
+   public ConnectionsUI() {
         CTRL = new ConnectionsController();
     }
 

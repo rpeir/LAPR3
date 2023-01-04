@@ -50,9 +50,10 @@ public class CreateExpeditionList {
                 int indexProdutor = 0;
                 boolean success = false;
                 do {
-                    if (qtdProduto > 0 && validStock.get(indexProdutor).getProduto(indexProduto) > 0) {
-                        ClienteProdutorEmpresa currentProdutor = App.getInstance().getClienteProdutorEmpresaStore().getCPE(validStock.get(indexProdutor).getClienteProdutor());
-                        if (validStock.get(indexProdutor).getProduto(indexProduto) >= qtdProduto) {
+                    Pedido currentStock = validStock.get(indexProdutor);
+                    if (qtdProduto > 0 && currentStock.getProduto(indexProduto) > 0) {
+                        ClienteProdutorEmpresa currentProdutor = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentStock.getClienteProdutor());
+                        if (currentStock.getProduto(indexProduto) >= qtdProduto) {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
                                     result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
@@ -69,7 +70,7 @@ public class CreateExpeditionList {
                                 result.put(currentCliente, tempMap);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, 0);
-                            validStock.get(indexProdutor).setProdutoByIndex(indexPedido, validStock.get(indexProdutor).getProduto(indexProduto) - qtdProduto);
+                            validStock.get(indexProdutor).setProdutoByIndex(indexPedido, currentStock.getProduto(indexProduto) - qtdProduto);
                             success = true;
                         } else {
                             if (result.containsKey(currentCliente)) {
@@ -77,17 +78,17 @@ public class CreateExpeditionList {
                                     result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, validStock.get(indexProdutor).getProduto(indexProduto)));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, validStock.get(indexProdutor).getProduto(indexProduto)));
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, validStock.get(indexProdutor).getProduto(indexProduto)));
+                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
                                 result.put(currentCliente, tempMap);
                             }
-                            listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, qtdProduto - validStock.get(indexProdutor).getProduto(indexProduto));
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, qtdProduto - currentStock.getProduto(indexProduto));
                             validStock.get(indexProdutor).setProdutoByIndex(indexPedido, 0);
                         }
                     }
