@@ -179,8 +179,45 @@ int main() {
     printf("Deseja inserir mais sensores? (1-Sim | 2-Nao)\n");
     scanf("%d", &opcao);
     if(opcao==1) {
+        printf("Quantos sensores deseja inserir? ");
+        int numSensores;
+        scanf("%d", &numSensores);
+            for(int i=0; i<numSensores; i++) {
+                printf("Insira o tipo de sensor que deseja inserir: ");
+                char tipoSensor;
+                scanf("%c", &tipoSensor);
+                printf("Insira o tipo de sensor: ");
+                unsigned char tipoSensor;
+                scanf("%c", &tipoSensor);
+                printf("Insira a frequencia do sensor: ");
+                unsigned long frequencia;
+                scanf("%lu", &frequencia);
+                switch (tipoSensor) {
+                    case 'T':
 
+                        break;
+                    case 'P':
+
+                        break;
+                    case 'H':
+
+                        break;
+                    case 'S':
+
+                        break;
+                    case 'V':
+
+                        break;
+                    case 'D':
+
+                        break;
+                    default:
+                        printf("Tipo de sensor invalido!\n");
+                        break;
+                    }
+                }
     }
+
     else {
         printf("A sair do programa...\n");
         return 0;
