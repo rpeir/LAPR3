@@ -1,6 +1,7 @@
 package UI;
 
 import Controller.CreateExpeditionListController;
+import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 
 import java.util.AbstractMap;
@@ -22,9 +23,10 @@ public class CreateExpeditionListUI implements Runnable {
         int dia = sc.nextInt();
         System.out.println("Indroduza o número de produtores que podem fornecer produtos na expedição quer criar");
         int n = sc.nextInt();
-        Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> result = CTRL.createExpeditionList(dia,n);
+        Map<ClienteProdutorEmpresa, Cabaz> result = CTRL.createExpeditionList(dia,n);
         for (ClienteProdutorEmpresa cliente: result.keySet()) {
-            Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtoresMap = result.get(cliente);
+            Cabaz cabaz= result.get(cliente);
+            Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtoresMap = cabaz.getProdutorProdutos();
             System.out.println("Cliente: "+ cliente.getId());
             for (ClienteProdutorEmpresa produtor : produtoresMap.keySet()){
                 List<AbstractMap.SimpleEntry<String, Float>> produtoList = produtoresMap.get(produtor);

@@ -34,8 +34,8 @@ public class CreateExpeditionList {
     }
 
 
-    public Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> createExpeditionList(int dia, int n) {
-        Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> result = new HashMap<>(); // mapa de clientes a mapa de produtores a lista de produtores e a quantidade do produto
+    public Map<ClienteProdutorEmpresa, Cabaz> createExpeditionList(int dia, int n) {
+        Map<ClienteProdutorEmpresa, Cabaz> result = new HashMap<>(); // mapa de clientes a mapa de produtores a lista de produtores e a quantidade do produto
         PedidosStore pedidosStore = App.getInstance().getPedidosStore();    // lista de pedidos
         Stock stock = App.getInstance().getStock();                         // lista de stock
         List<Pedido> listaPedidos = pedidosStore.getPedidoMap().get(dia);   // lista de pedidos do dia
@@ -67,7 +67,8 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();  // cria uma lista temporaria
                                 tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));    // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
                                 tempMap.put(currentProdutor, tempList);                                 // adiciona o produtor ao mapa temporario com a lista temporaria
-                                result.put(currentCliente, tempMap);                                    // adiciona o cliente ao mapa com o mapa temporario
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);                                   // cria um cabaz temporario com o mapa temporario
+                                result.put(currentCliente, tempCabaz);                                    // adiciona o cliente ao mapa com o mapa temporario
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, 0);        // remove a quantidade do produto do pedido
                             validStock.get(indexProdutor).setProdutoByIndex(indexPedido, currentStock.getProduto(indexProduto) - qtdProduto);   // remove a quantidade do produto do stock
@@ -86,7 +87,8 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();  // cria uma lista temporaria
                                 tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));     // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
                                 tempMap.put(currentProdutor, tempList);                                 // adiciona o produtor ao mapa temporario com a lista temporaria
-                                result.put(currentCliente, tempMap);                                    // adiciona o cliente ao mapa com o mapa temporario
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);                                   // cria um cabaz temporario com o mapa temporario
+                                result.put(currentCliente, tempCabaz);                                    // adiciona o cliente ao mapa com o mapa temporario
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, qtdProduto - currentStock.getProduto(indexProduto));   // remove a quantidade do produto do pedido
                             validStock.get(indexProdutor).setProdutoByIndex(indexPedido, 0);        // remove a quantidade do produto do stock
@@ -98,7 +100,7 @@ public class CreateExpeditionList {
             }
             indexPedido++;                                                                               // incrementa o index do pedido
         }
-        App.getInstance().setExpeditionList(result);                                                    // guarda o mapa na instância da aplicação
+        App.getInstance().getListaExpedicoesStore().getExpedicoes().put(dia, result);                    // guarda o mapa na instância da aplicação
         return result;                                                                                  // retorna o mapa
     }
 

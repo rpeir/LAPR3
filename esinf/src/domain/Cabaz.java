@@ -1,73 +1,67 @@
 package domain;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class Cabaz extends Pedido{
+public class Cabaz {
 
-    private List<String> produtores;
+    private String cliente;
 
-    public Cabaz(String clienteProdutorEmpresa, int diaDeProducao, List<Float> produtos, List<String> produtores) {
-        super(clienteProdutorEmpresa, diaDeProducao, produtos);
-        this.produtores = produtores;
+    private Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtorProdutos;
+
+    public Cabaz(String cliente, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtorProdutos) {
+        this.cliente = cliente;
+        this.produtorProdutos = produtorProdutos;
     }
 
-    public List<String> getProdutores() {
-        return produtores;
+    public Cabaz(String cliente) {
+        this.cliente = cliente;
+        produtorProdutos = new HashMap<>();
     }
 
-    public void setProdutores(List<String> produtores) {
-        this.produtores = produtores;
+    public String getCliente() {
+        return cliente;
     }
 
-    public String getProdutor(int i){
-        return produtores.get(i);
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> getProdutorProdutos() {
+        return produtorProdutos;
+    }
+
+    public void setProdutorProdutos(Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtorProdutos) {
+        this.produtorProdutos = produtorProdutos;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Cabaz cabaz = (Cabaz) o;
-        return Objects.equals(getProdutores(), cabaz.getProdutores());
+        return Objects.equals(getCliente(), cabaz.getCliente()) && Objects.equals(getProdutorProdutos(), cabaz.getProdutorProdutos());
     }
 
-    public boolean isSatisfied(Pedido pedido){
-        List<Float> thisProdutos = this.getProdutos();
-        List<Float> pedidoProdutos = pedido.getProdutos();
-        for (int i = 0; i < thisProdutos.size(); i++) {
-            if (!thisProdutos.get(i).equals(pedidoProdutos.get(i))) return false;
-        }
-        return true;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCliente());
     }
 
-    public boolean isPartillySatisfied(Pedido pedido){
-        List<Float> thisProdutos = this.getProdutos();
-        List<Float> pedidoProdutos = pedido.getProdutos();
-        int count = 0;
-        for (int i = 0; i < thisProdutos.size(); i++) {
-            if (!thisProdutos.get(i).equals(pedidoProdutos.get(i))) count++;
-        }
-        return count > 0 && count < thisProdutos.size();
+    @Override
+    public String toString() {
+        return "Cabaz de " + cliente;
     }
 
-
-    public boolean isSatisfiedByProdutor(ClienteProdutorEmpresa produtor){
-        List<String> thisProdutores = this.getProdutores();
-        for (String thisProdutor : thisProdutores) {
-            if (!thisProdutor.equals(produtor.getId())) return false;
-        }
-        return true;
+    public boolean containsKey(ClienteProdutorEmpresa key) {
+        return produtorProdutos.containsKey(key);
     }
 
-    public boolean isPartillySatisfiedByProdutor(ClienteProdutorEmpresa produtor){
-        List<String> thisProdutores = this.getProdutores();
-        int count = 0;
-        for (String thisProdutor : thisProdutores) {
-            if (thisProdutor.equals(produtor.getId())) count++;
-        }
-        return count > 0 && count < thisProdutores.size();
+    public List<AbstractMap.SimpleEntry<String, Float>> get(ClienteProdutorEmpresa key) {
+        return produtorProdutos.get(key);
+    }
+
+    public void put(ClienteProdutorEmpresa key, List<AbstractMap.SimpleEntry<String, Float>> value) {
+        produtorProdutos.put(key, value);
     }
 
 }
