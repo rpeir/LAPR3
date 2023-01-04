@@ -23,6 +23,7 @@ public class App {
 
     private Stock stock;
 
+
     public Stock getStock() {
         return stock;
     }

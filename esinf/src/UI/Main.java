@@ -53,10 +53,10 @@ public class Main {
                     MinimumRouteUI minimumRouteUI = new MinimumRouteUI();
                     minimumRouteUI.run();
                     break;
-                case "10":
-                    ExpListStatsUI expListStatsUI = new ExpListStatsUI();
-                    expListStatsUI.run();
-                    break;
+//                case "10":
+//                    ExpListStatsUI expListStatsUI = new ExpListStatsUI();
+//                    expListStatsUI.run();
+//                    break;
                 case "11":
                     CreateExpeditionListUI createExpeditionListUI = new CreateExpeditionListUI();
                     createExpeditionListUI.run();
