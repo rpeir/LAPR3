@@ -183,9 +183,6 @@ int main() {
         int numSensores;
         scanf("%d", &numSensores);
             for(int i=0; i<numSensores; i++) {
-                printf("Insira o tipo de sensor que deseja inserir: ");
-                char tipoSensor;
-                scanf("%c", &tipoSensor);
                 printf("Insira o tipo de sensor: ");
                 unsigned char tipoSensor;
                 scanf("%c", &tipoSensor);
@@ -215,7 +212,7 @@ int main() {
                         printf("Tipo de sensor invalido!\n");
                         break;
                     }
-                }
+            }
     }
 
     else {
