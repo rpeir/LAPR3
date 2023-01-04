@@ -16,7 +16,7 @@ cmpb $2, %dl
 jg normalizar
 cmpb $-2, %dl
 jl normalizar
-movb %dl, %al
+movb %dl, %alf
 
 back: 
 movl $0, %eax

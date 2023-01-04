@@ -1,12 +1,3 @@
-DROP TABLE Estatistica;
-DROP TABLE Cliente;
-DROP TABLE Produto;
-DROP TABLE Hub;
-DROP TABLE Cultura;
-DROP TABLE SetorAgricola_Cultura;
-DROP TABLE SetorAgricola;
-DROP TABLE Tempo;
-
 CREATE TABLE Tempo (
     codTempo INTEGER NOT NULL,
     ano INTEGER NOT NULL,
@@ -32,13 +23,6 @@ CREATE TABLE SetorAgricola_Cultura (
     codCultura INTEGER NOT NULL
 );
 
-CREATE TABLE Hub (
-    codHub INTEGER NOT NULL,
-    nomeHub VARCHAR(50) NOT NULL,
-    tipoHub VARCHAR(50) NOT NULL,
-    constraint pk_codHub PRIMARY KEY (codHub)
-);
-
 CREATE TABLE Produto (
     codProduto INTEGER NOT NULL,
     codCultura INTEGER NOT NULL,
@@ -59,7 +43,6 @@ CREATE TABLE Estatistica (
     codSetorAgricola INTEGER NOT NULL,
     codProduto INTEGER NOT NULL,
     codCliente INTEGER NOT NULL,
-    codHub INTEGER NOT NULL,
     producaoToneladas INTEGER NOT NULL,
     vendasMilharesEuros INTEGER NOT NULL
 );
@@ -73,4 +56,3 @@ alter table Estatistica add constraint fk_Estatisticas_codTempo FOREIGN KEY (cod
 alter table Estatistica add constraint fk_Estatisticas_codSetorAgricola FOREIGN KEY (codSetorAgricola) references SetorAgricola (codSetorAgricola);
 alter table Estatistica add constraint fk_Estatisticas_codProduto FOREIGN KEY (codProduto) references Produto (codProduto);
 alter table Estatistica add constraint fk_Estatisticas_codCliente FOREIGN KEY (codCliente) references Cliente (codCliente);
-alter table Estatistica add constraint fk_Estatisticas_codHub FOREIGN KEY (codHub) references Hub (codHub);

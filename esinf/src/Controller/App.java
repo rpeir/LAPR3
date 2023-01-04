@@ -4,16 +4,12 @@ import domain.Localizacao;
 import domain.WaterController.WaterController;
 import graph.Graph;
 import graph.map.MapGraph;
-import store.ClienteProdutorEmpresaStore;
-import store.ListaExpedicoesStore;
-import store.LocalizacaoStore;
-import store.ProdutoStore;
+import store.*;
 import store.WaterController.SectorStore;
 
 public class App {
 
     private Graph<Localizacao, Integer> graph;
-    private ProdutoStore produtoStore;
     private ClienteProdutorEmpresaStore cpeStore;
     private LocalizacaoStore localizacaoStore;
 
@@ -21,6 +17,19 @@ public class App {
 
     private WaterController waterController;
     private SectorStore sectorStore;
+    private HubsStore hubsStore;
+
+    private PedidosStore pedidosStore;
+
+    private Stock stock;
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public PedidosStore getPedidosStore() {
+        return pedidosStore;
+    }
 
     public SectorStore getSectorStore() {
         return sectorStore;
@@ -44,12 +53,14 @@ public class App {
 
     private void bootstrap() {
         graph = new MapGraph<>(false);
-        produtoStore = new ProdutoStore();
         cpeStore = new ClienteProdutorEmpresaStore();
         localizacaoStore = new LocalizacaoStore();
         waterController = new WaterController();
         sectorStore = new SectorStore();
         leStore = new ListaExpedicoesStore();
+        hubsStore = new HubsStore();
+        pedidosStore = new PedidosStore();
+        stock = new Stock();
 
     }
 
@@ -66,9 +77,6 @@ public class App {
     }
 
 
-    public ProdutoStore getProdutoStore() {
-        return produtoStore;
-    }
     public LocalizacaoStore getLocalizacaoStore() {
         return localizacaoStore;
     }
@@ -78,5 +86,9 @@ public class App {
 
     public ListaExpedicoesStore getListaExpedicoesStore() {
         return leStore;
+    }
+
+    public HubsStore getHubsStore() {
+        return hubsStore;
     }
 }

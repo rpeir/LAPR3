@@ -6,12 +6,15 @@ import domain.Localizacao;
 import graph.Graph;
 import store.ClienteProdutorEmpresaStore;
 import store.LocalizacaoStore;
+import store.PedidosStore;
+import store.Stock;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static java.lang.Integer.valueOf;
 
@@ -131,6 +134,8 @@ public class ReadCSVController {
 
     public void readCabazesFile(File filename) throws IOException {
         try {
+            PedidosStore pedidoMap = App.getInstance().getPedidosStore();
+            Stock stock = App.getInstance().getStock();
             BufferedReader br = new BufferedReader(new FileReader(filename));
             br.readLine(); // skip first line
             String line = br.readLine();
@@ -144,13 +149,21 @@ public class ReadCSVController {
                     }
                 }
                 ArrayList<Float> listProdutos = new ArrayList<>();
-                for (int i = 2; i <values.length; i++) {
+                for (int i = 2; i < values.length; i++) {
                     listProdutos.add(Float.parseFloat(values[i]));
                 }
-                Pedido pedido =new Pedido(values[0], Integer.parseInt(values[1]),listProdutos);
-                if(cpeStore.containsCPE(pedido.getClienteProdutor())){
+
+                //Inserir o pedido no mapa de pedidos e o stock no mapa de stock
+                Pedido pedido = new Pedido(values[0], Integer.parseInt(values[1]), listProdutos);
+                if (values[0].startsWith("C") || values[0].startsWith("E"))
+                    pedidoMap.insertPedido(pedido);
+                else
+                    stock.insertStock(pedido);
+
+                if (cpeStore.containsCPE(pedido.getClienteProdutor())) {
                     cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
                 }
+
                 line = br.readLine();
             }
         } catch (NumberFormatException e) {

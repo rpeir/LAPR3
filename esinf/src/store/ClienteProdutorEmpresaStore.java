@@ -43,5 +43,13 @@ public class ClienteProdutorEmpresaStore {
         return "Size of the map: " + mapCPE.size();
     }
 
-
+    //get object by locID
+    public ClienteProdutorEmpresa getCPEbyID(String locID) {
+        for (ClienteProdutorEmpresa cpe : mapCPE.values()) {
+            if (cpe.getLocalizacao().getLocID().equals(locID)) {
+                return cpe;
+            }
+        }
+        return null;
+    }
 }

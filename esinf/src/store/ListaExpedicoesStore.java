@@ -1,12 +1,8 @@
 package store;
-
 import domain.Pedido;
 import domain.ListaExpedicoes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ListaExpedicoesStore {
     private Map<Integer, ListaExpedicoes> expedicoes;
@@ -41,7 +37,7 @@ public class ListaExpedicoesStore {
     public ListaExpedicoes getExpedicao(int dia) {
         return expedicoes.get(dia);
     }
-    public List<Pedido> getListaExpedicoesDia(int dia, HashMap<Integer,ListaExpedicoes>expedicoes) {
+    public static List<Pedido> getListaExpedicoesDia(int dia, HashMap<Integer, ListaExpedicoes> expedicoes) {
         List<Pedido> listaExpedicoesDia = new ArrayList<>();
         for (Pedido pedido : listaExpedicoesDia) {
             if (pedido.getDiaDeProducao() == dia) {
@@ -50,5 +46,6 @@ public class ListaExpedicoesStore {
         }
         return listaExpedicoesDia;
     }
+
 }
 

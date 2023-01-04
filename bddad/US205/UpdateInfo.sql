@@ -1,6 +1,6 @@
-CREATE OR REPLACE FUNCTION UpdateInfo (
+CREATE OR REPLACE procedure UpdateInfo (
     search_codInterno IN Clientes.codInterno%TYPE    -- Codigo Interno do Cliente
-) RETURN NUMBER
+)
 
 is
 numeroTotalEncomendasUltimoAno NUMBER;
@@ -22,8 +22,6 @@ begin
     -- mostrar resultados
     dbms_output.put_line('Numero total de encomendas no ultimo ano: ' || numeroTotalEncomendasUltimoAno);
     dbms_output.put_line('Valor total das encomendas no ultimo ano: ' || valorTotalEncomendasUltimoAno);
-
-    return numeroTotalEncomendasUltimoAno;
 
 end;
 /
