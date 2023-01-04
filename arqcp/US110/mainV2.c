@@ -24,21 +24,37 @@ typedef struct
     unsigned long frequency; // frequency de leituras (em segundos)
     unsigned long readings_size; // tamanho do array de leituras
     unsigned short *readings; // array de leituras diárias
-    ... // adicionar o que acharem conveniente
+    // ... adicionar o que acharem conveniente
 } Sensor;
 //////////////////////////////////////////////////////////////////////////////////
 
-void add_sensor_to_list(Sensor sensor) {
-    Sensor* sensors = malloc(INITIAL_ARRAY_SIZE * sizeof(Sensor));
-    int num_sensors = 0;
-    int array_size = INITIAL_ARRAY_SIZE;
-    if (num_sensors == array_size) {
-    array_size *= 2;
-    sensors = realloc(sensors, array_size * sizeof(Sensor));
-    }
+typedef struct {
+    int nrSensores;
+    Sensor *sensores;
+} TipoSensor;
 
-    sensors[num_sensors] = sensor;
-    num_sensors++;
+void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
+    Sensor* sensores;
+    if (tp->nrSensores == 0) {
+        sensores = malloc(sizeof(Sensor));
+    } else {
+        Sensor* tmp = realloc(sensores, ((tp->nrSensores)+1)*(sizeof(Sensor)));
+        if (tmp != NULL) {
+            sensores = tmp;
+        }
+        else {
+            printf("Erro ao alocar memoria");
+        }
+    }
+    sensores[tp->nrSensores].id = sensor->id;
+    sensores[tp->nrSensores].sensor_type = sensor->sensor_type;
+    sensores[tp->nrSensores].max_limit = sensor->max_limit;
+    sensores[tp->nrSensores].min_limit = sensor->min_limit;
+    sensores[tp->nrSensores].frequency = sensor->frequency;
+    sensores[tp->nrSensores].readings_size = sensor->readings_size;
+    sensores[tp->nrSensores].readings = sensor->readings;
+    tp->nrSensors++;
+    tp->sensores = sensores;
 }
 
 void parse_sensor_line(char* line, Sensor* sensor) {
@@ -97,6 +113,14 @@ void parse_sensor_line(char* line, Sensor* sensor) {
 }
 ///////////////////////////////////////////////////////////////////////////////////
 int main() {
+    TipoSensor tpTemps, tpVelVents, tpDirVents, tpPluvios, tpHumAtms, tpHumSolos;
+    tpTemps.nrSensores=0;
+    tpVelVents.nrSensores=0;
+    tpDirVents.nrSensores=0;
+    tpPluvios.nrSensores=0;
+    tpHumAtms.nrSensores=0;
+    tpHumSolos.nrSensores=0;
+
     // choose if u want to import file or input the info yourself
     int choice;
     printf("1 - Import file\n2 - Input info\n");
@@ -146,33 +170,40 @@ int main() {
 
     int n = 5; //?
 
+    TipoSensor *tp;
     switch (sensor->sensor_type) {
         case 'T':
             leituras = (unsigned short*)createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            tp = &tpTemps;
             break;
         case 'V':
             leituras = (unsigned short*)createArrayVelVento(sensor->max_limit, sensor->min_limit, sensor->frequency, n)
+            tp = &tpVelVents;
             break;
         case 'D':
             leituras = (unsigned short*)createArrayDirVento(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
+            tp = &tpDirVents;
             break;
         case 'H':
             char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
             unsigned char pluvio = createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
             leituras = (unsigned short*)createArrayHumdSolo(sensor->max_limit, sensor->min_limit, sensor->frequency, n, pluvio);
+            tp = &tpHumSolos;
             break;
         case 'S':
             char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
             unsigned char pluvio = createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
             leituras = (unsigned short*)createArrayHumdSolo(sensor->max_limit, sensor->min_limit, sensor->frequency, n, pluvio);
+            tp = &tpHumSolos;
             break;
         case 'P':
             char* temps = createArrayTemp(sensor->max_limit, sensor->min_limit, sensor->frequency, n);
             leituras = (unsigned short*)createArrayPluvio(sensor->max_limit, sensor->min_limit, sensor->frequency, n,temps);
+            tp = &tpPluvios;
             break;
     }
     sensor->readings = leituras;
-    add_sensor_to_list(sensor);
+    add_sensor_to_list(sensor, tp);
             }
         }
         else {

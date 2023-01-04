@@ -2,7 +2,6 @@ package UI;
 
 import Controller.App;
 import Controller.MinimumRouteController;
-import store.HubsStore;
 
 import java.util.Scanner;
 
@@ -24,6 +23,7 @@ public class MinimumRouteUI {
             System.out.println(dia);
         }
         diaPretendido = sc.nextInt();
+        //test.getTest(diaPretendido);
         //if(app.getListaExpedicoesStore().getExpedicoes().containsKey(diaPretendido) && diaPretendido > 0) {
             ctrl.getMinimumRoute(diaPretendido);
         //} else {
