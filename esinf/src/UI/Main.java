@@ -56,6 +56,9 @@ public class Main {
                     ExpListStatsUI expListStatsUI = new ExpListStatsUI();
                     expListStatsUI.run();
                     break;
+                case "11":
+                    CreateExpeditionListUI createExpeditionListUI = new CreateExpeditionListUI();
+                    createExpeditionListUI.run();
                 case "0":
                     run = false;
                     break;
