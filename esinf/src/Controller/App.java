@@ -1,16 +1,11 @@
 package Controller;
 
-import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import domain.WaterController.WaterController;
 import graph.Graph;
 import graph.map.MapGraph;
 import store.*;
 import store.WaterController.SectorStore;
-
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
 
 public class App {
 
@@ -28,14 +23,9 @@ public class App {
 
     private Stock stock;
 
-    private Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> expeditionList;
 
     public Stock getStock() {
         return stock;
-    }
-
-    public Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> getExpeditionList() {
-        return expeditionList;
     }
 
     public PedidosStore getPedidosStore() {
@@ -56,10 +46,6 @@ public class App {
 
     public void setGraph(Graph<Localizacao, Integer> graph) {
         this.graph = graph;
-    }
-
-    public void setExpeditionList(Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> expeditionList) {
-        this.expeditionList = expeditionList;
     }
 
     public App() {
