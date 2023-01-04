@@ -11,27 +11,8 @@
 #include "../US104/createArray.h"
 #include "../US103/dailyValues.h"
 #include "../US103/createMatrix.h"
+#include "../US110/sensores.h"
 #define INITIAL_ARRAY_SIZE 10
-
-/////////////////////////////////////////////////////////////////////////////////
-
-typedef struct
-{
-    unsigned short id;
-    unsigned char sensor_type;
-    unsigned short max_limit; // limites do sensor
-    unsigned short min_limit;
-    unsigned long frequency; // frequency de leituras (em segundos)
-    unsigned long readings_size; // tamanho do array de leituras
-    unsigned short *readings; // array de leituras diárias
-    // ... adicionar o que acharem conveniente
-} Sensor;
-//////////////////////////////////////////////////////////////////////////////////
-
-typedef struct {
-    int nrSensores;
-    Sensor *sensores;
-} TipoSensor;
 
 void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
     Sensor* sensores;
@@ -53,7 +34,7 @@ void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
     sensores[tp->nrSensores].frequency = sensor->frequency;
     sensores[tp->nrSensores].readings_size = sensor->readings_size;
     sensores[tp->nrSensores].readings = sensor->readings;
-    tp->nrSensors++;
+    tp->nrSensores++;
     tp->sensores = sensores;
 }
 
