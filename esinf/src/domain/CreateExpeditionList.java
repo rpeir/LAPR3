@@ -98,6 +98,7 @@ public class CreateExpeditionList {
             }
             indexPedido++;                                                                               // incrementa o index do pedido
         }
+        App.getInstance().setExpeditionList(result);                                                    // guarda o mapa na instância da aplicação
         return result;                                                                                  // retorna o mapa
     }
 
