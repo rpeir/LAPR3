@@ -20,6 +20,7 @@ public class Main {
             System.out.println("8 - Gerar uma lista de expedição que forneça apenas com os N produtores agrícolas mais próximos do hub de entrega do cliente");
             System.out.println("9 - Gerar o percurso de entrega que minimiza a distância total percorrida");
             System.out.println("10 - Calcular estatísticas para uma lista de expedição");
+            System.out.println("11 - Criar lista de expedicao");
             System.out.println("0 - Sair");
             String opcao = sc.nextLine();
 

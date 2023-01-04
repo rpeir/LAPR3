@@ -18,9 +18,11 @@ public class Stock {
     public void insertStock(Pedido pedido){
         if(stockMap.containsKey(pedido.getDiaDeProducao()))
             stockMap.get(pedido.getDiaDeProducao()).add(pedido);
-        List<Pedido> tempList = new ArrayList<>();
-        tempList.add(pedido);
-        stockMap.put(pedido.getDiaDeProducao(),tempList);
+        else {
+            List<Pedido> tempList = new ArrayList<>();
+            tempList.add(pedido);
+            stockMap.put(pedido.getDiaDeProducao(),tempList);
+        }
     }
 
     public Map<Integer, List<Pedido>> getStockMap() {

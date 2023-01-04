@@ -20,17 +20,32 @@ public class CreateExpeditionList {
     public List<ClienteProdutorEmpresa> getNProdutores(ClienteProdutorEmpresa cpe, int n) {
         ClosestHubController closestHubController = new ClosestHubController();
         ClienteProdutorEmpresa closestHub = closestHubController.getClosestHub(cpe);
-        Map<Integer, ClienteProdutorEmpresa> produtoresMap = new TreeMap<>();
+        List<AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa>> produtoresList = new ArrayList<>();
         for (ClienteProdutorEmpresa currentCPE : App.getInstance().getClienteProdutorEmpresaStore().getMapCPE().values()) {
             LinkedList<Localizacao> list = new LinkedList<>();
-            if (currentCPE.isProdutor() || currentCPE.isEmpresa()) {
+            if (currentCPE.isProdutor()) {
                 Integer tempLenPath = Algorithms.shortestPath(graph, closestHub.getLocalizacao(), currentCPE.getLocalizacao(), Integer::compare, Integer::sum, 0, list);
-                produtoresMap.put(tempLenPath, currentCPE);
-                if (produtoresMap.keySet().size() > n)
-                    produtoresMap.remove(produtoresMap.keySet().stream().max(Integer::compare));
+                produtoresList.add(new AbstractMap.SimpleEntry<>(tempLenPath,currentCPE));
+                if (produtoresList.size() > n){
+                    class DistanceComparator implements Comparator<AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa>> {
+
+                        // override the compare() method
+                        public int compare(AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o1, AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o2)
+                        {
+                            return o1.getKey().compareTo(o2.getKey());
+                        }
+                    }
+                    produtoresList.sort(new DistanceComparator());
+                    produtoresList.remove(produtoresList.size() - 1);
+                }
+
             }
         }
-        return (List<ClienteProdutorEmpresa>) produtoresMap.values();
+        List<ClienteProdutorEmpresa> result = new ArrayList<>();
+        for (AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> produtorEntry: produtoresList) {
+            result.add(produtorEntry.getValue());
+        }
+        return result;
     }
 
 
@@ -69,8 +84,8 @@ public class CreateExpeditionList {
                                 tempMap.put(currentProdutor, tempList);
                                 result.put(currentCliente, tempMap);
                             }
-                            listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, 0);
-                            validStock.get(indexProdutor).setProdutoByIndex(indexPedido, currentStock.getProduto(indexProduto) - qtdProduto);
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, 0);
+                            validStock.get(indexProdutor).setProdutoByIndex(indexProduto, currentStock.getProduto(indexProduto) - qtdProduto);
                             success = true;
                         } else {
                             if (result.containsKey(currentCliente)) {
@@ -88,12 +103,12 @@ public class CreateExpeditionList {
                                 tempMap.put(currentProdutor, tempList);
                                 result.put(currentCliente, tempMap);
                             }
-                            listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, qtdProduto - currentStock.getProduto(indexProduto));
-                            validStock.get(indexProdutor).setProdutoByIndex(indexPedido, 0);
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));
+                            validStock.get(indexProdutor).setProdutoByIndex(indexProduto, 0);
                         }
                     }
                     indexProdutor++;
-                } while (success);
+                } while (!success && indexProdutor < validStock.size() && indexProduto < validStock.get(0).getProdutos().size());
                 indexProduto++;
             }
             indexPedido++;

@@ -154,8 +154,8 @@ public class ReadCSVController {
                 }
 
                 //Inserir o pedido no mapa de pedidos e o stock no mapa de stock
-                Pedido pedido = new Pedido(values[0], Integer.parseInt(values[1]), listProdutos);
-                if (values[0].startsWith("C") || values[0].startsWith("E"))
+                Pedido pedido = new Pedido(values[0].replace("\"", "").trim(), Integer.parseInt(values[1]), listProdutos);
+                if (values[0].replace("\"", "").trim().startsWith("C") || values[0].replace("\"", "").trim().startsWith("E"))
                     pedidoMap.insertPedido(pedido);
                 else
                     stock.insertStock(pedido);

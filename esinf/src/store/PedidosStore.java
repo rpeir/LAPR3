@@ -18,9 +18,11 @@ public class PedidosStore {
     public void insertPedido(Pedido pedido){
         if (pedidoMap.containsKey(pedido.getDiaDeProducao()))
             pedidoMap.get(pedido.getDiaDeProducao()).add(pedido);
-        List<Pedido> tempList = new ArrayList<>();
-        tempList.add(pedido);
-        pedidoMap.put(pedido.getDiaDeProducao(),tempList);
+        else{
+            List<Pedido> tempList = new ArrayList<>();
+            tempList.add(pedido);
+            pedidoMap.put(pedido.getDiaDeProducao(),tempList);
+        }
     }
 
     public Map<Integer, List<Pedido>> getPedidoMap() {
