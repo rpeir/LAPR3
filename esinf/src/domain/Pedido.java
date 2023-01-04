@@ -63,5 +63,9 @@ public class Pedido {
         return produtos.get(i);
     }
 
+    public void setProdutoByIndex(int index, float qtd){
+        produtos.set(index,qtd);
+    }
+
 }
 
