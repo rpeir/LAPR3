@@ -28,14 +28,13 @@ public class MinimumRouteController {
     }
 
     public List<Localizacao> getMinimumRoute() {
-        // cliente, produtores
         Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
+        //listar cabazes
+
         Graph<Localizacao, Integer> graph = app.getGraph();
         List<ClienteProdutorEmpresa> produtores = new ArrayList<>();
         for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {
-            // get cabaz
             Cabaz cabaz = entry.getValue();
-            // get produtores
             Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtorProdutos = cabaz.getProdutorProdutos();
             for(Map.Entry<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> entry2 : produtorProdutos.entrySet()) {
                 if(!produtores.contains(entry2.getKey())) {
@@ -44,10 +43,8 @@ public class MinimumRouteController {
             }
         }
         List<Localizacao> totalPath = new ArrayList<>();
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         int distanciaTotal = 0;
         LinkedList<Localizacao> caminhoMinimoEntreProdutores = new LinkedList<>();
-        //iterar sobre a lista de produtores
         Localizacao current = produtores.get(0).getLocalizacao();
         while (!produtores.isEmpty()) {
             int minDistance = Integer.MAX_VALUE;
@@ -90,11 +87,19 @@ public class MinimumRouteController {
                 hubs.add(hub);
             }
         }
-        System.out.println("Cabazes a entregar:");
-            for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()){
-                System.out.println("Hub: " + ctrl.getClosestHub(entry.getKey()) + " " + "Cabaz: " + entry.getValue());
+        List<String> aux = new ArrayList<>();
+        System.out.println("Cabazes a entregar: ");
+        for(ClienteProdutorEmpresa hub : hubs) {
+            System.out.println("Hub: " + hub.getDesignacao() + " ");
+            for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {
+                if(ctrl.getClosestHub(entry.getKey()).equals(hub)) {
+                    if(!aux.contains(entry.getValue().getCliente())) {
+                    System.out.println("Cabaz: " + entry.getValue());
+                    aux.add(entry.getValue().getCliente());
+                    }
+                }
+            }
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         int distanciaTotal2 = 0;
         LinkedList<Localizacao> caminhoMinimoEntreHubs = new LinkedList<>();
         //ultima posicao do caminho minimo entre produtores
@@ -120,7 +125,6 @@ public class MinimumRouteController {
                 hubs.remove(cpeStore.getCPEbyID(nextHub.getLocID()));
                 hubs.removeIf(h -> caminhoMinimoEntreHubs.contains(h.getLocalizacao()));
             } else {
-                // sair do loop quando todos os hubs ja foram visitados
                 break;
             }
         }
@@ -160,5 +164,4 @@ public class MinimumRouteController {
 
         return totalPath;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
