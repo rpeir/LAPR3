@@ -20,88 +20,100 @@ public class CreateExpeditionList {
     public List<ClienteProdutorEmpresa> getNProdutores(ClienteProdutorEmpresa cpe, int n) {
         ClosestHubController closestHubController = new ClosestHubController();
         ClienteProdutorEmpresa closestHub = closestHubController.getClosestHub(cpe);
-        Map<Integer, ClienteProdutorEmpresa> produtoresMap = new TreeMap<>();
+        List<AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa>> produtoresList = new ArrayList<>();
         for (ClienteProdutorEmpresa currentCPE : App.getInstance().getClienteProdutorEmpresaStore().getMapCPE().values()) {
             LinkedList<Localizacao> list = new LinkedList<>();
-            if (currentCPE.isProdutor() || currentCPE.isEmpresa()) {
+            if (currentCPE.isProdutor()) {
                 Integer tempLenPath = Algorithms.shortestPath(graph, closestHub.getLocalizacao(), currentCPE.getLocalizacao(), Integer::compare, Integer::sum, 0, list);
-                produtoresMap.put(tempLenPath, currentCPE);
-                if (produtoresMap.keySet().size() > n)
-                    produtoresMap.remove(produtoresMap.keySet().stream().max(Integer::compare));
+                produtoresList.add(new AbstractMap.SimpleEntry<>(tempLenPath,currentCPE));
+                if (produtoresList.size() > n){
+                    class DistanceComparator implements Comparator<AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa>> {
+
+                        // override the compare() method
+                        public int compare(AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o1, AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o2)
+                        {
+                            return o1.getKey().compareTo(o2.getKey());
+                        }
+                    }
+                    produtoresList.sort(new DistanceComparator());
+                    produtoresList.remove(produtoresList.size() - 1);
+                }
+
             }
         }
-        return (List<ClienteProdutorEmpresa>) produtoresMap.values();
+        List<ClienteProdutorEmpresa> result = new ArrayList<>();
+        for (AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> produtorEntry: produtoresList) {
+            result.add(produtorEntry.getValue());
+        }
+        return result;
     }
 
 
-    public Map<ClienteProdutorEmpresa, Cabaz> createExpeditionList(int dia, int n) {
-        Map<ClienteProdutorEmpresa, Cabaz> result = new HashMap<>(); // mapa de clientes a mapa de produtores a lista de produtores e a quantidade do produto
-        PedidosStore pedidosStore = App.getInstance().getPedidosStore();    // lista de pedidos
-        Stock stock = App.getInstance().getStock();                         // lista de stock
-        List<Pedido> listaPedidos = pedidosStore.getPedidoMap().get(dia);   // lista de pedidos do dia
-        List<Pedido> listaStock = stock.getStockMap().get(dia);             // lista de stock do dia
+    public Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> createExpeditionList(int dia, int n) {
+        Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> result = new HashMap<>();
+        PedidosStore pedidosStore = App.getInstance().getPedidosStore();
+        Stock stock = App.getInstance().getStock();
+        List<Pedido> listaPedidos = pedidosStore.getPedidoMap().get(dia);
+        List<Pedido> listaStock = stock.getStockMap().get(dia);
         int indexPedido = 0;
-        for (Pedido currentPedido : listaPedidos) {                         // para cada pedido
-            ClienteProdutorEmpresa currentCliente = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentPedido.getClienteProdutor()); // cliente do pedido
-            List<ClienteProdutorEmpresa> closestProdutores = getNProdutores(currentCliente, n);         // lista de produtores mais proximos
-            List<Pedido> validStock = validStock(listaStock, closestProdutores);                        // lista de stock que satisfaz os produtores mais proximos
+        for (Pedido currentPedido : listaPedidos) {
+            ClienteProdutorEmpresa currentCliente = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentPedido.getClienteProdutor());
+            List<ClienteProdutorEmpresa> closestProdutores = getNProdutores(currentCliente, n);
+            List<Pedido> validStock = validStock(listaStock, closestProdutores);
             int indexProduto = 0;
-            for (Float qtdProduto : currentPedido.getProdutos()) {                                      // para cada produto do pedido
-                int indexProdutor = 0;                                                                  // indice do produtor
-                boolean success = false;                                                                // flag para saber se foi possivel satisfazer o pedido
+            for (Float qtdProduto : currentPedido.getProdutos()) {
+                int indexProdutor = 0;
+                boolean success = false;
                 do {
-                    Pedido currentStock = validStock.get(indexProdutor);                                // stock do produtor
-                    if (qtdProduto > 0 && currentStock.getProduto(indexProduto) > 0) {                  // se a quantidade do produto for maior que 0 e o stock for maior que 0
-                        ClienteProdutorEmpresa currentProdutor = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentStock.getClienteProdutor()); // produtor do stock
-                        if (currentStock.getProduto(indexProduto) >= qtdProduto) {                      // se o stock for maior ou igual a quantidade do produto
-                            if (result.containsKey(currentCliente)) {                                   // se o cliente ja estiver no mapa
-                                if (result.get(currentCliente).containsKey(currentProdutor)) {          // se o produtor ja estiver no mapa
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto)); // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
-                                } else {                                                                // se o produtor nao estiver no mapa
-                                    List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();  // cria uma lista temporaria
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));    // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
-                                    result.get(currentCliente).put(currentProdutor, tempList);          // adiciona o produtor ao mapa do cliente com a lista temporaria
+                    Pedido currentStock = validStock.get(indexProdutor);
+                    if (qtdProduto > 0 && currentStock.getProduto(indexProduto) > 0) {
+                        ClienteProdutorEmpresa currentProdutor = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentStock.getClienteProdutor());
+                        if (currentStock.getProduto(indexProduto) >= qtdProduto) {
+                            if (result.containsKey(currentCliente)) {
+                                if (result.get(currentCliente).containsKey(currentProdutor)) {
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
+                                } else {
+                                    List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
+                                    result.get(currentCliente).put(currentProdutor, tempList);
                                 }
-                            } else {                                                                    // se o cliente nao estiver no mapa
-                                Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();    // cria um mapa temporario
-                                List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();  // cria uma lista temporaria
-                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));    // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
-                                tempMap.put(currentProdutor, tempList);                                 // adiciona o produtor ao mapa temporario com a lista temporaria
-                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);                                   // cria um cabaz temporario com o mapa temporario
-                                result.put(currentCliente, tempCabaz);                                    // adiciona o cliente ao mapa com o mapa temporario
+                            } else {
+                                Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
+                                List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
+                                tempMap.put(currentProdutor, tempList);
+                                result.put(currentCliente, tempMap);
                             }
-                            listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, 0);        // remove a quantidade do produto do pedido
-                            validStock.get(indexProdutor).setProdutoByIndex(indexPedido, currentStock.getProduto(indexProduto) - qtdProduto);   // remove a quantidade do produto do stock
-                            success = true;                                                             // marca a flag como true
-                        } else {                                                                        // se o stock for menor que a quantidade do produto
-                            if (result.containsKey(currentCliente)) {                                   // se o cliente ja estiver no mapa
-                                if (result.get(currentCliente).containsKey(currentProdutor)) {          // se o produtor ja estiver no mapa
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, validStock.get(indexProdutor).getProduto(indexProduto)));     // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
-                                } else {                                                                // se o produtor nao estiver no mapa
-                                    List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();  // cria uma lista temporaria
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto))); // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
-                                    result.get(currentCliente).put(currentProdutor, tempList);          // adiciona o produtor ao mapa do cliente com a lista temporaria
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, 0);
+                            validStock.get(indexProdutor).setProdutoByIndex(indexProduto, currentStock.getProduto(indexProduto) - qtdProduto);
+                            success = true;
+                        } else {
+                            if (result.containsKey(currentCliente)) {
+                                if (result.get(currentCliente).containsKey(currentProdutor)) {
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, validStock.get(indexProdutor).getProduto(indexProduto)));
+                                } else {
+                                    List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
+                                    result.get(currentCliente).put(currentProdutor, tempList);
                                 }
-                            } else {                                                                    // se o cliente nao estiver no mapa
-                                Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();    // cria um mapa temporario
-                                List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();  // cria uma lista temporaria
-                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));     // adiciona a quantidade do produto do pedido ao produtor fornecida pelo mesmo
-                                tempMap.put(currentProdutor, tempList);                                 // adiciona o produtor ao mapa temporario com a lista temporaria
-                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);                                   // cria um cabaz temporario com o mapa temporario
-                                result.put(currentCliente, tempCabaz);                                    // adiciona o cliente ao mapa com o mapa temporario
+                            } else {
+                                Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
+                                List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
+                                tempMap.put(currentProdutor, tempList);
+                                result.put(currentCliente, tempMap);
                             }
-                            listaPedidos.get(indexPedido).setProdutoByIndex(indexPedido, qtdProduto - currentStock.getProduto(indexProduto));   // remove a quantidade do produto do pedido
-                            validStock.get(indexProdutor).setProdutoByIndex(indexPedido, 0);        // remove a quantidade do produto do stock
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));
+                            validStock.get(indexProdutor).setProdutoByIndex(indexProduto, 0);
                         }
                     }
-                    indexProdutor++;                                                                     // incrementa o index do produtor
-                } while (success);                                                                       // enquanto a flag for verdadeira
-                indexProduto++;                                                                          // incrementa o index do produto
+                    indexProdutor++;
+                } while (!success && indexProdutor < validStock.size() && indexProduto < validStock.get(0).getProdutos().size());
+                indexProduto++;
             }
-            indexPedido++;                                                                               // incrementa o index do pedido
+            indexPedido++;
         }
-        App.getInstance().getListaExpedicoesStore().getExpedicoes().put(dia, result);                    // guarda o mapa na instância da aplicação
-        return result;                                                                                  // retorna o mapa
+        return result;
     }
 
     public List<Pedido> validStock(List<Pedido> listaStock, List<ClienteProdutorEmpresa> closestProdutores) {
