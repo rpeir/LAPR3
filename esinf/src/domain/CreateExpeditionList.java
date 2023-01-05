@@ -69,16 +69,16 @@ public class CreateExpeditionList {
                         if (currentStock.getProduto(indexProduto) >= qtdProduto) {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), qtdProduto));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), qtdProduto));
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), qtdProduto));
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
@@ -89,16 +89,16 @@ public class CreateExpeditionList {
                         } else {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), currentStock.getProduto(indexProduto)));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), currentStock.getProduto(indexProduto)));
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>(validStock.get(indexProdutor).getClienteProdutor(), currentStock.getProduto(indexProduto)));
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
