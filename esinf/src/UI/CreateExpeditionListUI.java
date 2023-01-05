@@ -31,7 +31,7 @@ public class CreateExpeditionListUI implements Runnable {
                         List<AbstractMap.SimpleEntry<String, Float>> produtoList = currentCabaz.get(produtor);
                         System.out.println("    Produtor: " + produtor.getId());
                         for (AbstractMap.SimpleEntry<String, Float> produto: produtoList) {
-                            System.out.printf("        Produto:%10s | Qtd: %4f  \n",produto.getKey(),produto.getValue());
+                            System.out.printf("        Produto: %10s | Qtd: %4f  \n",produto.getKey(),produto.getValue());
                         }
                     }
                     System.out.println("=========================================================================");
