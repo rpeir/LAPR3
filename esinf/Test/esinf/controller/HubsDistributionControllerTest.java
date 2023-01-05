@@ -4,14 +4,8 @@ import Controller.App;
 import Controller.HubsDistributionController;
 import Controller.ReadCSVController;
 import domain.ClienteProdutorEmpresa;
-import domain.Localizacao;
-import graph.Graph;
-import graph.map.MapGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class HubsDistributionControllerTest {

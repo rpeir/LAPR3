@@ -1,23 +1,33 @@
 package esinf.controller;
 
-import Controller.App;
-import Controller.MinimumRouteController;
-import Controller.ReadCSVController;
+import Controller.*;
+import domain.CreateExpeditionList;
+import domain.Localizacao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MinimumRouteControllerTest {
 
-    private MinimumRouteController controller;
-    private ReadCSVController readCSVController;
+    private final MinimumRouteController controller;
+    private final ReadCSVController readCSVController;
+    CreateExpeditionList createExpeditionList;
+    HubsDistributionController hubsDistributionController;
+    ClosestHubController closestHubController;
     App app = new App();
 
     public MinimumRouteControllerTest() {
         controller = new MinimumRouteController();
         readCSVController = new ReadCSVController();
+        createExpeditionList = new CreateExpeditionList();
+        hubsDistributionController = new HubsDistributionController();
+        closestHubController = new ClosestHubController();
         app = App.getInstance();
     }
 
@@ -37,7 +47,60 @@ public class MinimumRouteControllerTest {
     }
 
     @Test
-    public void testGetMinimumRoute() {
+    public void testGetMinimumRouteP1() {
+        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
+        closestHubController.getAllClosestHubs();
+        createExpeditionList.createExpeditionList(1, 3);
+        List<Localizacao> listaLocalizacoesActual = controller.getMinimumRoute("P1");
+        List<Localizacao> listaLocalizacoesExpected = new LinkedList<>();
+
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P1").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P3").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E2").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E3").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E4").getLocalizacao());
+
+        assertEquals(listaLocalizacoesExpected, listaLocalizacoesActual);
+
+    }
+
+    @Test
+    public void testGetMinimumRouteP2() {
+        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
+        closestHubController.getAllClosestHubs();
+        createExpeditionList.createExpeditionList(1, 3);
+        List<Localizacao> listaLocalizacoesActual = controller.getMinimumRoute("P2");
+        List<Localizacao> listaLocalizacoesExpected = new LinkedList<>();
+
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P3").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P1").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E4").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E3").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E2").getLocalizacao());
+
+        assertEquals(listaLocalizacoesExpected, listaLocalizacoesActual);
+
+    }
+
+    @Test
+    public void testGetMinimumRouteP3() {
+        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
+        closestHubController.getAllClosestHubs();
+        createExpeditionList.createExpeditionList(1, 3);
+        List<Localizacao> listaLocalizacoesActual = controller.getMinimumRoute("P3");
+        List<Localizacao> listaLocalizacoesExpected = new LinkedList<>();
+
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P3").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P1").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E4").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E3").getLocalizacao());
+        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E2").getLocalizacao());
+
+        assertEquals(listaLocalizacoesExpected, listaLocalizacoesActual);
 
     }
 

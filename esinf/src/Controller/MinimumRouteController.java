@@ -29,8 +29,10 @@ public class MinimumRouteController {
 
     public List<Localizacao> getMinimumRoute(String produtorInicial) {
         Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
-        //listar cabazes
-
+        if(expeditionList == null || expeditionList.isEmpty()) {
+            System.out.println("Lista de expedicoes vazia, por facor execute a opcao 8");
+            return null;
+        }
         Graph<Localizacao, Integer> graph = app.getGraph();
         List<ClienteProdutorEmpresa> produtores = new ArrayList<>();
         for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {
@@ -102,7 +104,6 @@ public class MinimumRouteController {
         }
         int distanciaTotal2 = 0;
         LinkedList<Localizacao> caminhoMinimoEntreHubs = new LinkedList<>();
-        //ultima posicao do caminho minimo entre produtores
         Localizacao current2 = totalPath.get(totalPath.size() - 1);
         while (!hubs.isEmpty()) {
             int minDistance2 = Integer.MAX_VALUE;
