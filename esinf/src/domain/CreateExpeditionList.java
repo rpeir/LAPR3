@@ -49,8 +49,8 @@ public class CreateExpeditionList {
     }
 
 
-    public Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> createExpeditionList(int dia, int n) {
-        Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> result = new HashMap<>();
+    public Map<ClienteProdutorEmpresa, Cabaz> createExpeditionList(int dia, int n) {
+        Map<ClienteProdutorEmpresa, Cabaz> result = new HashMap<>();
         PedidosStore pedidosStore = App.getInstance().getPedidosStore();
         Stock stock = App.getInstance().getStock();
         List<Pedido> listaPedidos = pedidosStore.getPedidoMap().get(dia);
@@ -82,7 +82,8 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
-                                result.put(currentCliente, tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
+                                result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, 0);
                             validStock.get(indexProdutor).setProdutoByIndex(indexProduto, currentStock.getProduto(indexProduto) - qtdProduto);
@@ -101,7 +102,8 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
-                                result.put(currentCliente, tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
+                                result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));
                             validStock.get(indexProdutor).setProdutoByIndex(indexProduto, 0);
