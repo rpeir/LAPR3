@@ -25,10 +25,10 @@ public class CreateExpeditionListUI implements Runnable {
             try{
                 Map<ClienteProdutorEmpresa, Cabaz> result = CTRL.createExpeditionList(dia,n);
                 for (ClienteProdutorEmpresa cliente: result.keySet()) {
-                    Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtoresMap = result.get(cliente).getProdutorProdutos();
+                    Cabaz currentCabaz = result.get(cliente);
                     System.out.println("Cliente: "+ cliente.getId());
-                    for (ClienteProdutorEmpresa produtor : produtoresMap.keySet()){
-                        List<AbstractMap.SimpleEntry<String, Float>> produtoList = produtoresMap.get(produtor);
+                    for (ClienteProdutorEmpresa produtor : currentCabaz.getProdutorProdutos().keySet()){
+                        List<AbstractMap.SimpleEntry<String, Float>> produtoList = currentCabaz.get(produtor);
                         System.out.println("    Produtor: " + produtor.getId());
                         for (AbstractMap.SimpleEntry<String, Float> produto: produtoList) {
                             System.out.printf("        Produto:%10s | Qtd: %4f  \n",produto.getKey(),produto.getValue());
