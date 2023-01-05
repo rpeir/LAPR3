@@ -28,8 +28,6 @@ public class CreateExpeditionList {
                 produtoresList.add(new AbstractMap.SimpleEntry<>(tempLenPath,currentCPE));
                 if (produtoresList.size() > n){
                     class DistanceComparator implements Comparator<AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa>> {
-
-                        // override the compare() method
                         public int compare(AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o1, AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o2)
                         {
                             return o1.getKey().compareTo(o2.getKey());
@@ -71,16 +69,16 @@ public class CreateExpeditionList {
                         if (currentStock.getProduto(indexProduto) >= qtdProduto) {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), qtdProduto));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
+                                    tempList.add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), qtdProduto));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, qtdProduto));
+                                tempList.add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
@@ -91,16 +89,16 @@ public class CreateExpeditionList {
                         } else {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, validStock.get(indexProdutor).getProduto(indexProduto)));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), currentStock.getProduto(indexProduto)));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
+                                    tempList.add(new AbstractMap.SimpleEntry<>(currentStock.getClienteProdutor(), currentStock.getProduto(indexProduto)));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>("Prod" + 1 + indexProdutor, currentStock.getProduto(indexProduto)));
+                                tempList.add(new AbstractMap.SimpleEntry<>(validStock.get(indexProdutor).getClienteProdutor(), currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
