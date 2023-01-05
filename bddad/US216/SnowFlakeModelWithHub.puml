@@ -64,11 +64,11 @@ table( Tempo ) {
 ' quando para obter todos os clientes produtores basta fazer um select distinct
 ' ou constraint
 
-Estatistica }|--|| Cliente
-Estatistica }|--|| Hub
-Estatistica }|--|| Produto
-Estatistica }|--|| SetorAgricola
-Estatistica }|--|| Tempo
+Estatisticas }|--|| Cliente
+Estatisticas }|--|| Hub
+Estatisticas }|--|| Produto
+Estatisticas }|--|| SetorAgricola
+Estatisticas }|--|| Tempo
 Produto }|--|| Cultura
 Cultura ||--|{ SetorAgricola_Cultura
 SetorAgricola_Cultura }|--|| SetorAgricola
