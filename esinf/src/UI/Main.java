@@ -49,6 +49,10 @@ public class Main {
                     ImportWaterControllerUI importWaterControllerUI = new ImportWaterControllerUI();
                     importWaterControllerUI.run();
                     break;
+                case "8", "11":
+                    CreateExpeditionListUI createExpeditionListUI = new CreateExpeditionListUI();
+                    createExpeditionListUI.run();
+                    break;
                 case "9":
                     MinimumRouteUI minimumRouteUI = new MinimumRouteUI();
                     minimumRouteUI.run();
@@ -57,10 +61,6 @@ public class Main {
 //                    ExpListStatsUI expListStatsUI = new ExpListStatsUI();
 //                    expListStatsUI.run();
 //                    break;
-                case "8":
-                    CreateExpeditionListUI createExpeditionListUI = new CreateExpeditionListUI();
-                    createExpeditionListUI.run();
-                    break;
                 case "0":
                     run = false;
                     break;

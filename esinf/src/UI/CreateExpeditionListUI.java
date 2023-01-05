@@ -1,6 +1,7 @@
 package UI;
 
 import Controller.CreateExpeditionListController;
+import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 
 import java.util.*;
@@ -17,15 +18,14 @@ public class CreateExpeditionListUI implements Runnable {
     public void run() {
         System.out.println("Indroduza o dia de expedição da lista que quer criar");
         int dia = sc.nextInt();
-        System.out.println("Indroduza o número de produtores que podem fornecer produtos na expedição que quer criar: ");
+        System.out.println("Indroduza o número de produtores que podem fornecer produtos na expedição quer criar");
         int n = sc.nextInt();
         boolean success = false;
         do{
             try{
-                Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> result = CTRL.createExpeditionList(dia,n);
-                success = true;
+                Map<ClienteProdutorEmpresa, Cabaz> result = CTRL.createExpeditionList(dia,n);
                 for (ClienteProdutorEmpresa cliente: result.keySet()) {
-                    Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtoresMap = result.get(cliente);
+                    Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtoresMap = result.get(cliente).getProdutorProdutos();
                     System.out.println("Cliente: "+ cliente.getId());
                     for (ClienteProdutorEmpresa produtor : produtoresMap.keySet()){
                         List<AbstractMap.SimpleEntry<String, Float>> produtoList = produtoresMap.get(produtor);
@@ -36,12 +36,13 @@ public class CreateExpeditionListUI implements Runnable {
                     }
                     System.out.println("=========================================================================");
                 }
-                success = false;
+                success = true;
             }catch (Exception e){
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
-        }while (success);
+        }while (!success);
+
 
 
     }
