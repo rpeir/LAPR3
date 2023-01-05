@@ -17,7 +17,7 @@ public class CreateExpeditionListUI implements Runnable {
     public void run() {
         System.out.println("Indroduza o dia de expedição da lista que quer criar");
         int dia = sc.nextInt();
-        System.out.println("Indroduza o número de produtores que podem fornecer produtos na expedição quer criar");
+        System.out.println("Indroduza o número de produtores que podem fornecer produtos na expedição que quer criar: ");
         int n = sc.nextInt();
         boolean success = false;
         do{
