@@ -90,6 +90,10 @@ public class MinimumRouteController {
                 hubs.add(hub);
             }
         }
+        System.out.println("Cabazes a entregar:");
+            for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()){
+                System.out.println("Hub: " + entry.getKey() + " " + "Cabaz: " + entry.getValue());
+        }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         int distanciaTotal2 = 0;
         LinkedList<Localizacao> caminhoMinimoEntreHubs = new LinkedList<>();
