@@ -36,12 +36,12 @@ public class CreateExpeditionListUI implements Runnable {
                     }
                     System.out.println("=========================================================================");
                 }
+                success = false;
             }catch (Exception e){
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }while (success);
-
 
 
     }
