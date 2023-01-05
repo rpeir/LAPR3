@@ -1,5 +1,5 @@
 -- create new session
-CREATE USER snowflake IDENTIFIED BY abcd1234;
+CREATE USER snowflake2 IDENTIFIED BY abcd1234;
 GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, create procedure, create trigger, create sequence to snowflake;
 alter user snowflake quota unlimited on users;
 
