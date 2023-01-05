@@ -92,7 +92,7 @@ public class MinimumRouteController {
         }
         System.out.println("Cabazes a entregar:");
             for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()){
-                System.out.println("Hub: " + entry.getKey() + " " + "Cabaz: " + entry.getValue());
+                System.out.println("Hub: " + ctrl.getClosestHub(entry.getKey()) + " " + "Cabaz: " + entry.getValue());
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         int distanciaTotal2 = 0;
