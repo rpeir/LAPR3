@@ -12,16 +12,16 @@ WHERE USERNAME IS NOT NULL;
 -- list roles from ras session
 SELECT * FROM USER_ROLE_PRIVS;
 -- grant roles to snowflake
-GRANT CONNECT TO snowflake;
-GRANT RESOURCE TO snowflake;
-GRANT DBA TO snowflake;
+GRANT CONNECT TO snowflake2;
+GRANT RESOURCE TO snowflake2;
+GRANT DBA TO snowflake2;
 
 -- on ras session
-GRANT SELECT, INSERT, UPDATE, DELETE ON Clientes TO snowflake;
-GRANT SELECT, INSERT, UPDATE, DELETE ON Culturas TO snowflake;
-GRANT SELECT, INSERT, UPDATE, DELETE ON Produtos TO snowflake;
-GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas TO snowflake;
-GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas_Culturas TO snowflake;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Clientes TO snowflake2;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Culturas TO snowflake2;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Produtos TO snowflake2;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas TO snowflake2;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas_Culturas TO snowflake2;
 
 -- on snowflake session
 GRANT SELECT, INSERT, UPDATE, DELETE ON Cliente TO ras;
@@ -67,13 +67,4 @@ VALUES (4, 2017, 4);
 INSERT INTO Tempo (codTempo, ano, mes)
 VALUES (5, 2021, 5);
 
--- insert 5 values into Estatistica table
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (1, 1, 1, 1, 1, 1000, 2000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (2, 2, 2, 2, 2, 2000, 3000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (3, 3, 3, 3, 3, 3000, 4000);
-INSERT INTO Estatistica (codTempo, codSetorAgricola, codProduto, codCliente, codHub, producaoToneladas, vendasMilharesEuros)
-VALUES (5, 5, 5, 5, 5, 5000, 6000);
 
