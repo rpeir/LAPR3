@@ -2,16 +2,16 @@
 #define CREATE_ARRAY_SENS_H
 #include "../US110/sensores.h"
 
-unsigned short *createArrayDirVento(unsigned short max, unsigned short min, unsigned int freq, int n);
+void fill_sens_dir_vento(Sensor *sensor_dir_vento, int n);
 
-unsigned char *createArrayHumAtm(unsigned char max, unsigned char min, unsigned int freq, int n, unsigned char *pluvio);
+void fill_sens_hum_atm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n);
 
-unsigned char *createArrayHumSolo(unsigned char max, unsigned char min, unsigned int freq, int n, unsigned char *pluvio);
+void fill_sens_hum_solo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n);
 
-void fill_sens_pluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int maxWrongReads);
+void fill_sens_pluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n);
 
-char *createArrayTemp(char max, char min, unsigned int freq, int n);
+void fill_sens_temp(Sensor *sensor_temp, int n);
 
-unsigned char *createArrayVelVento(unsigned char max, unsigned char min, unsigned int freq, int n);
+void fill_sens_vel_vento(Sensor *sensor_vel_vento, int n);
 
 #endif
