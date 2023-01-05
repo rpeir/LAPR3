@@ -19,7 +19,7 @@ public class CreateExpeditionListController {
         createExpeditionList = new CreateExpeditionList();
     }
 
-    public Map<ClienteProdutorEmpresa, Cabaz> createExpeditionList(int dia, int n) {
+    public Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> createExpeditionList(int dia, int n) {
         return this.createExpeditionList.createExpeditionList(dia, n);
     }
 }
