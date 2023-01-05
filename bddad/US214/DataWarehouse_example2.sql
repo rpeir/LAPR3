@@ -1,7 +1,7 @@
 -- create new session
 CREATE USER snowflake2 IDENTIFIED BY abcd1234;
-GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, create procedure, create trigger, create sequence to snowflake;
-alter user snowflake quota unlimited on users;
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, create procedure, create trigger, create sequence to snowflake2;
+alter user snowflake2 quota unlimited on users;
 
 -- list sessions
 SELECT SID, SERIAL#, USERNAME, STATUS
@@ -11,7 +11,7 @@ WHERE USERNAME IS NOT NULL;
 -- on ras session
 -- list roles from ras session
 SELECT * FROM USER_ROLE_PRIVS;
--- grant roles to snowflake
+-- grant roles to snowflake2
 GRANT CONNECT TO snowflake2;
 GRANT RESOURCE TO snowflake2;
 GRANT DBA TO snowflake2;
@@ -23,14 +23,14 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON Produtos TO snowflake2;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas TO snowflake2;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SetoresAgricolas_Culturas TO snowflake2;
 
--- on snowflake session
+-- on snowflake2 session
 GRANT SELECT, INSERT, UPDATE, DELETE ON Cliente TO ras;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Cultura TO ras;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Produto TO ras;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SetorAgricola TO ras;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SetorAgricola_Cultura TO ras;
 
--- on snowflake session
+-- on snowflake2 session
 INSERT INTO Cliente (codCliente, nome, emailCliente, nrFiscal)
 SELECT codInterno, nome, emailCliente, nrFiscal
 FROM ras.Clientes;

@@ -13,6 +13,7 @@ table( Vendas ) {
     foreign_key(primary_key( codCliente )): INTEGER
     foreign_key(primary_key( codProduto )): INTEGER
     foreign_key(primary_key( codTempo )): INTEGER
+    foreign_key(primary_key( codHub )): INTEGER
     column( vendasMilharesEuros ): INTEGER
 }
 
@@ -58,6 +59,12 @@ table( Tempo ) {
     column( mes ): INTEGER
 }
 
+table( Hub ) {
+    primary_key( codHub ): INTEGER
+    column( nomeHub ): VARCHAR
+    column( tipoHub ): VARCHAR
+}
+
 ' nao fazer tabela tipoHub nem ClientesProdutores porque gasta espaco na base dados
 ' quando para obter todos os clientes produtores basta fazer um select distinct
 ' ou constraint
@@ -71,5 +78,6 @@ Produções }|--|| Tempo
 Produto }|--|| Cultura
 Cultura ||--|{ SetorAgricola_Cultura
 SetorAgricola_Cultura }|--|| SetorAgricola
+Vendas }|--|| Hub
 
 @enduml
