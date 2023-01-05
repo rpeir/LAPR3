@@ -27,7 +27,7 @@ public class MinimumRouteController {
         createExpeditionList = new CreateExpeditionList();
     }
 
-    public List<Localizacao> getMinimumRoute() {
+    public List<Localizacao> getMinimumRoute(String produtorInicial) {
         Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
         //listar cabazes
 
@@ -45,7 +45,7 @@ public class MinimumRouteController {
         List<Localizacao> totalPath = new ArrayList<>();
         int distanciaTotal = 0;
         LinkedList<Localizacao> caminhoMinimoEntreProdutores = new LinkedList<>();
-        Localizacao current = produtores.get(0).getLocalizacao();
+        Localizacao current = cpeStore.getCPE(produtorInicial).getLocalizacao();
         while (!produtores.isEmpty()) {
             int minDistance = Integer.MAX_VALUE;
             Localizacao nextProd = null;
