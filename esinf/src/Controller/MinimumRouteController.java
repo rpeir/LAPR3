@@ -1,5 +1,6 @@
 package Controller;
 
+import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 import domain.CreateExpeditionList;
 import domain.Localizacao;
@@ -7,6 +8,7 @@ import graph.Algorithms;
 import graph.Graph;
 import store.ClienteProdutorEmpresaStore;
 import store.HubsStore;
+
 import java.util.*;
 
 public class MinimumRouteController {
@@ -27,11 +29,15 @@ public class MinimumRouteController {
 
     public List<Localizacao> getMinimumRoute() {
         // cliente, produtores
-        Map<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
+        Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
         Graph<Localizacao, Integer> graph = app.getGraph();
         List<ClienteProdutorEmpresa> produtores = new ArrayList<>();
-        for(Map.Entry<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> entry : expeditionList.entrySet()) {
-            for(Map.Entry<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> entry2 : entry.getValue().entrySet()) {
+        for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {
+            // get cabaz
+            Cabaz cabaz = entry.getValue();
+            // get produtores
+            Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtorProdutos = cabaz.getProdutorProdutos();
+            for(Map.Entry<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> entry2 : produtorProdutos.entrySet()) {
                 if(!produtores.contains(entry2.getKey())) {
                     produtores.add(entry2.getKey());
                 }
@@ -63,7 +69,7 @@ public class MinimumRouteController {
                 current = nextProd;
                 produtores.remove(cpeStore.getCPEbyID(nextProd.getLocID()));
                 produtores.removeIf(p -> caminhoMinimoEntreProdutores.contains(p.getLocalizacao()));
-            }else {
+            } else {
                 // sair do loop quando todos os hubs ja foram visitados
                 break;
             }
@@ -78,7 +84,7 @@ public class MinimumRouteController {
         }
         totalPath.addAll(caminhoMinimoEntreProdutores);
         List<ClienteProdutorEmpresa> hubs = new ArrayList<>();
-        for(Map.Entry<ClienteProdutorEmpresa, Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>>> entry : expeditionList.entrySet()) {
+        for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {
             ClienteProdutorEmpresa hub = ctrl.getClosestHub(entry.getKey());
             if(!hubs.contains(hub)) {
                 hubs.add(hub);
@@ -109,7 +115,7 @@ public class MinimumRouteController {
                 current2 = nextHub;
                 hubs.remove(cpeStore.getCPEbyID(nextHub.getLocID()));
                 hubs.removeIf(h -> caminhoMinimoEntreHubs.contains(h.getLocalizacao()));
-            }else {
+            } else {
                 // sair do loop quando todos os hubs ja foram visitados
                 break;
             }
@@ -140,12 +146,14 @@ public class MinimumRouteController {
         }
         System.out.println();
         for (int k = 0; k < totalPath.size(); k++) {
-            if(k < x-1){
+            if (k < x - 1) {
                 System.out.println("Distancia entre " + cpeStore.getCPEbyID(totalPath.get(k).getLocID()) + " e "
-                        + cpeStore.getCPEbyID(totalPath.get(k+1).getLocID()) + ": "
-                        + graph.edge(totalPath.get(k), totalPath.get(k+1)).getWeight());
+                        + cpeStore.getCPEbyID(totalPath.get(k + 1).getLocID()) + ": "
+                        + graph.edge(totalPath.get(k), totalPath.get(k + 1)).getWeight());
             }
         }
+        System.out.println();
+
         return totalPath;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
