@@ -9,20 +9,18 @@
 ' Zero or Many	}o--
 ' One or Many	}|--
 
-table( Hub ) {
-    primary_key( codHub ): INTEGER
-    column( nomeHub ): VARCHAR
-    column( tipoHub ): VARCHAR
+table( Vendas ) {
+    foreign_key(primary_key( codCliente )): INTEGER
+    foreign_key(primary_key( codProduto )): INTEGER
+    foreign_key(primary_key( codTempo )): INTEGER
+    column( vendasMilharesEuros ): INTEGER
 }
 
-table( Estatisticas ) {
-    foreign_key(primary_key( codCliente )): INTEGER
-    foreign_key(primary_key( codHub )): INTEGER
+table( Produções ) {
     foreign_key(primary_key( codProduto )): INTEGER
     foreign_key(primary_key( codSetorAgricola )): INTEGER
     foreign_key(primary_key( codTempo )): INTEGER
     column( producaoToneladas ): INTEGER
-    column( vendasMilharesEuros ): INTEGER
 }
 
 table( Produto ) {
@@ -64,11 +62,12 @@ table( Tempo ) {
 ' quando para obter todos os clientes produtores basta fazer um select distinct
 ' ou constraint
 
-Estatistica }|--|| Cliente
-Estatistica }|--|| Hub
-Estatistica }|--|| Produto
-Estatistica }|--|| SetorAgricola
-Estatistica }|--|| Tempo
+Vendas }|--|| Cliente
+Vendas }|--|| Produto
+Produções }|--|| Produto
+Produções }|--|| SetorAgricola
+Vendas }|--|| Tempo
+Produções }|--|| Tempo
 Produto }|--|| Cultura
 Cultura ||--|{ SetorAgricola_Cultura
 SetorAgricola_Cultura }|--|| SetorAgricola

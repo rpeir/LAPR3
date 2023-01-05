@@ -9,7 +9,7 @@
 ' Zero or Many	}o--
 ' One or Many	}|--
 
-table( Estatistica ) {
+table( Estatisticas ) {
     foreign_key(primary_key( codCliente )): INTEGER
     foreign_key(primary_key( codProduto )): INTEGER
     foreign_key(primary_key( codSetorAgricola )): INTEGER
@@ -57,10 +57,10 @@ table( Tempo ) {
 ' quando para obter todos os clientes produtores basta fazer um select distinct
 ' ou constraint
 
-Estatistica }|--|| Cliente
-Estatistica }|--|| Produto
-Estatistica }|--|| SetorAgricola
-Estatistica }|--|| Tempo
+Estatisticas }|--|| Cliente
+Estatisticas }|--|| Produto
+Estatisticas }|--|| SetorAgricola
+Estatisticas }|--|| Tempo
 Produto }|--|| Cultura
 Cultura ||--|{ SetorAgricola_Cultura
 SetorAgricola_Cultura }|--|| SetorAgricola
