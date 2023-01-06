@@ -4,6 +4,7 @@ import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 import domain.Pedido;
 import stats.ListStatistics;
+import store.HubsStore;
 import store.ListaExpedicoesStore;
 import store.PedidosStore;
 import store.Stock;
@@ -270,8 +271,28 @@ public class ExpListStatsController {
         return outOfStock;
     }
 
+    /**
+     * Get the number of Hubs that a produtor delivered to
+     * @param produtor produtor to get the number of Hubs delivered to
+     * @param dia day of the expeditions
+     * @return number of Hubs delivered to
+     */
     public Integer numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
-
-        return null;
+        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+        HubsStore hubsStore = App.getInstance().getHubsStore();
+        HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
+        List<ClienteProdutorEmpresa> hubs = null;
+        int numberOfHubsSatisfied = 0;
+        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
+            if (entry.getValue().containsKey(produtor)) {
+                if (hubs.isEmpty()){
+                    hubs.add(closestHubs.get(entry.getKey()));
+                }else if(!hubs.contains(closestHubs.get(entry.getKey()))){
+                    hubs.add(closestHubs.get(entry.getKey()));
+                }
+            }
+        }
+        if (hubs != null) numberOfHubsSatisfied = hubs.size();
+        return numberOfHubsSatisfied;
     }
 }
