@@ -148,9 +148,39 @@ public class ExpListStatsController {
         return null;
     }
 
+    /**
+     * Create a list of statistics for each proutor for the given day
+     * @param dia day of the expeditions
+     * @return List of statistics for each produtor
+     */
     public List<ListStatistics> getStatsByProdutor(int dia) {
-        // TODO
-        return null;
+        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+        HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
+
+        final String statNameCFT = "Nº de cabazes fornecidos totalmente"; // Nome da estatística "Cabazes fornecidos totalmente"
+        final String statNameCFP = "Nº de cabazes fornecidos parcialmente"; // Nome da estatística "Cabazes fornecidos parcialmente"
+        final String statNameCDF = "Nº de clientes distintos fornecidos"; // Nome da estatística "Clientes distintos fornecidos"
+        final String statNamePTE = "Nº de produtos totalmente esgotados"; // Nome da estatística "Produtos totalmente esgotados"
+        final String statNameHF = "Nº de hubs fornecidos"; // Nome da estatística "Hubs fornecidos"
+
+        for (ClienteProdutorEmpresa produtor : mapCPE.values()) {
+            if (produtor.isProdutor()) {
+                ListStatistics stats = new ListStatistics(produtor.getId());
+                int cft = numberOfCabazesTotallyDelivered(produtor, dia); // Nº de cabazes fornecidos totalmente
+                int cfp = numberOfCabazesPartiallyDelivered(produtor, dia); // Nº de cabazes fornecidos parcialmente
+                int cdf = numberOfDistinctClientesDelivered(produtor, dia); // Nº de clientes distintos fornecidos
+                int pte = numberOfProductsOutOfStock(produtor, dia); // Nº de produtos totalmente esgotados
+                int hf = numberOfHubsSatisfiedByProducer(produtor, dia); // Nº de hubs fornecidos
+
+                stats.addStat(statNameCFT, cft); // Cria a estatistica com o valor de cabazes fornecidos totalmente
+                stats.addStat(statNameCFP, cfp); // Cria a estatistica com o valor de cabazes fornecidos parcialmente
+                stats.addStat(statNameCDF, cdf); // Cria a estatistica com o valor de clientes distintos fornecidos
+                stats.addStat(statNamePTE, pte); // Cria a estatistica com o valor de produtos totalmente esgotados
+                stats.addStat(statNameHF, hf); // Cria a estatistica com o valor de hubs fornecidos
+                finalStats.put(produtor.getId(), stats);
+            }
+        }
+        return new ArrayList<>(finalStats.values());
     }
 
     /**
