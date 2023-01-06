@@ -113,7 +113,7 @@ public class CreateExpeditionList {
             App.getInstance().getStockAfterExpedition().insertUpdatedStock(validStock);
             indexPedido++;
         }
-        App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result);
+        App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result, dia);
         return result;
     }
 
