@@ -166,7 +166,7 @@ public class ExpListStatsController {
     }
 
     public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor, int dia){
-        List<Pedido> listaStock = App.getInstance().getStock().getStockMap().get(dia);
+        List<Pedido> listaStock = App.getInstance().getStockAfterExpedition().getStockMap().get(dia);
 
         return null;
     }
