@@ -65,6 +65,7 @@ public class App {
         hubsStore = new HubsStore();
         pedidosStore = new PedidosStore();
         stock = new Stock();
+        stockAfterExpedition = new Stock();
 
     }
 
