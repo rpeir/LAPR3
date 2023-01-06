@@ -8,10 +8,10 @@
 #include "../US102/sens_temp.h"
 #include "../US102/sens_velc_vento.h"
 #include "../US101/pcg32_random_r.h"
-#include "../US104/createArray.h"
+#include "../US104/createArrayNew.h"
 #include "../US103/dailyValues.h"
 #include "../US103/createMatrix.h"
-#include "../US110/sensores.h"
+#include "sensores.h"
 
 void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
     Sensor* sensores;

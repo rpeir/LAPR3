@@ -1,6 +1,6 @@
 #ifndef CREATE_ARRAY_SENS_H
 #define CREATE_ARRAY_SENS_H
-#include "../US110/sensores.h"
+#include "../mainS2/sensores.h"
 
 void createArrayDirVento(Sensor *sensor_dir_vento, int n);
 
