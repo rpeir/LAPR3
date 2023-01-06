@@ -40,24 +40,14 @@ void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
 void parse_sensor_line(char* line, Sensor* sensor) {
     char* token;
     char* line_copy = strdup(line);
-    // atoi = ascii to integer
-//    token = strtok(line_copy, ",");
-//    sensor->id = (unsigned short)atoi(token);
 
     token = strtok(NULL, ",");
     sensor->sensor_type = (unsigned char)token[0];
-
-//    token = strtok(NULL, ",");
-//    sensor->max_limit = (unsigned short)atoi(token);
-//
-//    token = strtok(NULL, ",");
-//    sensor->min_limit = (unsigned short)atoi(token);
 
     token = strtok(NULL, ",");
     sensor->frequency = (unsigned long)atoi(token);
 
     int n = 5;
-    //fill readings array here
     unsigned short* leituras;
 
 
@@ -73,7 +63,6 @@ int main() {
     tpHumAtms.nrSensores=0;
     tpHumSolos.nrSensores=0;
 
-    // choose if u want to import file or input the info yourself
     int choice;
     printf("1 - Import file\n2 - Input info\n");
     scanf("%d", &choice);
@@ -89,8 +78,7 @@ int main() {
     while (fgets(line, 1024, file) != NULL) {
     Sensor sensor;
     parse_sensor_line(line, &sensor);
-
-    }
+}
 
     fclose(file);
 
@@ -103,20 +91,7 @@ int main() {
         scanf("%d", &nrSensors);
         if(nrSensors>0) {
             for(i=0; i<nrSensors; i++) {
-                Sensor sensor;
-                printf("Sensor %d\n", i+1);
-                printf("ID: ");
-                scanf("%hd", &sensor.id);
-                printf("Sensor type: ");
-                scanf("%hhd", &sensor.sensor_type);
-                printf("Max limit: ");
-                scanf("%hd", &sensor.max_limit);
-                printf("Min limit: ");
-                scanf("%hd", &sensor.min_limit);
-                printf("Frequency: ");
-                scanf("%ld", &sensor.frequency);
-                //fill readings array here
-                //switch case para cada tipo de sensor
+
 
     int n = 5;
 
