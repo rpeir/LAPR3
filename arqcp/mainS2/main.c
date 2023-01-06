@@ -90,7 +90,6 @@ int main() {
     Sensor sensor;
     parse_sensor_line(line, &sensor);
 
-    //add_sensor_to_list(sensor);
     }
 
     fclose(file);
@@ -123,7 +122,6 @@ int main() {
 
     TipoSensor *tp;
     
-    add_sensor_to_list(sensor, tp);
             }
         }
         else {
