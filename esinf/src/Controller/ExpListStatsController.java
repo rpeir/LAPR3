@@ -159,20 +159,43 @@ public class ExpListStatsController {
         // TODO
         return null;
     }
-
+    /**
+     * Get the number of distinct clientes that a produtor delivered to
+     * @param produtor produtor to get the number of clientes delivered to
+     * @param dia day of the expeditions
+     * @return number of distinct clientes delivered to
+     */
     public Integer numberOfDistinctClientesDelivered(ClienteProdutorEmpresa produtor, int dia){
-        // TODO
-        return null;
+        int numberOfDistinctClientesDelivered = 0;
+        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+        for (Cabaz cabaz : clienteCabaz.values()) {
+            if (cabaz.containsKey(produtor)) {
+                numberOfDistinctClientesDelivered++;
+            }
+        }
+        return numberOfDistinctClientesDelivered;
     }
-
+    /**
+     * Get the number of products out of stock for a produtor on the given day
+     * @param produtor produtor to get the number of products out of stock
+     * @param dia day to get the number of products out of stock
+     * @return number of products out of stock
+     */
     public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor, int dia){
         List<Pedido> listaStock = App.getInstance().getStockAfterExpedition().getStockMap().get(dia);
-
-        return null;
+        int outOfStock = 0;
+        for (Pedido p : listaStock) {
+            if (p.getClienteProdutor().equals(produtor.getId())) {
+                for (Float f : p.getProdutos()) {
+                    if (f == 0) outOfStock++;
+                }
+            }
+        }
+        return outOfStock;
     }
 
     public Integer numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
-        // TODO
+
         return null;
     }
 }
