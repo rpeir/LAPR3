@@ -1,5 +1,6 @@
 package Controller;
 
+//import domain.ListaExpedicoes;
 import domain.Pedido;
 import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
@@ -166,6 +167,7 @@ public class ReadCSVController {
                     cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
                 }
 
+                //adicionar o cabaz à expedição
                 line = br.readLine();
             }
         } catch (NumberFormatException e) {

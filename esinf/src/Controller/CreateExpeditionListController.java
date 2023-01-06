@@ -19,4 +19,8 @@ public class CreateExpeditionListController {
     public Map<ClienteProdutorEmpresa, Cabaz> createExpeditionList(int dia, int n) {
         return this.createExpeditionList.createExpeditionList(dia, n);
     }
+    public Map<ClienteProdutorEmpresa, Cabaz> createDailyExpeditionList(int dia) {
+        return this.createExpeditionList.createDailyExpeditionList(dia);
+    }
+
 }

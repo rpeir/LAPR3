@@ -127,5 +127,83 @@ public class CreateExpeditionList {
         }
         return result;
     }
-
+    public Map<ClienteProdutorEmpresa, Cabaz> createDailyExpeditionList(int dia) {
+        Map<ClienteProdutorEmpresa, Cabaz> result = new HashMap<>();
+        PedidosStore pedidosStore = App.getInstance().getPedidosStore();
+        Stock stock = App.getInstance().getStock();
+        List<Pedido> listaPedidos = pedidosStore.getPedidoMap().get(dia);
+        List<Pedido> listaStock = new ArrayList<>(stock.getStockMap().get(dia)) ;
+        int indexPedido = 0;
+        for (Pedido currentPedido : listaPedidos) {
+            ClienteProdutorEmpresa currentCliente = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentPedido.getClienteProdutor());
+            int indexProduto = 0;
+            for (Float qtdProduto : currentPedido.getProdutos()) {
+                int indexProdutor = 0;
+                boolean success = false;
+                do {
+                    Pedido currentStock = listaStock.get(indexProdutor);
+                    if (qtdProduto > 0 && currentStock.getProduto(indexProduto) > 0) {
+                        ClienteProdutorEmpresa currentProdutor = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentStock.getClienteProdutor());
+                        if (currentStock.getProduto(indexProduto) >= qtdProduto) {
+                            if (result.containsKey(currentCliente)) {
+                                if (result.get(currentCliente).containsKey(currentProdutor)) {
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
+                                } else {
+                                    List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
+                                    result.get(currentCliente).put(currentProdutor, tempList);
+                                }
+                            } else {
+                                Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
+                                List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
+                                tempMap.put(currentProdutor, tempList);
+                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
+                                result.put(currentCliente, tempCabaz);
+                            }
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, 0);
+                            listaStock.get(indexProdutor).setProdutoByIndex(indexProduto, currentStock.getProduto(indexProduto) - qtdProduto);
+                            qtdProduto = (float) 0;
+                        } else {
+                            if (result.containsKey(currentCliente)) {
+                                if (result.get(currentCliente).containsKey(currentProdutor)) {
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
+                                } else {
+                                    List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
+                                    result.get(currentCliente).put(currentProdutor, tempList);
+                                }
+                            } else {
+                                Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
+                                List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
+                                tempMap.put(currentProdutor, tempList);
+                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
+                                result.put(currentCliente, tempCabaz);
+                            }
+                            listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));
+                            qtdProduto = qtdProduto - currentStock.getProduto(indexProduto);
+                            listaStock.get(indexProdutor).setProdutoByIndex(indexProduto, 0);
+                        }
+                    }
+                    indexProdutor++;
+                } while (qtdProduto>0  && indexProdutor < listaStock.size());
+                indexProduto++;
+            }
+            App.getInstance().getStockAfterExpedition().insertUpdatedStock(listaStock);
+            indexPedido++;
+        }
+        App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result, dia);
+        return result;
+    }
+        //method that returns the producers of a given client
+    public List<ClienteProdutorEmpresa> getProdutores() {
+        List<ClienteProdutorEmpresa> result = new ArrayList<>();
+        for (ClienteProdutorEmpresa produtor : App.getInstance().getClienteProdutorEmpresaStore().getMapCPE().values()) {
+            if (produtor.isProdutor()) {
+                result.add(produtor);
+            }
+        }
+        return result;
+    }
 }

@@ -49,6 +49,10 @@ public class Main {
                     ImportWaterControllerUI importWaterControllerUI = new ImportWaterControllerUI();
                     importWaterControllerUI.run();
                     break;
+                case "7":
+                    DailyExpeditionListUI dailyExpeditionListUI = new DailyExpeditionListUI();
+                    dailyExpeditionListUI.run();
+                    break;
                 case "8", "11":
                     CreateExpeditionListUI createExpeditionListUI = new CreateExpeditionListUI();
                     createExpeditionListUI.run();
