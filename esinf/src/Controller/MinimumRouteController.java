@@ -27,12 +27,8 @@ public class MinimumRouteController {
         createExpeditionList = new CreateExpeditionList();
     }
 
-    public List<Localizacao> getMinimumRoute(String produtorInicial) {
-        Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
-        if(expeditionList == null || expeditionList.isEmpty()) {
-            System.out.println("Lista de expedicoes vazia, por facor execute a opcao 8");
-            return null;
-        }
+    public List<Localizacao> getMinimumRoute(String produtorInicial, int dia) {
+        Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia(dia);
         Graph<Localizacao, Integer> graph = app.getGraph();
         List<ClienteProdutorEmpresa> produtores = new ArrayList<>();
         for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {

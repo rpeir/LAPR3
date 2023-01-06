@@ -4,6 +4,7 @@ import Controller.App;
 import Controller.MinimumRouteController;
 import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
+import store.ListaExpedicoesStore;
 
 import java.util.*;
 
@@ -19,26 +20,30 @@ public class MinimumRouteUI {
     public void run() {
         Scanner sc = new Scanner(System.in);
         String produtorInicial = "";
-        app = App.getInstance();
-        Map<ClienteProdutorEmpresa, Cabaz> expeditionList = app.getListaExpedicoesStore().getExpedicaoNumDia();
-        System.out.println("Em qual produtor deseja comecar o precurso?");
-        List<ClienteProdutorEmpresa> produtores = new ArrayList<>();
-        for(Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionList.entrySet()) {
-            Cabaz cabaz = entry.getValue();
-            Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtorProdutos = cabaz.getProdutorProdutos();
-            for(Map.Entry<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> entry2 : produtorProdutos.entrySet()) {
-                if(!produtores.contains(entry2.getKey())) {
-                    produtores.add(entry2.getKey());
-                    System.out.println(entry2.getKey().getDesignacao());
+        int dia;
+        System.out.println("Selecione um dia:");
+        for(Map.Entry<Integer, Map<ClienteProdutorEmpresa, Cabaz>> listaExpedicoes : app.getListaExpedicoesStore().getExpedicoes().entrySet()) {
+            System.out.println(listaExpedicoes.getKey());
+        }
+        dia = sc.nextInt();
+        if(app.getListaExpedicoesStore().getExpedicaoNumDia(dia) == null) {
+            System.out.println("Não existem expedicoes nesse dia");
+            run();
+        }
+        List<ClienteProdutorEmpresa> listaProdutores = new ArrayList<>();
+        System.out.println("Selecione um produtor inicial:");
+        for(Map.Entry<ClienteProdutorEmpresa, Cabaz> expedicao : app.getListaExpedicoesStore().getExpedicaoNumDia(dia).entrySet()) {
+            Cabaz cabaz = expedicao.getValue();
+            for(Map.Entry<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> produtor : cabaz.getProdutorProdutos().entrySet()) {
+                if(!listaProdutores.contains(produtor.getKey())) {
+                    listaProdutores.add(produtor.getKey());
+                    System.out.println(produtor.getKey().getDesignacao());
                 }
             }
         }
-        produtorInicial = sc.nextLine();
-        if(produtores.contains(app.getClienteProdutorEmpresaStore().getCPE(produtorInicial))) {
-            ctrl.getMinimumRoute(produtorInicial);
-        }
-        else {
-            System.out.println("Produtor nao existe");
+        produtorInicial = sc.next();
+        if(!listaProdutores.contains(app.getClienteProdutorEmpresaStore().getCPE(produtorInicial))) {
+            System.out.println("Produtor não existe");
             run();
         }
     }
