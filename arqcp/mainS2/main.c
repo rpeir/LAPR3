@@ -59,27 +59,7 @@ void parse_sensor_line(char* line, Sensor* sensor) {
     int n = 5;
     //fill readings array here
     unsigned short* leituras;
-    //switch case para cada tipo de sensor
-    switch (sensor->sensor_type) {
-        case 'T':
-            createSensTemp(sensor, n);
-            break;
-        case 'V':
-            createSensVelVento(sensor, n);
-            break;
-        case 'D':
-            createSensDirVento(sensor, n);
-            break;
-        case 'H':
 
-            break;
-        case 'S':
-
-            break;
-        case 'P':
-
-            break;
-    }
 
     free(line_copy);
 }
@@ -127,48 +107,22 @@ int main() {
                 Sensor sensor;
                 printf("Sensor %d\n", i+1);
                 printf("ID: ");
-                scanf("%d", &sensor.id);
+                scanf("%hd", &sensor.id);
                 printf("Sensor type: ");
-                scanf("%d", &sensor.sensor_type);
+                scanf("%hhd", &sensor.sensor_type);
                 printf("Max limit: ");
-                scanf("%d", &sensor.max_limit);
+                scanf("%hd", &sensor.max_limit);
                 printf("Min limit: ");
-                scanf("%d", &sensor.min_limit);
+                scanf("%hd", &sensor.min_limit);
                 printf("Frequency: ");
-                scanf("%d", &sensor.frequency);
+                scanf("%ld", &sensor.frequency);
                 //fill readings array here
                 //switch case para cada tipo de sensor
 
     int n = 5;
 
     TipoSensor *tp;
-    switch (sensor->sensor_type) {
-        case 'T':
-
-            tp = &tpTemps;
-            break;
-        case 'V':
-
-            tp = &tpVelVents;
-            break;
-        case 'D':
-
-            tp = &tpDirVents;
-            break;
-        case 'H':
-
-            tp = &tpHumSolos;
-            break;
-        case 'S':
-
-            tp = &tpHumSolos;
-            break;
-        case 'P':
-
-            tp = &tpPluvios;
-            break;
-    }
-    sensor->readings = leituras;
+    
     add_sensor_to_list(sensor, tp);
             }
         }
