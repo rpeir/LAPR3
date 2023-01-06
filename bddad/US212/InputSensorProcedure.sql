@@ -5,8 +5,8 @@ AS
   v_valorLido  varchar(3);
   v_valorReferencia varchar(2);
   v_instanteLeitura varchar(23);
-  codLeitura int;
-  duplicado int;
+  codLeitura number;
+  duplicado number;
 
 
 
@@ -19,7 +19,7 @@ Select substr(input_string,8,3) as substring from input_sensor;
 Cursor c_valorReferencia is
 Select substr(input_string,11,2) as substring from input_sensor;
 Cursor c_instanteLeitura is
-Select substr(input_string,12,13) as substring from input_sensor;
+Select substr(input_string,13,13) as substring from input_sensor;
 
 Begin
 Select count(*) into codLeitura from Leituras;
@@ -41,11 +41,11 @@ Exit when c_idsensor%notfound or c_tiposensor%notfound or
 
 Select count(*) into duplicado from sensores where valorReferencia = v_valorReferencia OR idSensor = v_idSensor;
 If duplicado = 0 then
-         Insert into Sensores (idSensor, codTipoSensor, codEstacaoMeteorologica, valorReferencia) values (v_idSensor, v_tipoSensor, NULL, v_valorReferencia);
+         Insert into Sensores (idSensor, codTipoSensor, codEstacaoMeteorologica, valorReferencia) values (v_idSensor, v_tipoSensor, NULL, TO_NUMBER(v_valorReferencia));
 END IF;
 
 INSERT INTO Leituras(codLeitura, idSensor, instanteLeitura, valorLido) values
-    (codLeitura, TO_NUMBER(v_idSensor), TO_DATE(v_instanteLeitura,'DDMMYYYYHH:MM'),v_valorLido);
+    (codLeitura, v_idSensor, TO_DATE(v_instanteLeitura,'DDMMYYYYHH24:MI'),TO_NUMBER(v_valorLido));
 
 End Loop;
 End;

@@ -430,3 +430,9 @@ quantidade integer constraint nnQuantidade not null,
 );
 alter table FichasTecnicas_Componentes add constraint fk_FichasTecnicas_Componentes_codFichaTecnica FOREIGN KEY (codFichaTecnica) references FichasTecnicas (codFichaTecnica);
 alter table FichasTecnicas_Componentes add constraint fk_FichasTecnicas_Componentes_codComponentes FOREIGN KEY (codComponente) references Componentes (codComponente);
+
+drop table input_sensor;
+CREATE TABLE input_sensor(
+input_string VARCHAR(25),
+ constraint pkInput_sensor primary key (input_string)
+);
