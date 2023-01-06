@@ -21,7 +21,6 @@ public class CreateExpeditionListUI implements Runnable {
         System.out.println("Indroduza o número de produtores que podem fornecer produtos na expedição quer criar");
         int n = sc.nextInt();
         boolean success = false;
-        do{
             try{
                 Map<ClienteProdutorEmpresa, Cabaz> result = CTRL.createExpeditionList(dia,n);
                 for (ClienteProdutorEmpresa cliente: result.keySet()) {
@@ -41,7 +40,7 @@ public class CreateExpeditionListUI implements Runnable {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
-        }while (!success);
+
 
 
 

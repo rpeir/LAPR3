@@ -4,7 +4,6 @@ import Controller.App;
 import Controller.MinimumRouteController;
 import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
-import store.ListaExpedicoesStore;
 
 import java.util.*;
 

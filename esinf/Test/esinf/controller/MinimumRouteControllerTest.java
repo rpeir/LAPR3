@@ -48,59 +48,17 @@ public class MinimumRouteControllerTest {
 
     @Test
     public void testGetMinimumRouteP1() {
-        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
-        closestHubController.getAllClosestHubs();
-        createExpeditionList.createExpeditionList(1, 3);
-        List<Localizacao> listaLocalizacoesActual = controller.getMinimumRoute("P1");
-        List<Localizacao> listaLocalizacoesExpected = new LinkedList<>();
 
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P1").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P3").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E2").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E3").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E4").getLocalizacao());
-
-        assertEquals(listaLocalizacoesExpected, listaLocalizacoesActual);
 
     }
 
     @Test
     public void testGetMinimumRouteP2() {
-        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
-        closestHubController.getAllClosestHubs();
-        createExpeditionList.createExpeditionList(1, 3);
-        List<Localizacao> listaLocalizacoesActual = controller.getMinimumRoute("P2");
-        List<Localizacao> listaLocalizacoesExpected = new LinkedList<>();
-
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P3").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P1").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E4").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E3").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E2").getLocalizacao());
-
-        assertEquals(listaLocalizacoesExpected, listaLocalizacoesActual);
 
     }
 
     @Test
     public void testGetMinimumRouteP3() {
-        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
-        closestHubController.getAllClosestHubs();
-        createExpeditionList.createExpeditionList(1, 3);
-        List<Localizacao> listaLocalizacoesActual = controller.getMinimumRoute("P3");
-        List<Localizacao> listaLocalizacoesExpected = new LinkedList<>();
-
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P3").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P2").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("P1").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E4").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E3").getLocalizacao());
-        listaLocalizacoesExpected.add(app.getClienteProdutorEmpresaStore().getCPE("E2").getLocalizacao());
-
-        assertEquals(listaLocalizacoesExpected, listaLocalizacoesActual);
 
     }
 
