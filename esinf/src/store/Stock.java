@@ -25,6 +25,18 @@ public class Stock {
         }
     }
 
+    public void insertUpdatedStock(List<Pedido> updatedStock){
+        for (int i = 0; i < updatedStock.size(); i++) {
+            if(stockMap.containsKey(updatedStock.get(i).getDiaDeProducao()))
+                stockMap.get(updatedStock.get(i).getDiaDeProducao()).add(updatedStock.get(i));
+            else {
+                List<Pedido> tempList = new ArrayList<>();
+                tempList.add(updatedStock.get(i));
+                stockMap.put(updatedStock.get(i).getDiaDeProducao(),tempList);
+            }
+        }
+    }
+
     public Map<Integer, List<Pedido>> getStockMap() {
         return stockMap;
     }

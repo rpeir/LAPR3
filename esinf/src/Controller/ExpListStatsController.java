@@ -150,23 +150,29 @@ public class ExpListStatsController {
         return null;
     }
 
+    public Integer numberOfCabazesTotallyDelivered(ClienteProdutorEmpresa produtor, int dia){
+        // TODO
+        return null;
+    }
+
+    public Integer numberOfCabazesPartiallyDelivered(ClienteProdutorEmpresa produtor, int dia){
+        // TODO
+        return null;
+    }
+
+    public Integer numberOfDistinctClientesDelivered(ClienteProdutorEmpresa produtor, int dia){
+        // TODO
+        return null;
+    }
+
+    public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor, int dia){
+        List<Pedido> listaStock = App.getInstance().getStock().getStockMap().get(dia);
+
+        return null;
+    }
+
     public Integer numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
         // TODO
         return null;
     }
-    public Integer numberOfClientsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
-        // TODO
-        return null;
-    }
-
-    public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor){
-        // TODO
-        return null;
-    }
-
-    public List<ListStatistics> getStatsByHub(int dia) {
-        // TODO
-        return null;
-    }
-
 }

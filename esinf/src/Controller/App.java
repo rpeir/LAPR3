@@ -23,9 +23,12 @@ public class App {
 
     private Stock stock;
 
-
+    private Stock stockAfterExpedition;
     public Stock getStock() {
         return stock;
+    }
+    public Stock getStockAfterExpedition() {
+        return stockAfterExpedition;
     }
 
     public PedidosStore getPedidosStore() {
