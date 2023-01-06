@@ -2,16 +2,16 @@
 #define CREATE_ARRAY_SENS_H
 #include "../US110/sensores.h"
 
-void fill_sens_dir_vento(Sensor *sensor_dir_vento, int n);
+void createArrayDirVento(Sensor *sensor_dir_vento, int n);
 
-void fill_sens_hum_atm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n);
+void createArrayHumAtm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n);
 
-void fill_sens_hum_solo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n);
+void createArrayHumSolo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n);
 
-void fill_sens_pluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n);
+void createArrayPluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n);
 
-void fill_sens_temp(Sensor *sensor_temp, int n);
+void createArrayTemp(Sensor *sensor_temp, int n);
 
-void fill_sens_vel_vento(Sensor *sensor_vel_vento, int n);
+void createArrayVelVento(Sensor *sensor_vel_vento, int n);
 
 #endif

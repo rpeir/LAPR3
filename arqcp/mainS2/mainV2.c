@@ -68,7 +68,7 @@ void parse_sensor_line(char* line, Sensor* sensor) {
             createSensVelVento(sensor, n);
             break;
         case 'D':
-
+            createSensDirVento(sensor, n);
             break;
         case 'H':
 

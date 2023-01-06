@@ -14,7 +14,7 @@
 uint64_t state = 0;
 uint64_t inc = 0;
 
-void createSensDirVent(Sensor *sensor_dir_vento, int n)
+void createArrayDirVento(Sensor *sensor_dir_vento, int n)
 {
     int isWrong = 0;
     char errorIsReached = 0;
@@ -54,7 +54,7 @@ void createSensDirVent(Sensor *sensor_dir_vento, int n)
     sensor_dir_vento -> readings = (void*) readings_dir_vento;
 }
 
-void createSensHumAtm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n)
+void createArrayHumAtm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n)
 {
     int isWrong = 0;
     char errorIsReached = 0;
@@ -101,7 +101,7 @@ void createSensHumAtm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n)
     sensor_hum_atm->readings = (void*) readings_hum_atm;
 }
 
-void createSensHumSolo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n)
+void createArrayHumSolo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n)
 {
     int isWrong = 0;
     char errorIsReached = 0;
@@ -148,7 +148,7 @@ void createSensHumSolo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n)
     sensor_hum_solo->readings = (void*) readings_hum_solo;
 }
 
-void createSensPluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n)
+void createArrayPluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n)
 {
     int isWrong = 0;
     char errorIsReached = 0;
@@ -195,7 +195,7 @@ void createSensPluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n)
     sensor_pluvio->readings = (void*) readings_pluvio;
 }
 
-void createSensTemp(Sensor *sensor_temp, int n)
+void createArrayTemp(Sensor *sensor_temp, int n)
 {
     int isWrong = 0;
     char errorIsReached = 0;
@@ -235,7 +235,7 @@ void createSensTemp(Sensor *sensor_temp, int n)
     sensor_temp -> readings = (void*) readings_temp;
 }
 
-void createSensVelVento(Sensor *sensor_vel_vento, int n)
+void createArrayVelVento(Sensor *sensor_vel_vento, int n)
 {
     int isWrong = 0;
     char errorIsReached = 0;
