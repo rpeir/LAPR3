@@ -10,14 +10,14 @@ import java.util.*;
 public class ExpListStatsController {
 
     private final Map<String, ClienteProdutorEmpresa> mapCPE;
-    private final Map<Integer, ListaExpedicoes> expedicoes;
+    private final Map<Integer, Map<ClienteProdutorEmpresa, Cabaz>> expedicoes;
 
     public ExpListStatsController() {
         this.expedicoes = App.getInstance().getListaExpedicoesStore().getExpedicoes();
         this.mapCPE = App.getInstance().getClienteProdutorEmpresaStore().getMapCPE();
     }
 
-    public ExpListStatsController(Map<Integer, ListaExpedicoes> expedicoes, Map<String, ClienteProdutorEmpresa> mapCPE) {
+    public ExpListStatsController(Map<Integer, Map<ClienteProdutorEmpresa, Cabaz>> expedicoes, Map<String, ClienteProdutorEmpresa> mapCPE) {
         this.expedicoes = expedicoes;
         this.mapCPE = mapCPE;
     }
@@ -28,7 +28,7 @@ public class ExpListStatsController {
      * @return List of statistics for each client
      */
     public List<ListStatistics> getStatsByCliente(int dia) {
-        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+        /*if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
 
         HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
         ListaExpedicoes listaExpedicoes = expedicoes.get(dia);
@@ -73,7 +73,8 @@ public class ExpListStatsController {
         stats.addStat(statNameCPS, statValueCPS); // Cria a estatistica com o valor de cabazes parcialmente satisfeitos para o ultimo cpe
         stats.addStat(statNamePFC, fornecedores.size()); // Cria a estatistica com o valor de produtores distintos que forneceram cabazes para o ultimo cpe
 
-        return new ArrayList<>(finalStats.values());
+        return new ArrayList<>(finalStats.values());*/
+        return null;
     }
 
     /**
@@ -82,12 +83,12 @@ public class ExpListStatsController {
      * @param listaExpedicoes ListaExpedicoes to get the ClienteProdutorEmpresa
      */
     private void createListStatisticsForEachClienteProdutor(HashMap<String, ListStatistics> stats, ListaExpedicoes listaExpedicoes) {
-        for (Cabaz cabaz : listaExpedicoes.get_listaExpedicoes()) {
+        /*for (Cabaz cabaz : listaExpedicoes.get_listaExpedicoes()) {
             String clienteProdutor = cabaz.getClienteProdutor();
             if (!stats.containsKey(clienteProdutor)) {
                 stats.put(clienteProdutor, new ListStatistics(clienteProdutor));
             }
-        }
+        }*/
     }
 
     /**
@@ -96,7 +97,7 @@ public class ExpListStatsController {
      * @return List of statistics for each cabaz
      */
     public List<ListStatistics> getStatsByCabaz(int dia) {
-        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+        /*if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
 
         HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
         ListaExpedicoes listaExpedicoes = expedicoes.get(dia);
@@ -140,81 +141,32 @@ public class ExpListStatsController {
             finalStats.put(cabaz.getClienteProdutor(), stats);
         }
 
-        return new ArrayList<>(finalStats.values());
+        return new ArrayList<>(finalStats.values());*/
+        return null;
     }
 
     public List<ListStatistics> getStatsByProdutor(int dia) {
-        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
-
-        HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
-        ListaExpedicoes listaExpedicoes = expedicoes.get(dia);
-
-        createListStatisticsForEachClienteProdutor(finalStats,listaExpedicoes); // cria uma lista de estatisticas para cada cpe e adiciona ao hashmap finalStats
-
-        final String statNameCFT = "Nº de cabazes fornecidos totalmente"; // Nome da estatística "Cabazes fornecidos totalmente"
-        final String statNameCFP = "Nº de cabazes fornecidos parcialmente"; // Nome da estatística "Cabazes fornecidos parcialmente"
-        final String statNameCDF = "Nº de clientes distintos fornecidos"; // Nome da estatística "Clientes distintos fornecidos"
-        final String statNamePTE = "Nº de produtos totalmente esgotados"; // Nome da estatística "Produtos totalmente esgotados"
-        final String statNameHF = "Nº de hubs fornecidos"; // Nome da estatística "Hubs fornecidos"
-
-        for (Cabaz cabaz : listaExpedicoes.get_listaExpedicoes()) {
-            List<Float> produtosCabaz = cabaz.getProdutos();
-            List<Float> produtosPedido = mapCPE.get(cabaz.getClienteProdutor()).getCabaz(dia).getProdutos();
-
-            int cft = 0; // Nº de cabazes fornecidos totalmente
-            int cfp = 0; // Nº de cabazes fornecidos parcialmente
-            int cdf = 0; // Nº de clientes distintos fornecidos
-            int pte = 0; // Nº de produtos totalmente esgotados
-            int hf = 0; // Nº de hubs fornecidos
-
-            ListStatistics stats = finalStats.get(cabaz.getClienteProdutor());
-            stats.addStat(statNameCFT, cft); // Cria a estatistica com o valor de cabazes fornecidos totalmente
-            stats.addStat(statNameCFP, cfp); // Cria a estatistica com o valor de cabazes fornecidos parcialmente
-            stats.addStat(statNameCDF, cdf); // Cria a estatistica com o valor de clientes distintos fornecidos
-            stats.addStat(statNamePTE, pte); // Cria a estatistica com o valor de produtos totalmente esgotados
-            stats.addStat(statNameHF, hf); // Cria a estatistica com o valor de hubs fornecidos
-
-        }
-        return new ArrayList<>(finalStats.values());
+        // TODO
+        return null;
     }
 
     public Integer numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
-        int hubsSatisfied = 0;
-        return hubsSatisfied;
+        // TODO
+        return null;
     }
     public Integer numberOfClientsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
-        int total = 0;
-        for (Cabaz cabaz : expedicoes.get(dia).get_listaExpedicoes()) {
-            if (cabaz.getProdutores().contains(produtor.getId())) total++;
-        }
-        return total;
+        // TODO
+        return null;
     }
 
     public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor){
         // TODO
-        return 0;
+        return null;
     }
 
     public List<ListStatistics> getStatsByHub(int dia) {
-        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
-        HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
-        ListaExpedicoes listaExpedicoes = expedicoes.get(dia);
-
-        createListStatisticsForEachClienteProdutor(finalStats,listaExpedicoes); // cria uma lista de estatisticas para cada cpe e adiciona ao hashmap finalStats
-
-        final String statNameCDR = "Nº de clientes distintos que recolhem cabazes"; // Nome da estatística "Clientes distintos que recolhem cabazes"
-        final String statNameNPD = "Nº de produtores distintos que fornecem cabazes"; // Nome da estatística "Produtores distintos que fornecem cabazes"
-
-        for ( ClienteProdutorEmpresa hub : mapCPE.values()) {
-            if (hub.isHub()){
-                ListStatistics stats = finalStats.get(hub.getId());
-                int cdr = 0;
-                int npd = 0;
-                stats.addStat(statNameCDR, cdr); // Cria a estatistica com o valor de clientes distintos que recolhem cabazes
-                stats.addStat(statNameNPD, npd); // Cria a estatistica com o valor de produtores distintos que fornecem cabazes
-            }
-        }
-        return new ArrayList<>(finalStats.values());
+        // TODO
+        return null;
     }
 
 }
