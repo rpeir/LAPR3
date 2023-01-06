@@ -45,5 +45,8 @@ public class MinimumRouteUI {
             System.out.println("Produtor não existe");
             run();
         }
+        else {
+            ctrl.getMinimumRoute(produtorInicial, dia);
+        }
     }
 }
