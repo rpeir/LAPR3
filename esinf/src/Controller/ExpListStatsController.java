@@ -5,6 +5,8 @@ import domain.ClienteProdutorEmpresa;
 import domain.Pedido;
 import stats.ListStatistics;
 import store.ListaExpedicoesStore;
+import store.PedidosStore;
+import store.Stock;
 
 import java.util.*;
 
@@ -150,14 +152,88 @@ public class ExpListStatsController {
         return null;
     }
 
+    /**
+     * Calculates the total number of complete cabazes for the producer for the given day
+     * @param produtor producer to calculate the number of complete cabazes
+     * @param dia day of the expeditions
+     * @return total number of complete cabazes for the producer for the given day
+     */
     public Integer numberOfCabazesTotallyDelivered(ClienteProdutorEmpresa produtor, int dia){
-        // TODO
-        return null;
+        int numberOfCabazes = 0;
+        Map<Integer, List<Pedido>> pedidosStore = App.getInstance().getPedidosStore().getPedidoMap();
+        List<Pedido> pedidos = pedidosStore.get(dia);
+        Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = expedicoes.get(dia);
+        List<AbstractMap.SimpleEntry<String, Float>> listOfProductsInCabaz = null;
+        List<Float> listOfProductsInPedido = null;
+        // Get the stock of the producer
+        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+            // Look for pedido of the cliente
+            for (Pedido pedido : pedidos) {
+                if (pedido.getClienteProdutor().equals(entry.getKey().getId())) {
+                    listOfProductsInPedido = pedido.getProdutos();
+                }
+            }
+            // If the cabaz of the cliente only has one producer and it is the same as the producer
+            if (entry.getValue().getProdutorProdutos().size() == 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
+                listOfProductsInCabaz = entry.getValue().getProdutorProdutos().get(produtor);
+                int i = 0;
+                int completeProducts = 0;
+                // Check if the products quantities in the cabaz are the same as the quantities in the pedido
+                for (AbstractMap.SimpleEntry<String, Float> product : listOfProductsInCabaz){
+                    if (listOfProductsInPedido.get(i) == product.getValue()){
+                        completeProducts++;
+                    }else{
+                        break;
+                    }
+                    i++;
+                }
+                // If all the products quantities are the same, then the cabaz is complete
+                if (completeProducts == listOfProductsInCabaz.size()){
+                    numberOfCabazes++;
+                }
+            }
+        }
+        return numberOfCabazes;
     }
 
+    /**
+     * Calculates the total number of partial cabazes for the producer for the given day
+     * @param produtor produtor to check
+     * @param dia day to check
+     * @return number of partial cabazes
+     */
     public Integer numberOfCabazesPartiallyDelivered(ClienteProdutorEmpresa produtor, int dia){
-        // TODO
-        return null;
+        int numberOfCabazes = 0;
+        Map<Integer, List<Pedido>> pedidosStore = App.getInstance().getPedidosStore().getPedidoMap();
+        List<Pedido> pedidos = pedidosStore.get(dia);
+        Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = expedicoes.get(dia);
+        List<AbstractMap.SimpleEntry<String, Float>> listOfProductsInCabaz = null;
+        List<Float> listOfProductsInPedido = null;
+        // Get the stock of the producer
+        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+            // Look for pedido of the cliente
+            for (Pedido pedido : pedidos) {
+                if (pedido.getClienteProdutor().equals(entry.getKey().getId())) {
+                    listOfProductsInPedido = pedido.getProdutos();
+                }
+            }
+            // If the cabaz of the cliente only has one producer and it is the same as the producer
+            if (entry.getValue().getProdutorProdutos().size() > 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
+                numberOfCabazes++;
+            }else if(entry.getValue().getProdutorProdutos().size() == 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)){
+                listOfProductsInCabaz = entry.getValue().getProdutorProdutos().get(produtor);
+                int i = 0;
+                // Check if the products quantities in the cabaz are the same as the quantities in the pedido
+                for (AbstractMap.SimpleEntry<String, Float> product : listOfProductsInCabaz){
+                    if (listOfProductsInPedido.get(i) > product.getValue()){
+                        numberOfCabazes++;
+                        break;
+                    }
+                    i++;
+                }
+            }
+        }
+        return numberOfCabazes;
     }
     /**
      * Get the number of distinct clientes that a produtor delivered to
