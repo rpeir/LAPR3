@@ -4,6 +4,7 @@ import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 import domain.Pedido;
 import stats.ListStatistics;
+import store.ListaExpedicoesStore;
 
 import java.util.*;
 
@@ -80,9 +81,8 @@ public class ExpListStatsController {
     /**
      * Create a ListStatistics for each ClienteProdutorEmpresa in ListaExpedicoes and add it to the stats HashMap
      * @param stats HashMap to add the ListStatistics
-     * @param listaExpedicoes ListaExpedicoes to get the ClienteProdutorEmpresa
      */
-    private void createListStatisticsForEachClienteProdutor(HashMap<String, ListStatistics> stats, ListaExpedicoes listaExpedicoes) {
+    private void createListStatisticsForEachClienteProdutor(HashMap<String, ListStatistics> stats) {
         /*for (Cabaz cabaz : listaExpedicoes.get_listaExpedicoes()) {
             String clienteProdutor = cabaz.getClienteProdutor();
             if (!stats.containsKey(clienteProdutor)) {
