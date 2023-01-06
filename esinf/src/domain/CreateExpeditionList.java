@@ -112,7 +112,7 @@ public class CreateExpeditionList {
             }
             indexPedido++;
         }
-        App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result);
+        App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result, dia);
         return result;
     }
 
