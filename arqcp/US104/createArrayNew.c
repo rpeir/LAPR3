@@ -22,7 +22,7 @@ void createArrayDirVento(Sensor *sensor_dir_vento, int n)
     unsigned long dir_vento_frequency = sensor_dir_vento -> frequency;
     free(sensor_dir_vento -> readings);
     sensor_dir_vento->readings_size = (SECDAY / dir_vento_frequency);
-    unsigned short *readings_dir_vento = (char*) malloc(sensor_dir_vento->readings_size * sizeof(unsigned short));
+    unsigned short *readings_dir_vento = (unsigned short*) malloc(sensor_dir_vento->readings_size * sizeof(unsigned short));
     do {
         errorIsReached = 0;
         *(readings_dir_vento) = sens_dir_vento(0,(char) pcg32_random_r());
@@ -36,7 +36,7 @@ void createArrayDirVento(Sensor *sensor_dir_vento, int n)
                 isWrong ++;
                 
                 if(isWrong == n){
-                    errorIsReached == 1;
+                    errorIsReached = 1;
                 }
                 
             } else {
@@ -83,7 +83,7 @@ void createArrayHumAtm(Sensor *sensor_hum_atm, Sensor* sensor_pluvio, int n)
                 isWrong ++;
                 
                 if(isWrong == n){
-                    errorIsReached == 1;
+                    errorIsReached = 1;
                 }
                 
             } else {
@@ -130,7 +130,7 @@ void createArrayHumSolo(Sensor *sensor_hum_solo, Sensor* sensor_pluvio, int n)
                 isWrong ++;
                 
                 if(isWrong == n){
-                    errorIsReached == 1;
+                    errorIsReached = 1;
                 }
                 
             } else {
@@ -177,7 +177,7 @@ void createArrayPluvio(Sensor *sensor_pluvio, Sensor *sensor_temp, int n)
                 isWrong ++;
                 
                 if(isWrong == n){
-                    errorIsReached == 1;
+                    errorIsReached = 1;
                 }
                 
             } else {
@@ -217,7 +217,7 @@ void createArrayTemp(Sensor *sensor_temp, int n)
                 isWrong ++;
                 
                 if(isWrong == n){
-                    errorIsReached == 1;
+                    errorIsReached = 1;
                 }
                 
             } else {
@@ -249,7 +249,6 @@ void createArrayVelVento(Sensor *sensor_vel_vento, int n)
         *(readings_vel_vento) = sens_velc_vento(20,(char) pcg32_random_r());
     
         for(int i = 1; i < sensor_vel_vento -> readings_size; i++){
-            int frequency = sensor_vel_vento -> frequency * i / vel_vento_frequency;
                 
             char ult_vel_vento = sens_velc_vento(*(readings_vel_vento + i - 1), (char) pcg32_random_r());
             *(readings_vel_vento + i) = ult_vel_vento;
@@ -259,7 +258,7 @@ void createArrayVelVento(Sensor *sensor_vel_vento, int n)
                 isWrong ++;
                 
                 if(isWrong == n){
-                    errorIsReached == 1;
+                    errorIsReached = 1;
                 }
                 
             } else {
