@@ -20,7 +20,7 @@ public class WaterControllerTest {
     @Test
     public void currentSector() throws IOException {
         setUP();
-        Sector realSector = App.getInstance().getWaterController().currentSector(LocalDateTime.parse("2022-12-30T17:05:10.63"));
+        Sector realSector = App.getInstance().getWaterController().currentSector(LocalDateTime.parse("2023-01-30T17:05:10.63"));
         Sector expectedSector = new Sector("a", 10, "t");
         assertEquals(expectedSector, realSector);
     }

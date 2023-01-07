@@ -5,9 +5,6 @@ import domain.ClienteProdutorEmpresa;
 import domain.Pedido;
 import stats.ListStatistics;
 import store.HubsStore;
-import store.ListaExpedicoesStore;
-import store.PedidosStore;
-import store.Stock;
 
 import java.util.*;
 
@@ -149,7 +146,7 @@ public class ExpListStatsController {
     }
 
     /**
-     * Create a list of statistics for each proutor for the given day
+     * Create a list of statistics for each produtor for the given day
      * @param dia day of the expeditions
      * @return List of statistics for each produtor
      */
@@ -324,5 +321,74 @@ public class ExpListStatsController {
         }
         if (hubs != null) numberOfHubsSatisfied = hubs.size();
         return numberOfHubsSatisfied;
+    }
+
+    /**
+     * Create a list of statistics for each hub
+     * @param dia day of the expeditions
+     * @return list of statistics for each hub
+     */
+    public List<ListStatistics> getStatsByHub(int dia) {
+        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+        HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
+
+        final String statNameCDR = "Nº de clientes distintos que recolhem cabazes"; // Nome da estatística "Clientes distintos que recolhem cabazes"
+        final String statNameNPD = "Nº de produtores distintos que fornecem cabazes"; // Nome da estatística "Produtores distintos que fornecem cabazes"
+
+        for ( ClienteProdutorEmpresa hub : mapCPE.values()) {
+            if (hub.isHub()){
+                ListStatistics stats = new ListStatistics(hub.getId());
+                int cdr = numberOfDistinctClientesByHub(hub, dia);
+                int npd = numberOfProdutoresByHub(hub, dia);
+                stats.addStat(statNameCDR, cdr); // Cria a estatistica com o valor de clientes distintos que recolhem cabazes
+                stats.addStat(statNameNPD, npd); // Cria a estatistica com o valor de produtores distintos que fornecem cabazes
+                finalStats.put(hub.getId(), stats);
+            }
+        }
+        return new ArrayList<>(finalStats.values());
+    }
+
+    /**
+     * Get the number of distinct clientes that a hub services
+     * @param hub hub to get the number of clientes serviced
+     * @param dia day of the expeditions
+     * @return number of distinct clientes serviced
+     */
+    public Integer numberOfDistinctClientesByHub(ClienteProdutorEmpresa hub, int dia){
+        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+        HubsStore hubsStore = App.getInstance().getHubsStore();
+        HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
+        int numberOfClients = 0;
+        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
+            if (closestHubs.get(entry.getKey()).equals(hub)) {
+                numberOfClients++;
+            }
+        }
+        return numberOfClients;
+    }
+
+    /**
+     * Get the number of produtores that service a hub
+     * @param hub hub to get the number of produtores that service it
+     * @param dia day of the expeditions
+     * @return number of produtores that serviced the hub
+     */
+    public Integer numberOfProdutoresByHub(ClienteProdutorEmpresa hub, int dia){
+        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+        HubsStore hubsStore = App.getInstance().getHubsStore();
+        HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
+        int numberOfProducers = 0;
+        List<ClienteProdutorEmpresa> listOfProducersOnHub = new ArrayList<>();
+        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
+            if (closestHubs.get(entry.getKey()).equals(hub)) {
+                for ( ClienteProdutorEmpresa produtor : entry.getValue().getProdutorProdutos().keySet()) {
+                    if (!listOfProducersOnHub.contains(produtor)) {
+                        listOfProducersOnHub.add(produtor);
+                    }
+                }
+            }
+        }
+        if (!listOfProducersOnHub.isEmpty()) numberOfProducers = listOfProducersOnHub.size();
+        return numberOfProducers;
     }
 }
