@@ -37,7 +37,7 @@ void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
     tp->sensores = sensores;
 }
 
-void parse_sensor_line(char* line, Sensor* sensor, int ID, int n) {
+void parse_sensor_line(char* line, Sensor* sensor, int ID, int n, TipoSensor* tpTemps, TipoSensor* tpVelVents, TipoSensor* tpDirVents, TipoSensor* tpPluvios, TipoSensor* tpHumAtms, TipoSensor* tpHumSolos) {
     char* token;
     char* line_copy = strdup(line);
 
@@ -47,10 +47,9 @@ void parse_sensor_line(char* line, Sensor* sensor, int ID, int n) {
     token = strtok(NULL, ",");
     sensor->frequency = (unsigned long)atoi(token);
 
-    TipoSensor *tp;
-
     //switch case for sensor type
     switch (sensor->sensor_type) {
+        int i = 0;
         case 'T':
             // associar constantes de max e min
             sensor->max_limit = 30;
@@ -61,18 +60,42 @@ void parse_sensor_line(char* line, Sensor* sensor, int ID, int n) {
             ID++;
             //gerar as leituras
             createArrayTemp(sensor, n);
+            //guardar no array
+            add_sensor_to_list(sensor, tpTemps);
             break;
         case 'H':
-            sensor->max_limit = 100;
-            sensor->min_limit = 0;
-            sensor->id = ID;
-            ID++;
-            break;
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpPluvios->nrSensores != 0 && i >= 0 && i < tpPluvios->nrSensores) {
+                Sensor chosenSensor = tpPluvios->sensores[i];
+                sensor->max_limit = 100;
+                sensor->min_limit = 0;
+                sensor->id = ID;
+                ID++;
+                createArrayHumAtm(sensor, &chosenSensor, n);
+                add_sensor_to_list(sensor, tpHumAtms);
+            }
+            else {
+                printf("Index invalido ou nao existem sensores de pluviosidade");
+            }
+                break;
         case 'P':
-            sensor->max_limit = 150;
-            sensor->min_limit = 0;
-            sensor->id = ID;
-            ID++;
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpTemps->nrSensores != 0 && i >= 0 && i < tpTemps->nrSensores) {
+                Sensor chosenSensor = tpTemps->sensores[i];
+                sensor->max_limit = 150;
+                sensor->min_limit = 0;
+                sensor->id = ID;
+                ID++;
+                createArrayPluvio(sensor, &chosenSensor, n);
+                add_sensor_to_list(sensor, tpPluvios);
+            }
+            else {
+                printf("Index invalido ou nao existem sensores de temperatura");
+            }            
             break;
         case 'V':
             sensor->max_limit = 150;
@@ -80,6 +103,7 @@ void parse_sensor_line(char* line, Sensor* sensor, int ID, int n) {
             sensor->id = ID;
             ID++;
             createArrayVelVento(sensor, n);
+            add_sensor_to_list(sensor, tpVelVents);
             break;
         case 'D':
             sensor->max_limit = 359;
@@ -87,18 +111,28 @@ void parse_sensor_line(char* line, Sensor* sensor, int ID, int n) {
             sensor->id = ID;
             ID++;
             createArrayDirVento(sensor, n);
+            add_sensor_to_list(sensor, tpDirVents);
             break;
         case 'S':
-            sensor->max_limit = 100;
-            sensor->min_limit = 0;
-            sensor->id = ID;
-            ID++;
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpPluvios->nrSensores != 0 && i >= 0 && i < tpPluvios->nrSensores) {
+                Sensor chosenSensor = tpPluvios->sensores[i];
+                sensor->max_limit = 100;
+                sensor->min_limit = 0;
+                sensor->id = ID;
+                ID++;
+                createArrayHumSolo(sensor, &chosenSensor, n);
+                add_sensor_to_list(sensor, tpHumSolos);
+            }
+            else {
+                printf("Index invalido ou nao existem sensores de pluviosidade");
+            }
             break;
         default:
             break;
     }
-
-    //guardar no array
 
     free(line_copy);
 }
@@ -111,6 +145,8 @@ int main() {
     tpPluvios.nrSensores=0;
     tpHumAtms.nrSensores=0;
     tpHumSolos.nrSensores=0;
+    int ID = 0;
+    int n = 5;
 
     int choice;
     printf("1 - Import file\n2 - Input info\n");
@@ -126,9 +162,7 @@ int main() {
     char line[1024];
     while (fgets(line, 1024, file) != NULL) {
     Sensor sensor;
-    int ID = 0;
-    int n = 5;
-    parse_sensor_line(line, &sensor, ID, n);
+    parse_sensor_line(line, &sensor, ID, n, &tpTemps, &tpVelVents, &tpDirVents, &tpPluvios, &tpHumAtms, &tpHumSolos);
 }
 
     fclose(file);
@@ -142,15 +176,119 @@ int main() {
         scanf("%d", &nrSensors);
         if(nrSensors>0) {
             for(i=0; i<nrSensors; i++) {
-                TipoSensor *tp;
-
+                Sensor sensor;
                 // pedir os dados
-
-                // verificar se o id ja existe
-
-                // listar sensores ja existentes e escolher o sensor de temperatura e o sensor de pluviosidade para gerar os outros valores
-
-                // guardar no array
+                printf("Tipo de sensor: ");
+                scanf("%c", &sensor.sensor_type);
+                
+        switch (sensor.sensor_type) {
+        int i = 0;
+        case 'T':
+            //preencher o resto dos dados
+            printf("Qual o valor maximo? ");
+            scanf("%hu", &sensor.max_limit);
+            printf("Qual o valor minimo? ");
+            scanf("%hu", &sensor.min_limit);
+            printf("Qual a frequencia? ");
+            scanf("%lu", &sensor.frequency);
+            sensor.id = ID;
+            ID++;
+            createArrayTemp(&sensor, n);
+            add_sensor_to_list(&sensor, &tpTemps);
+            break;
+        case 'H':
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpPluvios.nrSensores != 0 && i >= 0 && i < tpPluvios.nrSensores) {
+                Sensor chosenSensor = tpPluvios.sensores[i];
+                printf("Qual o valor maximo? ");
+                scanf("%hu", &sensor.max_limit);
+                printf("Qual o valor minimo? ");
+                scanf("%hu", &sensor.min_limit);
+                printf("Qual a frequencia? ");
+                scanf("%lu", &sensor.frequency);
+                sensor.id = ID;
+                ID++;
+                createArrayHumAtm(&sensor, &chosenSensor, n);
+                add_sensor_to_list(&sensor, &tpHumAtms);
+            }
+            else {
+                printf("Index invalido ou nao existem sensores de pluviosidade");
+            }
+            break;
+        case 'P':
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpTemps.nrSensores != 0 && i >= 0 && i < tpTemps.nrSensores) {
+                Sensor chosenSensor = tpTemps.sensores[i];
+                printf("Qual o valor maximo? ");
+                scanf("%hu", &sensor.max_limit);
+                printf("Qual o valor minimo? ");
+                scanf("%hu", &sensor.min_limit);
+                printf("Qual a frequencia? ");
+                scanf("%lu", &sensor.frequency);
+                sensor.id = ID;
+                ID++;
+                createArrayPluvio(&sensor, &chosenSensor, n);
+                add_sensor_to_list(&sensor, &tpPluvios);
+            }
+            else {
+                printf("Index invalido ou nao existem sensores de temperatura");
+            }               
+            break;
+        case 'V':
+            printf("Qual o valor maximo? ");
+            scanf("%hu", &sensor.max_limit);
+            printf("Qual o valor minimo? ");
+            scanf("%hu", &sensor.min_limit);
+            printf("Qual a frequencia? ");
+            scanf("%lu", &sensor.frequency);
+            sensor.id = ID;
+            ID++;
+            createArrayVelVento(&sensor, n);
+            add_sensor_to_list(&sensor, &tpVelVents);            
+            break;
+        case 'D':
+            printf("Qual o valor maximo? ");
+            scanf("%hu", &sensor.max_limit);
+            printf("Qual o valor minimo? ");
+            scanf("%hu", &sensor.min_limit);
+            printf("Qual a frequencia? ");
+            scanf("%lu", &sensor.frequency);
+            sensor.id = ID;
+            ID++;
+            createArrayDirVento(&sensor, n);
+            add_sensor_to_list(&sensor, &tpDirVents);   
+            break;
+        case 'S':
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpPluvios.nrSensores != 0 && i >= 0 && i < tpPluvios.nrSensores) {
+                Sensor chosenSensor = tpPluvios.sensores[i];
+                printf("Qual o valor maximo? ");
+                scanf("%hu", &sensor.max_limit);
+                printf("Qual o valor minimo? ");
+                scanf("%hu", &sensor.min_limit);
+                printf("Qual a frequencia? ");
+                scanf("%lu", &sensor.frequency);
+                sensor.id = ID;
+                ID++;
+                createArrayHumSolo(&sensor, &chosenSensor, n);
+                add_sensor_to_list(&sensor, &tpHumSolos);
+            }
+            else {
+                printf("Index invalido ou nao existem sensores de pluviosidade");
+            }
+            break;
+        
+        default:
+            printf("O tipo de sensor nao existe.\n");
+            break;
+                
+        }
 
             }
         }
