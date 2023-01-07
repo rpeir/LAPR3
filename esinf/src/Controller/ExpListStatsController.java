@@ -38,6 +38,8 @@ public class ExpListStatsController {
      * @return List of statistics for each client
      */
     public List<ListStatistics> getStatsByCliente() {
+        if (expedicoes.isEmpty()) throw new IllegalArgumentException("Não existem listas de expedição");
+
         Map<String, List<Integer>> clientesStatsValues = new HashMap<>(); // posicao : 0 - PTS, 1 - PPS
         Map<String, Set<String>> clientesDiffProdutores = new HashMap<>(); // produtores distintos que forneceram cabazes
 
@@ -116,6 +118,7 @@ public class ExpListStatsController {
      * @return List of statistics for each cabaz
      */
     public List<ListStatistics> getStatsByCabaz() {
+        if (expedicoes.isEmpty()) throw new IllegalArgumentException("Não existem listas de expedição");
         List<ListStatistics> finalStats = new ArrayList<>(); // Lista de estatísticas a retornar
         for (Map.Entry<Integer, Map<ClienteProdutorEmpresa, Cabaz>> diaEntry: expedicoes.entrySet()) { // para cada dia
             int dia = diaEntry.getKey();
