@@ -10,13 +10,22 @@ import store.Stock;
 import java.util.*;
 
 public class CreateExpeditionList {
-
+    /**
+     * Graph object
+     */
     private final Graph<Localizacao, Integer> graph;
-
+    /**
+     * Constructor for CreateExpeditionList
+     */
     public CreateExpeditionList() {
         this.graph = App.getInstance().getGraph();
     }
-
+    /**
+     * Obtains a list with the closest producers for a given client
+     * @param cpe client
+     * @param n number of closest producers
+     * @return a map with the client and the cabaz
+     */
     public List<ClienteProdutorEmpresa> getNProdutores(ClienteProdutorEmpresa cpe, int n) {
         ClosestHubController closestHubController = new ClosestHubController();
         ClienteProdutorEmpresa closestHub = closestHubController.getClosestHub(cpe);
@@ -45,7 +54,11 @@ public class CreateExpeditionList {
         return result;
     }
 
-
+    /**
+     * Creates a list of expeditions for a given day and containing a given number of producers
+     * @param dia day of the expedition list
+     * @return a map with the client and the cabaz
+     */
     public Map<ClienteProdutorEmpresa, Cabaz> createExpeditionList(int dia, int n) {
         Map<ClienteProdutorEmpresa, Cabaz> result = new HashMap<>();
         PedidosStore pedidosStore = App.getInstance().getPedidosStore();
@@ -116,6 +129,11 @@ public class CreateExpeditionList {
         return result;
     }
 
+    /**
+     * Validates the stock for the expedition list
+     * @param listaStock the stock list
+     * @param closestProdutores the producers
+     */
     public List<Pedido> validStock(List<Pedido> listaStock, List<ClienteProdutorEmpresa> closestProdutores) {
         List<Pedido> result = new ArrayList<>();
         for (Pedido pedido : listaStock) {
@@ -126,6 +144,11 @@ public class CreateExpeditionList {
         }
         return result;
     }
+    /**
+     * Creates an expedition list for a given day, without any restrictions
+     * @param dia day of the expedition
+     * @return a map with the client and the cabaz
+     */
     public Map<ClienteProdutorEmpresa, Cabaz> createDailyExpeditionList(int dia) {
         Map<ClienteProdutorEmpresa, Cabaz> result = new HashMap<>();
         PedidosStore pedidosStore = App.getInstance().getPedidosStore();
@@ -146,16 +169,16 @@ public class CreateExpeditionList {
                         if (currentStock.getProduto(indexProduto) >= qtdProduto) {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto )+ ": ", qtdProduto));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", qtdProduto));
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
@@ -166,16 +189,16 @@ public class CreateExpeditionList {
                         } else {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + 1 + indexProdutor + ": ", currentStock.getProduto(indexProduto)));
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
@@ -194,7 +217,10 @@ public class CreateExpeditionList {
         App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result, dia);
         return result;
     }
-        //method that returns the producers of a given client
+
+    /** Obtatins the list of producers
+     *
+     */
     public List<ClienteProdutorEmpresa> getProdutores() {
         List<ClienteProdutorEmpresa> result = new ArrayList<>();
         for (ClienteProdutorEmpresa produtor : App.getInstance().getClienteProdutorEmpresaStore().getMapCPE().values()) {

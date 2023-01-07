@@ -133,6 +133,12 @@ public class ReadCSVController {
         }
     }
 
+    /**
+     * It reads a file refering to the baskets
+     *
+     * @param filename The file to be read
+     */
+
     public void readCabazesFile(File filename) throws IOException {
         try {
             PedidosStore pedidoMap = App.getInstance().getPedidosStore();
@@ -164,8 +170,6 @@ public class ReadCSVController {
                 if (cpeStore.containsCPE(pedido.getClienteProdutor())) {
                     cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
                 }
-
-                //adicionar o cabaz à expedição
                 line = br.readLine();
             }
         } catch (NumberFormatException e) {
