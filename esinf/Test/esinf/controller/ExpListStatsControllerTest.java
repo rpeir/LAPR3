@@ -1,19 +1,12 @@
 package esinf.controller;
 
 import Controller.*;
-import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
-
-import domain.Pedido;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import stats.ListStatistics;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 class ExpListStatsControllerTest {
 
@@ -23,9 +16,8 @@ class ExpListStatsControllerTest {
     private final String pathCsmall = "esinf/grafos/grafos/Small/cabazes_small.csv";
 
     public ExpListStatsControllerTest() {
+        setUp();
     }
-
-    @BeforeEach
     void setUp() {
         App app = App.getInstance();
         ReadCSVController readCSVController = new ReadCSVController();
@@ -73,39 +65,46 @@ class ExpListStatsControllerTest {
         //}
     }
 
-    @Test
-    void testGetStatsByProdutor() {
-    }
 
     @Test
-    void testGetStatsByHub() {
-    }
-
-    @org.junit.Test
     public void numberOfCabazesTotallyDelivered() {
+        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        Assertions.assertEquals((Integer) 0, instance.numberOfCabazesTotallyDelivered(produtor, 1));
     }
 
-    @org.junit.Test
+    @Test
     public void numberOfCabazesPartiallyDelivered() {
+        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        Assertions.assertEquals((Integer) 6, instance.numberOfCabazesPartiallyDelivered(produtor, 1));
     }
 
-    @org.junit.Test
+    @Test
     public void numberOfDistinctClientesDelivered() {
+        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        Assertions.assertEquals((Integer) 6, instance.numberOfDistinctClientesDelivered(produtor, 1));
     }
 
-    @org.junit.Test
+    @Test
     public void numberOfProductsOutOfStock() {
+        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        Assertions.assertEquals((Integer) 10, instance.numberOfProductsOutOfStock(produtor, 1));
     }
 
-    @org.junit.Test
+    @Test
     public void numberOfHubsSatisfiedByProducer() {
+        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        Assertions.assertEquals((Integer) 3, instance.numberOfHubsSatisfiedByProducer(produtor, 1));
     }
 
-    @org.junit.Test
+    @Test
     public void numberOfDistinctClientesByHub() {
+        ClienteProdutorEmpresa hub = App.getInstance().getClienteProdutorEmpresaStore().getCPE("E2");
+        Assertions.assertEquals((Integer) 2, instance.numberOfDistinctClientesByHub(hub, 1));
     }
 
-    @org.junit.Test
+    @Test
     public void numberOfProdutoresByHub() {
+        ClienteProdutorEmpresa hub = App.getInstance().getClienteProdutorEmpresaStore().getCPE("E2");
+        Assertions.assertEquals((Integer) 3, instance.numberOfProdutoresByHub(hub, 1));
     }
 }
