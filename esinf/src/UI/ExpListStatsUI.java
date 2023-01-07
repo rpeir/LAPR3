@@ -53,7 +53,7 @@ public class ExpListStatsUI implements Runnable{
                             case "1" -> printStats(CTRL.getStatsByCabaz());
                             case "2" -> printStats(CTRL.getStatsByCliente());
                             case "3" -> printStats(CTRL.getStatsByProdutor());
-                            case "4" -> printStats(CTRL.getStatsByHub();
+                            case "4" -> printStats(CTRL.getStatsByHub());
                         }
                     } else {
                         switch (inputStat) {
