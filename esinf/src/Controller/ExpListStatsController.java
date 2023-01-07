@@ -183,7 +183,7 @@ public class ExpListStatsController {
             stats.addStat(statNamePNS, pns); // Cria a estatistica com o valor de produtos nao satisfeitos
             stats.addStat(statNamePer, String.format("%.2f %%", ((float) qtSatisfeita/qtPedida) * 100)) ; // Cria a estatistica com o valor da percentagem total do cabaz satisfeito
             stats.addStat(statNamePFOC, cabaz.getDiffProdutores().size()); // Cria a estatistica com o valor de produtores distintos que forneceram o cabaz
-            finalStats.put(cabaz.getCliente(), stats);
+            finalStats.put(cliente.getId(), stats);
         }
 
         return new ArrayList<>(finalStats.values());

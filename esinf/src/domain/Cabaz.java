@@ -64,18 +64,20 @@ public class Cabaz {
         produtorProdutos.put(key, value);
     }
 
+    /**
+     * Gets a list of all the products in the cabaz, desconsidering the producers
+     * @return a list of all the products in the cabaz
+     */
     public List<Float> getProdutos() {
-        TreeMap<Integer, Float> produtos = new TreeMap<>();
+        List<Float> produtos = new ArrayList<>(Arrays.asList(0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f));
         for (ClienteProdutorEmpresa produtor : produtorProdutos.keySet()) {
             for (AbstractMap.SimpleEntry<String, Float> produto : produtorProdutos.get(produtor)) {
-                int key = Integer.parseInt(produto.getKey().substring(7));
-                if (produtos.containsKey(key))
-                    produtos.put(key, produtos.get(key) + produto.getValue());
-                else
-                    produtos.put(key, produto.getValue());
+                String untreated = produto.getKey().substring(7);
+                int key = Integer.parseInt(untreated.replace(": ", ""));
+                produtos.set(key-1,(produtos.get(key-1) + produto.getValue()));
             }
         }
-        return produtos.values().stream().toList();
+        return produtos;
     }
 
     /**
