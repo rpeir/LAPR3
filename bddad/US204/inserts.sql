@@ -353,3 +353,15 @@ INSERT INTO FichasTecnicas_Componentes( codFichaTecnica, codComponente, unidade,
 INSERT INTO FichasTecnicas_Componentes( codFichaTecnica, codComponente, unidade, quantidade) VALUES (3, 3, 'uma', 40);
 INSERT INTO FichasTecnicas_Componentes( codFichaTecnica, codComponente, unidade, quantidade) VALUES (4, 4, 'uma', 40);
 INSERT INTO FichasTecnicas_Componentes( codFichaTecnica, codComponente, unidade, quantidade) VALUES (5, 1, 'uma', 40);
+
+--Tabela input_sensor
+INSERT INTO input_sensor(input_string) VALUES ('AAAAAPI049012305202013:25');
+INSERT INTO input_sensor(input_string) VALUES ('BBBBBTS050022405202014:25');
+INSERT INTO input_sensor(input_string) VALUES ('CCCCCVV100032505202015:25');
+INSERT INTO input_sensor(input_string) VALUES ('DDDDDHS099042605202016:25');
+INSERT INTO input_sensor(input_string) VALUES ('EEEEETA089052705202013:25');
+INSERT INTO input_sensor(input_string) VALUES ('FFFFFPA087062805202015:25');
+INSERT INTO input_sensor(input_string) VALUES ('GGGGGPL069072905202003:25');
+INSERT INTO input_sensor(input_string) VALUES ('HHHHHPI019083005202019:25');
+INSERT INTO input_sensor(input_string) VALUES ('IIIIIPI049093105202009:25');
+INSERT INTO input_sensor(input_string) VALUES ('JJJJJTS073100106202009:25');

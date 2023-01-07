@@ -46,14 +46,24 @@ public class ExpListStatsUI implements Runnable{
                         break;
                 }
                 if (valid) {
-                    System.out.println("\nEscolha o dia da lista de expedição que pretende analisar");
+                    System.out.println("\nEscolha o dia da lista de expedição que pretende analisar, ou \"0\" para todos os dias\n");
                     int day = Integer.parseInt(sc.nextLine());
-                    switch (inputStat) {
-                        case "1" -> printStats(CTRL.getStatsByCabaz(day));
-                        case "2" -> printStats(CTRL.getStatsByCliente(day));
-                        case "3" -> printStats(CTRL.getStatsByProdutor());
-                        case "4" -> printStats(CTRL.getStatsByHub());
+                    if (day == 0) {
+                        switch (inputStat) {
+                            case "1" -> printStats(CTRL.getStatsByCabaz());
+                            case "2" -> printStats(CTRL.getStatsByCliente());
+                            case "3" -> printStats(CTRL.getStatsByProdutor());
+                            case "4" -> printStats(CTRL.getStatsByHub();
+                        }
+                    } else {
+                        switch (inputStat) {
+                            case "1" -> printStats(CTRL.getStatsByCabaz(day));
+                            case "2" -> printStats(CTRL.getStatsByCliente(day));
+                            //case "3" -> printStats(CTRL.getStatsByProdutor(day));
+                            //case "4" -> printStats(CTRL.getStatsByHub(day));
+                        }
                     }
+
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("\nErro: " + e.getMessage());
