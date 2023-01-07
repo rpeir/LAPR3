@@ -55,7 +55,7 @@ class ExpListStatsControllerTest {
         createExpeditionListController.createExpeditionList(1,3);
         createExpeditionListController.createExpeditionList(2,3);
         //create instance of ExpListStatsController
-        ExpListStatsController instance = new ExpListStatsController();
+        instance = new ExpListStatsController();
     }
     @Test
     void testGetStatsByCliente() {
