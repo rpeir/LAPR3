@@ -65,46 +65,20 @@ class ExpListStatsControllerTest {
         //}
     }
 
-
     @Test
-    public void numberOfCabazesTotallyDelivered() {
+    public void testGetStatsByProdutor() {
         ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        Assertions.assertEquals((Integer) 10, instance.numberOfProductsOutOfStock(produtor, 1));
+        Assertions.assertEquals((Integer) 3, instance.numberOfHubsSatisfiedByProducer(produtor, 1));
+        Assertions.assertEquals((Integer) 6, instance.numberOfDistinctClientesDelivered(produtor, 1));
+        Assertions.assertEquals((Integer) 6, instance.numberOfCabazesPartiallyDelivered(produtor, 1));
         Assertions.assertEquals((Integer) 0, instance.numberOfCabazesTotallyDelivered(produtor, 1));
     }
 
     @Test
-    public void numberOfCabazesPartiallyDelivered() {
-        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
-        Assertions.assertEquals((Integer) 6, instance.numberOfCabazesPartiallyDelivered(produtor, 1));
-    }
-
-    @Test
-    public void numberOfDistinctClientesDelivered() {
-        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
-        Assertions.assertEquals((Integer) 6, instance.numberOfDistinctClientesDelivered(produtor, 1));
-    }
-
-    @Test
-    public void numberOfProductsOutOfStock() {
-        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
-        Assertions.assertEquals((Integer) 10, instance.numberOfProductsOutOfStock(produtor, 1));
-    }
-
-    @Test
-    public void numberOfHubsSatisfiedByProducer() {
-        ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
-        Assertions.assertEquals((Integer) 3, instance.numberOfHubsSatisfiedByProducer(produtor, 1));
-    }
-
-    @Test
-    public void numberOfDistinctClientesByHub() {
+    public void testGetStatsByHub() {
         ClienteProdutorEmpresa hub = App.getInstance().getClienteProdutorEmpresaStore().getCPE("E2");
         Assertions.assertEquals((Integer) 2, instance.numberOfDistinctClientesByHub(hub, 1));
-    }
-
-    @Test
-    public void numberOfProdutoresByHub() {
-        ClienteProdutorEmpresa hub = App.getInstance().getClienteProdutorEmpresaStore().getCPE("E2");
         Assertions.assertEquals((Integer) 3, instance.numberOfProdutoresByHub(hub, 1));
     }
 }
