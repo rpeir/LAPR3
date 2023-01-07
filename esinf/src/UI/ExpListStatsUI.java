@@ -46,31 +46,39 @@ public class ExpListStatsUI implements Runnable{
                         break;
                 }
                 if (valid) {
-                    System.out.println("\nEscolha o dia da lista de expedição que pretende analisar");
+                    System.out.println("\nEscolha o dia da lista de expedição que pretende analisar, ou \"0\" para todos os dias");
                     int day = Integer.parseInt(sc.nextLine());
-                    switch (inputStat) {
-                        case "1" -> printStats(CTRL.getStatsByCabaz(day));
-                        case "2" -> printStats(CTRL.getStatsByCliente(day));
-                        case "3" -> printStats(CTRL.getStatsByProdutor(day));
-                        case "4" -> printStats(CTRL.getStatsByHub(day));
+                    if (day == 0) {
+                        switch (inputStat) {
+                            case "1" -> printStats(CTRL.getStatsByCabaz());
+                            case "2" -> printStats(CTRL.getStatsByCliente());
+                            case "3" -> printStats(CTRL.getStatsByProdutor());
+                            case "4" -> printStats(CTRL.getStatsByHub());
+                        }
+                    } else {
+                        switch (inputStat) {
+                            case "1" -> printStats(CTRL.getStatsByCabaz(day));
+                            case "2" -> printStats(CTRL.getStatsByCliente(day));
+                            case "3" -> printStats(CTRL.getStatsByProdutor(day));
+                            case "4" -> printStats(CTRL.getStatsByHub(day));
+                        }
                     }
+
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("\nErro: " + e.getMessage());
-            }
-            /*} catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Ocorreu um erro inesperado!");
                 System.out.println("Tente novamente");
                 System.out.printf("Erro: %s\n",e.getMessage());
-                System.out.printf("%s\n", (Object) e.getStackTrace());
-            }*/
+            }
 
         } while (!exit);
 
     }
 
     private void printStats(List<ListStatistics> stats) {
-        if (stats.isEmpty()) throw new IllegalStateException("Sem estatatísticas calculadas");
+        if (stats.isEmpty()) throw new IllegalArgumentException("Não foram calculadas estatísticas");
 
         for (ListStatistics stat : stats) {
             System.out.println(stat.toStringDetailed());

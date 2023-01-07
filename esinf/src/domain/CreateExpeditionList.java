@@ -91,7 +91,7 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Produto" +( 1 + indexProduto) + ": ", qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
-                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(), tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);
                                 result.put(currentCliente, tempCabaz);
                             }
                             validStock.get(indexProdutor).setProdutoByIndex(indexProduto, currentStock.getProduto(indexProduto) - qtdProduto);
@@ -111,7 +111,7 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
-                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(), tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);
                                 result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));
@@ -180,7 +180,7 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
-                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, 0);
@@ -200,7 +200,7 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
-                                Cabaz tempCabaz = new Cabaz(currentProdutor.getId(),tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(),tempMap);
                                 result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));

@@ -168,7 +168,7 @@ public class ReadCSVController {
                     stock.insertStock(pedido);
 
                 if (cpeStore.containsCPE(pedido.getClienteProdutor())) {
-                    cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
+                    cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(new Pedido(pedido));
                 }
                 line = br.readLine();
             }

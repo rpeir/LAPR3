@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,12 @@ public class Pedido {
         this.clienteProdutorEmpresa = clienteProdutorEmpresa;
         this.diaDeProducao = diaDeProducao;
         this.produtos = produtos;
+    }
+
+    public Pedido(Pedido pedido) {
+        this.clienteProdutorEmpresa = pedido.getClienteProdutor();
+        this.diaDeProducao = pedido.getDiaDeProducao();
+        this.produtos = new ArrayList<>(pedido.getProdutos());
     }
 
     public List<Float> getProdutos() {

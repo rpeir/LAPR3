@@ -275,6 +275,14 @@ table( FichasTecnicas_Componentes ){
     column( quantidade ): INTEGER
 }
 
+table( Pista_Auditoria ){
+    primary_key( cod_auditoria ): INTEGER
+    column( user_id ): VARCHAR
+    column( tipo_alteracao ): VARCHAR
+    column( alteracao ): VARCHAR
+    column( data_hora ): DATE
+}
+
 ' cardinalidades
 Clientes ||--o{ Incidentes
 Clientes ||--o{ Pedidos

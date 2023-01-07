@@ -1,6 +1,6 @@
 package esinf.controller;
 
-import Controller.ExpListStatsController;
+import Controller.*;
 import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 
@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import stats.ListStatistics;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,49 +18,44 @@ import java.util.Map;
 class ExpListStatsControllerTest {
 
     private ExpListStatsController instance;
+    private final String pathCPsmall = "esinf/grafos/grafos/Small/clientes-produtores_small.csv";
+    private final String pathDsmall = "esinf/grafos/grafos/Small/distancias_small.csv";
+    private final String pathCsmall = "esinf/grafos/grafos/Small/cabazes_small.csv";
 
     public ExpListStatsControllerTest() {
     }
 
     @BeforeEach
     void setUp() {
-        // Temporário enquanto os metodos de criacao de listas de expedicoes nao estao implementados
-        //Map<Integer, ListaExpedicoes> expedicoes = new HashMap<>();
-        Map<String, ClienteProdutorEmpresa > mapCPE = new HashMap<>();
-
-        //ListaExpedicoes exp1 = new ListaExpedicoes(1);
-        //expedicoes.put(1, exp1);
-
-        ClienteProdutorEmpresa c1 = new ClienteProdutorEmpresa("CT1",1,1,"C1");
-        ClienteProdutorEmpresa c2 = new ClienteProdutorEmpresa("CT2",2,2,"C2");
-        ClienteProdutorEmpresa p1 = new ClienteProdutorEmpresa("CT3",3,3,"P1");
-        ClienteProdutorEmpresa p2 = new ClienteProdutorEmpresa("CT4",4,4,"P2");
-        ClienteProdutorEmpresa p3 = new ClienteProdutorEmpresa("CT5",5,5,"P3");
-
-        mapCPE.put("C1", c1);
-        mapCPE.put("C2", c2);
-        mapCPE.put("P1", p1);
-        mapCPE.put("P2", p2);
-        mapCPE.put("P3", p3);
-
-        List<String> produtores = List.of("P1", "P2", "P2");
-
-        List<Float> c1p1Produtos = List.of(1f,2f,3f);
-        List<Float> c2p1Produtos = List.of(4f,5f,6f);
-
-        Pedido c1p1 = new Pedido("C1",1, c1p1Produtos);
-        Pedido c2p1 = new Pedido("C1",1, c2p1Produtos);
-
-        c1.setCabaz(c1p1);
-        c2.setCabaz(c2p1);
-
-        //Cabaz cabaz1 = new Cabaz("C1", 1, c1p1Produtos,produtores);
-        //Cabaz cabaz2 = new Cabaz("C2", 1, List.of(0f,4f,4f),produtores);
-
-        //exp1.addExpedicao(cabaz1);
-        //exp1.addExpedicao(cabaz2);
-
-        //instance = new ExpListStatsController(expedicoes, mapCPE);
+        App app = App.getInstance();
+        ReadCSVController readCSVController = new ReadCSVController();
+        try {
+            readCSVController.readClientesProdutoresFile(new File(pathCPsmall));
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o ficheiro de teste clientes-produtores_small.csv");
+        }
+        try {
+            readCSVController.readDistancesFile(new File(pathDsmall));
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o ficheiro de teste distancias_small.csv");
+        }
+        try {
+            readCSVController.readCabazesFile(new File(pathCsmall));
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o ficheiro de teste cabazes_small.csv");
+        }
+        //define hubs
+        HubsDistributionController hubsDistributionController = new HubsDistributionController();
+        hubsDistributionController.getMediaDistancia(app.getGraph(), 3);
+        //define closest hubs
+        ClosestHubController closestHubController = new ClosestHubController();
+        closestHubController.getAllClosestHubs();
+        //create expedition list for day 1 and day 2 with 3 producers delivering to the hubs
+        CreateExpeditionListController createExpeditionListController = new CreateExpeditionListController();
+        createExpeditionListController.createExpeditionList(1,3);
+        createExpeditionListController.createExpeditionList(2,3);
+        //create instance of ExpListStatsController
+        instance = new ExpListStatsController();
     }
     @Test
     void testGetStatsByCliente() {
