@@ -23,12 +23,8 @@ public class App {
 
     private Stock stock;
 
-    private Stock stockAfterExpedition;
     public Stock getStock() {
         return stock;
-    }
-    public Stock getStockAfterExpedition() {
-        return stockAfterExpedition;
     }
 
     public PedidosStore getPedidosStore() {
@@ -65,8 +61,6 @@ public class App {
         hubsStore = new HubsStore();
         pedidosStore = new PedidosStore();
         stock = new Stock();
-        stockAfterExpedition = new Stock();
-
     }
 
     // Extracted from https://www.javaworld.com/article/2073352/core-java/core-java-simply-singleton.html?page=2

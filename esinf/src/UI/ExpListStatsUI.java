@@ -56,12 +56,14 @@ public class ExpListStatsUI implements Runnable{
                     }
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("\nErro: "+e.getMessage());
-            } catch (Exception e) {
+                System.out.println("\nErro: " + e.getMessage());
+            }
+            /*} catch (Exception e) {
                 System.out.println("Ocorreu um erro inesperado!");
                 System.out.println("Tente novamente");
                 System.out.printf("Erro: %s\n",e.getMessage());
-            }
+                System.out.printf("%s\n", (Object) e.getStackTrace());
+            }*/
 
         } while (!exit);
 

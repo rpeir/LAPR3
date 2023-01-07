@@ -110,7 +110,6 @@ public class CreateExpeditionList {
                 } while (qtdProduto > 0 && indexProdutor < validStock.size() && indexProduto < validStock.get(0).getProdutos().size());
                 indexProduto++;
             }
-            App.getInstance().getStockAfterExpedition().insertUpdatedStock(validStock);
             indexPedido++;
         }
         App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result, dia);
@@ -190,7 +189,6 @@ public class CreateExpeditionList {
                 } while (qtdProduto>0  && indexProdutor < listaStock.size());
                 indexProduto++;
             }
-            App.getInstance().getStockAfterExpedition().insertUpdatedStock(listaStock);
             indexPedido++;
         }
         App.getInstance().getListaExpedicoesStore().setExpedicaoNumDia(result, dia);

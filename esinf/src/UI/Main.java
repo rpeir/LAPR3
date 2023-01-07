@@ -61,10 +61,10 @@ public class Main {
                     MinimumRouteUI minimumRouteUI = new MinimumRouteUI();
                     minimumRouteUI.run();
                     break;
-//                case "10":
-//                    ExpListStatsUI expListStatsUI = new ExpListStatsUI();
-//                    expListStatsUI.run();
-//                    break;
+                case "10":
+                    ExpListStatsUI expListStatsUI = new ExpListStatsUI();
+                    expListStatsUI.run();
+                    break;
                 case "0":
                     run = false;
                     break;

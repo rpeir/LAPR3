@@ -286,7 +286,7 @@ public class ExpListStatsController {
      * @return number of products out of stock
      */
     public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor, int dia){
-        List<Pedido> listaStock = App.getInstance().getStockAfterExpedition().getStockMap().get(dia);
+        List<Pedido> listaStock = App.getInstance().getStock().getStockMap().get(dia);
         int outOfStock = 0;
         for (Pedido p : listaStock) {
             if (p.getClienteProdutor().equals(produtor.getId())) {
@@ -308,19 +308,15 @@ public class ExpListStatsController {
         Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
         HubsStore hubsStore = App.getInstance().getHubsStore();
         HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
-        List<ClienteProdutorEmpresa> hubs = null;
-        int numberOfHubsSatisfied = 0;
+        List<ClienteProdutorEmpresa> hubs = new ArrayList<>();
         for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
             if (entry.getValue().containsKey(produtor)) {
-                if (hubs.isEmpty()){
-                    hubs.add(closestHubs.get(entry.getKey()));
-                }else if(!hubs.contains(closestHubs.get(entry.getKey()))){
+                if(!hubs.contains(closestHubs.get(entry.getKey()))){
                     hubs.add(closestHubs.get(entry.getKey()));
                 }
             }
         }
-        if (hubs != null) numberOfHubsSatisfied = hubs.size();
-        return numberOfHubsSatisfied;
+        return hubs.size();
     }
 
     /**
@@ -360,8 +356,10 @@ public class ExpListStatsController {
         HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
         int numberOfClients = 0;
         for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
-            if (closestHubs.get(entry.getKey()).equals(hub)) {
-                numberOfClients++;
+            if (closestHubs.get(entry.getKey())!=null) {
+                if (closestHubs.get(entry.getKey()).equals(hub)) {
+                    numberOfClients++;
+                }
             }
         }
         return numberOfClients;
@@ -380,10 +378,12 @@ public class ExpListStatsController {
         int numberOfProducers = 0;
         List<ClienteProdutorEmpresa> listOfProducersOnHub = new ArrayList<>();
         for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
-            if (closestHubs.get(entry.getKey()).equals(hub)) {
-                for ( ClienteProdutorEmpresa produtor : entry.getValue().getProdutorProdutos().keySet()) {
-                    if (!listOfProducersOnHub.contains(produtor)) {
-                        listOfProducersOnHub.add(produtor);
+            if (closestHubs.get(entry.getKey())!=null) {
+                if (closestHubs.get(entry.getKey()).equals(hub)) {
+                    for (ClienteProdutorEmpresa produtor : entry.getValue().getProdutorProdutos().keySet()) {
+                        if (!listOfProducersOnHub.contains(produtor)) {
+                            listOfProducersOnHub.add(produtor);
+                        }
                     }
                 }
             }
