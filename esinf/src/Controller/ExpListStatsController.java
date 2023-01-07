@@ -5,6 +5,7 @@ import domain.ClienteProdutorEmpresa;
 import domain.Pedido;
 import stats.ListStatistics;
 import store.HubsStore;
+import store.ListaExpedicoesStore;
 
 import java.util.*;
 
@@ -147,11 +148,9 @@ public class ExpListStatsController {
 
     /**
      * Create a list of statistics for each produtor for the given day
-     * @param dia day of the expeditions
      * @return List of statistics for each produtor
      */
-    public List<ListStatistics> getStatsByProdutor(int dia) {
-        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+    public List<ListStatistics> getStatsByProdutor() {
         HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
 
         final String statNameCFT = "Nº de cabazes fornecidos totalmente"; // Nome da estatística "Cabazes fornecidos totalmente"
@@ -163,11 +162,11 @@ public class ExpListStatsController {
         for (ClienteProdutorEmpresa produtor : mapCPE.values()) {
             if (produtor.isProdutor()) {
                 ListStatistics stats = new ListStatistics(produtor.getId());
-                int cft = numberOfCabazesTotallyDelivered(produtor, dia); // Nº de cabazes fornecidos totalmente
-                int cfp = numberOfCabazesPartiallyDelivered(produtor, dia); // Nº de cabazes fornecidos parcialmente
-                int cdf = numberOfDistinctClientesDelivered(produtor, dia); // Nº de clientes distintos fornecidos
-                int pte = numberOfProductsOutOfStock(produtor, dia); // Nº de produtos totalmente esgotados
-                int hf = numberOfHubsSatisfiedByProducer(produtor, dia); // Nº de hubs fornecidos
+                int cft = numberOfCabazesTotallyDelivered(produtor); // Nº de cabazes fornecidos totalmente
+                int cfp = numberOfCabazesPartiallyDelivered(produtor); // Nº de cabazes fornecidos parcialmente
+                int cdf = numberOfDistinctClientesDelivered(produtor); // Nº de clientes distintos fornecidos
+                int pte = numberOfProductsOutOfStock(produtor); // Nº de produtos totalmente esgotados
+                int hf = numberOfHubsSatisfiedByProducer(produtor); // Nº de hubs fornecidos
 
                 stats.addStat(statNameCFT, cft); // Cria a estatistica com o valor de cabazes fornecidos totalmente
                 stats.addStat(statNameCFP, cfp); // Cria a estatistica com o valor de cabazes fornecidos parcialmente
@@ -181,43 +180,46 @@ public class ExpListStatsController {
     }
 
     /**
-     * Calculates the total number of complete cabazes for the producer for the given day
+     * Calculates the total number of complete cabazes for the producer
      * @param produtor producer to calculate the number of complete cabazes
-     * @param dia day of the expeditions
-     * @return total number of complete cabazes for the producer for the given day
+     * @return total number of complete cabazes for the producer
      */
-    public Integer numberOfCabazesTotallyDelivered(ClienteProdutorEmpresa produtor, int dia){
+    public Integer numberOfCabazesTotallyDelivered(ClienteProdutorEmpresa produtor){
         int numberOfCabazes = 0;
         Map<Integer, List<Pedido>> pedidosStore = App.getInstance().getPedidosStore().getPedidoMap();
-        List<Pedido> pedidos = pedidosStore.get(dia);
-        Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = expedicoes.get(dia);
-        List<AbstractMap.SimpleEntry<String, Float>> listOfProductsInCabaz = null;
-        List<Float> listOfProductsInPedido = null;
-        // Get the stock of the producer
-        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
-            // Look for pedido of the cliente
-            for (Pedido pedido : pedidos) {
-                if (pedido.getClienteProdutor().equals(entry.getKey().getId())) {
-                    listOfProductsInPedido = pedido.getProdutos();
-                }
-            }
-            // If the cabaz of the cliente only has one producer and it is the same as the producer
-            if (entry.getValue().getProdutorProdutos().size() == 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
-                listOfProductsInCabaz = entry.getValue().getProdutorProdutos().get(produtor);
-                int i = 0;
-                int completeProducts = 0;
-                // Check if the products quantities in the cabaz are the same as the quantities in the pedido
-                for (AbstractMap.SimpleEntry<String, Float> product : listOfProductsInCabaz){
-                    if (listOfProductsInPedido.get(i) == product.getValue()){
-                        completeProducts++;
-                    }else{
-                        break;
+        for (Integer dia : pedidosStore.keySet()){
+            List<Pedido> pedidos = pedidosStore.get(dia);
+            Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = expedicoes.get(dia);
+            List<AbstractMap.SimpleEntry<String, Float>> listOfProductsInCabaz = null;
+            List<Float> listOfProductsInPedido = null;
+            if (expeditionListInDay != null) {
+                // Get the stock of the producer
+                for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+                    // Look for pedido of the cliente
+                    for (Pedido pedido : pedidos) {
+                        if (pedido.getClienteProdutor().equals(entry.getKey().getId())) {
+                            listOfProductsInPedido = pedido.getProdutos();
+                        }
                     }
-                    i++;
-                }
-                // If all the products quantities are the same, then the cabaz is complete
-                if (completeProducts == listOfProductsInCabaz.size()){
-                    numberOfCabazes++;
+                    // If the cabaz of the cliente only has one producer and it is the same as the producer
+                    if (entry.getValue().getProdutorProdutos().size() == 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
+                        listOfProductsInCabaz = entry.getValue().getProdutorProdutos().get(produtor);
+                        int i = 0;
+                        int completeProducts = 0;
+                        // Check if the products quantities in the cabaz are the same as the quantities in the pedido
+                        for (AbstractMap.SimpleEntry<String, Float> product : listOfProductsInCabaz){
+                            if (listOfProductsInPedido.get(i) == product.getValue()){
+                                completeProducts++;
+                            }else{
+                                break;
+                            }
+                            i++;
+                        }
+                        // If all the products quantities are the same, then the cabaz is complete
+                        if (completeProducts == listOfProductsInCabaz.size()){
+                            numberOfCabazes++;
+                        }
+                    }
                 }
             }
         }
@@ -225,39 +227,42 @@ public class ExpListStatsController {
     }
 
     /**
-     * Calculates the total number of partial cabazes for the producer for the given day
-     * @param produtor produtor to check
-     * @param dia day to check
+     * Calculates the total number of partial cabazes for the producer
+     * @param produtor produtor to check the number of partial cabazes
      * @return number of partial cabazes
      */
-    public Integer numberOfCabazesPartiallyDelivered(ClienteProdutorEmpresa produtor, int dia){
+    public Integer numberOfCabazesPartiallyDelivered(ClienteProdutorEmpresa produtor){
         int numberOfCabazes = 0;
         Map<Integer, List<Pedido>> pedidosStore = App.getInstance().getPedidosStore().getPedidoMap();
-        List<Pedido> pedidos = pedidosStore.get(dia);
-        Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = expedicoes.get(dia);
-        List<AbstractMap.SimpleEntry<String, Float>> listOfProductsInCabaz = null;
-        List<Float> listOfProductsInPedido = null;
-        // Get the stock of the producer
-        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
-            // Look for pedido of the cliente
-            for (Pedido pedido : pedidos) {
-                if (pedido.getClienteProdutor().equals(entry.getKey().getId())) {
-                    listOfProductsInPedido = pedido.getProdutos();
-                }
-            }
-            // If the cabaz of the cliente only has one producer and it is the same as the producer
-            if (entry.getValue().getProdutorProdutos().size() > 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
-                numberOfCabazes++;
-            }else if(entry.getValue().getProdutorProdutos().size() == 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)){
-                listOfProductsInCabaz = entry.getValue().getProdutorProdutos().get(produtor);
-                int i = 0;
-                // Check if the products quantities in the cabaz are the same as the quantities in the pedido
-                for (AbstractMap.SimpleEntry<String, Float> product : listOfProductsInCabaz){
-                    if (listOfProductsInPedido.get(i) > product.getValue()){
-                        numberOfCabazes++;
-                        break;
+        for (Integer dia : pedidosStore.keySet()) {
+            List<Pedido> pedidos = pedidosStore.get(dia);
+            Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = expedicoes.get(dia);
+            List<AbstractMap.SimpleEntry<String, Float>> listOfProductsInCabaz = null;
+            List<Float> listOfProductsInPedido = null;
+            if (expeditionListInDay != null) {
+                // Get the stock of the producer
+                for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+                    // Look for pedido of the cliente
+                    for (Pedido pedido : pedidos) {
+                        if (pedido.getClienteProdutor().equals(entry.getKey().getId())) {
+                            listOfProductsInPedido = pedido.getProdutos();
+                        }
                     }
-                    i++;
+                    // If the cabaz of the cliente only has one producer and it is the same as the producer
+                    if (entry.getValue().getProdutorProdutos().size() > 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
+                        numberOfCabazes++;
+                    } else if (entry.getValue().getProdutorProdutos().size() == 1 && entry.getValue().getProdutorProdutos().containsKey(produtor)) {
+                        listOfProductsInCabaz = entry.getValue().getProdutorProdutos().get(produtor);
+                        int i = 0;
+                        // Check if the products quantities in the cabaz are the same as the quantities in the pedido
+                        for (AbstractMap.SimpleEntry<String, Float> product : listOfProductsInCabaz) {
+                            if (listOfProductsInPedido.get(i) > product.getValue()) {
+                                numberOfCabazes++;
+                                break;
+                            }
+                            i++;
+                        }
+                    }
                 }
             }
         }
@@ -266,27 +271,31 @@ public class ExpListStatsController {
     /**
      * Get the number of distinct clientes that a produtor delivered to
      * @param produtor produtor to get the number of clientes delivered to
-     * @param dia day of the expeditions
      * @return number of distinct clientes delivered to
      */
-    public Integer numberOfDistinctClientesDelivered(ClienteProdutorEmpresa produtor, int dia){
-        int numberOfDistinctClientesDelivered = 0;
-        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
-        for (Cabaz cabaz : clienteCabaz.values()) {
-            if (cabaz.containsKey(produtor)) {
-                numberOfDistinctClientesDelivered++;
+    public Integer numberOfDistinctClientesDelivered(ClienteProdutorEmpresa produtor){
+        List<ClienteProdutorEmpresa> distinctClientesDelivered = new ArrayList<>();
+        ListaExpedicoesStore clienteCabaz = App.getInstance().getListaExpedicoesStore();
+        for (Integer dia : clienteCabaz.getExpedicoes().keySet()){
+            Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = clienteCabaz.getExpedicoes().get(dia);
+            if (expeditionListInDay != null) {
+                for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()){
+                    if (entry.getValue().containsKey(produtor) && !distinctClientesDelivered.contains(entry.getKey())){
+                        distinctClientesDelivered.add(entry.getKey());
+                    }
+                }
             }
+
         }
-        return numberOfDistinctClientesDelivered;
+        return distinctClientesDelivered.size();
     }
     /**
-     * Get the number of products out of stock for a produtor on the given day
+     * Get the number of products out of stock for a produtor on the last expedition day on the list
      * @param produtor produtor to get the number of products out of stock
-     * @param dia day to get the number of products out of stock
      * @return number of products out of stock
      */
-    public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor, int dia){
-        List<Pedido> listaStock = App.getInstance().getStock().getStockMap().get(dia);
+    public Integer numberOfProductsOutOfStock(ClienteProdutorEmpresa produtor){
+        List<Pedido> listaStock = App.getInstance().getStock().getStockMap().get(App.getInstance().getStock().getStockMap().keySet().stream().max(Integer::compareTo).orElse(0));
         int outOfStock = 0;
         for (Pedido p : listaStock) {
             if (p.getClienteProdutor().equals(produtor.getId())) {
@@ -301,18 +310,22 @@ public class ExpListStatsController {
     /**
      * Get the number of Hubs that a produtor delivered to
      * @param produtor produtor to get the number of Hubs delivered to
-     * @param dia day of the expeditions
      * @return number of Hubs delivered to
      */
-    public Integer numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa produtor, int dia){
-        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+    public Integer numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa produtor){
         HubsStore hubsStore = App.getInstance().getHubsStore();
         HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
         List<ClienteProdutorEmpresa> hubs = new ArrayList<>();
-        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
-            if (entry.getValue().containsKey(produtor)) {
-                if(!hubs.contains(closestHubs.get(entry.getKey()))){
-                    hubs.add(closestHubs.get(entry.getKey()));
+        ListaExpedicoesStore clienteCabaz = App.getInstance().getListaExpedicoesStore();
+        for (Integer dia : clienteCabaz.getExpedicoes().keySet()) {
+            Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = clienteCabaz.getExpedicoes().get(dia);
+            if (expeditionListInDay != null) {
+                for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+                    if (entry.getValue().containsKey(produtor)) {
+                        if (!hubs.contains(closestHubs.get(entry.getKey()))) {
+                            hubs.add(closestHubs.get(entry.getKey()));
+                        }
+                    }
                 }
             }
         }
@@ -321,11 +334,9 @@ public class ExpListStatsController {
 
     /**
      * Create a list of statistics for each hub
-     * @param dia day of the expeditions
      * @return list of statistics for each hub
      */
-    public List<ListStatistics> getStatsByHub(int dia) {
-        if (!expedicoes.containsKey(dia)) throw new IllegalArgumentException("Não existe lista de expedicoes para o dia " + dia);
+    public List<ListStatistics> getStatsByHub() {
         HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
 
         final String statNameCDR = "Nº de clientes distintos que recolhem cabazes"; // Nome da estatística "Clientes distintos que recolhem cabazes"
@@ -334,8 +345,8 @@ public class ExpListStatsController {
         for ( ClienteProdutorEmpresa hub : mapCPE.values()) {
             if (hub.isHub()){
                 ListStatistics stats = new ListStatistics(hub.getId());
-                int cdr = numberOfDistinctClientesByHub(hub, dia);
-                int npd = numberOfProdutoresByHub(hub, dia);
+                int cdr = numberOfDistinctClientesByHub(hub);
+                int npd = numberOfProdutoresByHub(hub);
                 stats.addStat(statNameCDR, cdr); // Cria a estatistica com o valor de clientes distintos que recolhem cabazes
                 stats.addStat(statNameNPD, npd); // Cria a estatistica com o valor de produtores distintos que fornecem cabazes
                 finalStats.put(hub.getId(), stats);
@@ -347,48 +358,57 @@ public class ExpListStatsController {
     /**
      * Get the number of distinct clientes that a hub services
      * @param hub hub to get the number of clientes serviced
-     * @param dia day of the expeditions
      * @return number of distinct clientes serviced
      */
-    public Integer numberOfDistinctClientesByHub(ClienteProdutorEmpresa hub, int dia){
-        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+    public Integer numberOfDistinctClientesByHub(ClienteProdutorEmpresa hub){
         HubsStore hubsStore = App.getInstance().getHubsStore();
         HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
-        int numberOfClients = 0;
-        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
-            if (closestHubs.get(entry.getKey())!=null) {
-                if (closestHubs.get(entry.getKey()).equals(hub)) {
-                    numberOfClients++;
+        List<ClienteProdutorEmpresa> distinctClients = new ArrayList<>();
+        ListaExpedicoesStore clienteCabaz = App.getInstance().getListaExpedicoesStore();
+        for (Integer dia : clienteCabaz.getExpedicoes().keySet()) {
+            Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = clienteCabaz.getExpedicoes().get(dia);
+            if (expeditionListInDay != null) {
+                for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+                    if (closestHubs.get(entry.getKey())!=null) {
+                        if (closestHubs.get(entry.getKey()).equals(hub)) {
+                            if (!distinctClients.contains(entry.getKey())) {
+                                distinctClients.add(entry.getKey());
+                            }
+                        }
+                    }
+
                 }
             }
         }
-        return numberOfClients;
+        return distinctClients.size();
     }
 
     /**
      * Get the number of produtores that service a hub
      * @param hub hub to get the number of produtores that service it
-     * @param dia day of the expeditions
      * @return number of produtores that serviced the hub
      */
-    public Integer numberOfProdutoresByHub(ClienteProdutorEmpresa hub, int dia){
-        Map<ClienteProdutorEmpresa, Cabaz> clienteCabaz = App.getInstance().getListaExpedicoesStore().getExpedicaoNumDia(dia);
+    public Integer numberOfProdutoresByHub(ClienteProdutorEmpresa hub){
+        ListaExpedicoesStore clienteCabaz = App.getInstance().getListaExpedicoesStore();
         HubsStore hubsStore = App.getInstance().getHubsStore();
         HashMap<ClienteProdutorEmpresa,ClienteProdutorEmpresa> closestHubs = hubsStore.getClosestHubToEachClient();
-        int numberOfProducers = 0;
         List<ClienteProdutorEmpresa> listOfProducersOnHub = new ArrayList<>();
-        for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : clienteCabaz.entrySet()) {
-            if (closestHubs.get(entry.getKey())!=null) {
-                if (closestHubs.get(entry.getKey()).equals(hub)) {
-                    for (ClienteProdutorEmpresa produtor : entry.getValue().getProdutorProdutos().keySet()) {
-                        if (!listOfProducersOnHub.contains(produtor)) {
-                            listOfProducersOnHub.add(produtor);
+        for (Integer dia : clienteCabaz.getExpedicoes().keySet()) {
+            Map<ClienteProdutorEmpresa, Cabaz> expeditionListInDay = clienteCabaz.getExpedicoes().get(dia);
+            if (expeditionListInDay != null) {
+                for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expeditionListInDay.entrySet()) {
+                    if (closestHubs.get(entry.getKey())!=null) {
+                        if (closestHubs.get(entry.getKey()).equals(hub)) {
+                            for (ClienteProdutorEmpresa produtor : entry.getValue().getProdutorProdutos().keySet()) {
+                                if (!listOfProducersOnHub.contains(produtor)) {
+                                    listOfProducersOnHub.add(produtor);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        if (!listOfProducersOnHub.isEmpty()) numberOfProducers = listOfProducersOnHub.size();
-        return numberOfProducers;
+        return listOfProducersOnHub.size();
     }
 }

@@ -51,8 +51,8 @@ public class ExpListStatsUI implements Runnable{
                     switch (inputStat) {
                         case "1" -> printStats(CTRL.getStatsByCabaz(day));
                         case "2" -> printStats(CTRL.getStatsByCliente(day));
-                        case "3" -> printStats(CTRL.getStatsByProdutor(day));
-                        case "4" -> printStats(CTRL.getStatsByHub(day));
+                        case "3" -> printStats(CTRL.getStatsByProdutor());
+                        case "4" -> printStats(CTRL.getStatsByHub());
                     }
                 }
             } catch (IllegalArgumentException e) {
