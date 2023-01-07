@@ -16,7 +16,7 @@ table( Vendas ) {
     column( vendasMilharesEuros ): INTEGER
 }
 
-table( Produções ) {
+table( Producoes ) {
     foreign_key(primary_key( codProduto )): INTEGER
     foreign_key(primary_key( codSetorAgricola )): INTEGER
     foreign_key(primary_key( codTempo )): INTEGER
@@ -64,10 +64,10 @@ table( Tempo ) {
 
 Vendas }|--|| Cliente
 Vendas }|--|| Produto
-Produções }|--|| Produto
-Produções }|--|| SetorAgricola
+Producoes }|--|| Produto
+Producoes }|--|| SetorAgricola
 Vendas }|--|| Tempo
-Produções }|--|| Tempo
+Producoes }|--|| Tempo
 Produto }|--|| Cultura
 Cultura ||--|{ SetorAgricola_Cultura
 SetorAgricola_Cultura }|--|| SetorAgricola
