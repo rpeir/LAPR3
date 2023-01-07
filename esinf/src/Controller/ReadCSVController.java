@@ -137,7 +137,6 @@ public class ReadCSVController {
         try {
             PedidosStore pedidoMap = App.getInstance().getPedidosStore();
             Stock stock = App.getInstance().getStock();
-            Stock stockAfterExpedition = App.getInstance().getStockAfterExpedition();
             BufferedReader br = new BufferedReader(new FileReader(filename));
             br.readLine(); // skip first line
             String line = br.readLine();
@@ -161,7 +160,6 @@ public class ReadCSVController {
                     pedidoMap.insertPedido(pedido);
                 else
                     stock.insertStock(pedido);
-                    stockAfterExpedition.insertStock(pedido);
 
                 if (cpeStore.containsCPE(pedido.getClienteProdutor())) {
                     cpeStore.getCPE(pedido.getClienteProdutor()).setCabaz(pedido);
