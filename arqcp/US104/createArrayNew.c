@@ -10,7 +10,7 @@
 #include "../US102/sens_pluvio.h"
 #include "../US102/sens_temp.h"
 #include "../US102/sens_velc_vento.h"
-#include "../US110/sensores.h"
+#include "sensores.h"
 uint64_t state = 0;
 uint64_t inc = 0;
 

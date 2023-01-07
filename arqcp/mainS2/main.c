@@ -37,7 +37,7 @@ void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
     tp->sensores = sensores;
 }
 
-void parse_sensor_line(char* line, Sensor* sensor) {
+void parse_sensor_line(char* line, Sensor* sensor, int ID, int n) {
     char* token;
     char* line_copy = strdup(line);
 
@@ -47,9 +47,58 @@ void parse_sensor_line(char* line, Sensor* sensor) {
     token = strtok(NULL, ",");
     sensor->frequency = (unsigned long)atoi(token);
 
-    int n = 5;
-    unsigned short* leituras;
+    TipoSensor *tp;
 
+    //switch case for sensor type
+    switch (sensor->sensor_type) {
+        case 'T':
+            // associar constantes de max e min
+            sensor->max_limit = 30;
+            sensor->min_limit = -5;
+            //gerar id
+            sensor->id = ID;
+            //icrementar id
+            ID++;
+            //gerar as leituras
+            createArrayTemp(sensor, n);
+            break;
+        case 'H':
+            sensor->max_limit = 100;
+            sensor->min_limit = 0;
+            sensor->id = ID;
+            ID++;
+            break;
+        case 'P':
+            sensor->max_limit = 150;
+            sensor->min_limit = 0;
+            sensor->id = ID;
+            ID++;
+            break;
+        case 'V':
+            sensor->max_limit = 150;
+            sensor->min_limit = 0;
+            sensor->id = ID;
+            ID++;
+            createArrayVelVento(sensor, n);
+            break;
+        case 'D':
+            sensor->max_limit = 359;
+            sensor->min_limit = 0;
+            sensor->id = ID;
+            ID++;
+            createArrayDirVento(sensor, n);
+            break;
+        case 'S':
+            sensor->max_limit = 100;
+            sensor->min_limit = 0;
+            sensor->id = ID;
+            ID++;
+            break;
+        default:
+            break;
+    }
+
+    //guardar no array
 
     free(line_copy);
 }
@@ -77,7 +126,9 @@ int main() {
     char line[1024];
     while (fgets(line, 1024, file) != NULL) {
     Sensor sensor;
-    parse_sensor_line(line, &sensor);
+    int ID = 0;
+    int n = 5;
+    parse_sensor_line(line, &sensor, ID, n);
 }
 
     fclose(file);
@@ -91,12 +142,16 @@ int main() {
         scanf("%d", &nrSensors);
         if(nrSensors>0) {
             for(i=0; i<nrSensors; i++) {
+                TipoSensor *tp;
 
+                // pedir os dados
 
-    int n = 5;
+                // verificar se o id ja existe
 
-    TipoSensor *tp;
-    
+                // listar sensores ja existentes e escolher o sensor de temperatura e o sensor de pluviosidade para gerar os outros valores
+
+                // guardar no array
+
             }
         }
         else {
