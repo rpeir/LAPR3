@@ -1,7 +1,8 @@
-package domain.WaterController;
+package esinf.domain.WaterController.WaterController;
 
 import Controller.App;
 import Controller.ImportWaterControllerController;
+import domain.WaterController.Sector;
 import org.junit.Test;
 
 import java.io.File;
