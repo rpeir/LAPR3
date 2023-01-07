@@ -14,10 +14,23 @@
 #include "sensores.h"
 
 void add_sensor_to_list(Sensor *sensor, TipoSensor* tp) {
+    /*Sensor* sensores;
+    if (tp->nrSensores == 0) {
+        sensores = malloc(sizeof(Sensor));
+    } else {
+        Sensor* tmp = realloc(sensores, ((tp->nrSensores)+1)*(sizeof(Sensor)));
+        if (tmp != NULL) {
+            sensores = tmp;
+        }
+        else {
+            printf("Erro ao alocar memoria");
+        }
+    }*/
     Sensor* sensores;
     if (tp->nrSensores == 0) {
         sensores = malloc(sizeof(Sensor));
     } else {
+        sensores = tp->sensores; // iniciar os sensores antes de usar o realloc
         Sensor* tmp = realloc(sensores, ((tp->nrSensores)+1)*(sizeof(Sensor)));
         if (tmp != NULL) {
             sensores = tmp;
@@ -46,10 +59,9 @@ void parse_sensor_line(char* line, Sensor* sensor, int ID, int n, TipoSensor* tp
 
     token = strtok(NULL, ",");
     sensor->frequency = (unsigned long)atoi(token);
-
+    int i = 0;
     //switch case for sensor type
     switch (sensor->sensor_type) {
-        int i = 0;
         case 'T':
             // associar constantes de max e min
             sensor->max_limit = 30;
@@ -170,19 +182,17 @@ int main() {
     }
 
     else if(choice==2) {
-        int i;
         int nrSensors;
         printf("How many sensors do you want to add?\n");
         scanf("%d", &nrSensors);
         if(nrSensors>0) {
-            for(i=0; i<nrSensors; i++) {
+            for(int j=0; j<nrSensors; j++) {
                 Sensor sensor;
                 // pedir os dados
                 printf("Tipo de sensor: ");
                 scanf("%c", &sensor.sensor_type);
-                
-        switch (sensor.sensor_type) {
         int i = 0;
+        switch (sensor.sensor_type) {
         case 'T':
             //preencher o resto dos dados
             printf("Qual o valor maximo? ");
