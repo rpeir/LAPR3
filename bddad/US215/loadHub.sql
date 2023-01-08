@@ -25,19 +25,19 @@ Begin
 
         Select string_parts into v_lat from (
                                             SELECT ROW_NUMBER() OVER (ORDER BY 1) AS row_num, string_parts FROM (
-                                                        SELECT REGEXP_SUBSTR ( v_input_string, '[^;]+', 1, level) AS string_partsFROM dual
+                                                        SELECT REGEXP_SUBSTR ( v_input_string, '[^;]+', 1, level) AS string_parts FROM dual
                                                         CONNECT BY REGEXP_SUBSTR (v_input_string, '[^;]+', 1, level) IS NOT NULL))
                                             WHERE row_num = 2;
 
         Select string_parts into v_lng from (
-                                            SELECT ROW_NUMBER() OVER (ORDER BY 1)AS row_num, string_parts FROM (
-                                                          SELECT REGEXP_SUBSTR (v_input_string, '[^;]+', 1, level) AS string_partsFROM dual
+                                            SELECT ROW_NUMBER() OVER (ORDER BY 1) AS row_num, string_parts FROM (
+                                                          SELECT REGEXP_SUBSTR (v_input_string, '[^;]+', 1, level) AS string_parts FROM dual
                                                           CONNECT BY REGEXP_SUBSTR (_input_string, '[^;]+', 1, level) IS NOT NULL))
                                             WHERE row_num = 3;
 
         Select string_parts into v_tipoHub from (
                                                 SELECT ROW_NUMBER() OVER (ORDER BY 1) AS row_num, string_parts FROM (
-                                                           SELECT REGEXP_SUBSTR (v_input_string, '[^;]+', 1, level) AS string_partsFROM dual
+                                                           SELECT REGEXP_SUBSTR (v_input_string, '[^;]+', 1, level) AS string_parts FROM dual
                                                            CONNECT BY REGEXP_SUBSTR ( v_input_string, '[^;]+', 1, level) IS NOT NULL))
                                                 WHERE row_num = 4;
 
