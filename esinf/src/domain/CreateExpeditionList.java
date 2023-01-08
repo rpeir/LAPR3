@@ -23,8 +23,8 @@ public class CreateExpeditionList {
     /**
      * Obtains a list with the closest producers for a given client
      * @param cpe client
-     * @param n number of closest producers
-     * @return a map with the client and the cabaz
+     * @param n number of  producers
+     * @return list on n closest produtores from the client  hub
      */
     public List<ClienteProdutorEmpresa> getNProdutores(ClienteProdutorEmpresa cpe, int n) {
         ClosestHubController closestHubController = new ClosestHubController();
@@ -134,6 +134,7 @@ public class CreateExpeditionList {
      * Validates the stock for the expedition list
      * @param listaStock the stock list
      * @param closestProdutores the producers
+     * @return returns a list of producers who are on both lists
      */
     public List<Pedido> validStock(List<Pedido> listaStock, List<ClienteProdutorEmpresa> closestProdutores) {
         List<Pedido> result = new ArrayList<>();
