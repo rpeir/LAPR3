@@ -4,9 +4,10 @@ void write_matrix_file(short **matrix){
     int cols = 3;
     FILE *fp;
     fp = fopen("matrix.csv", "w");              //create or open file in write mode
-    fprintf(fp,"SensorType,Max,Min,Media\n");
+    fprintf(fp,"SensorType,Max,Min,Media");
     char sens_names[] = {'T', 'V', 'D', 'H', 'S', 'P'};
     for (int i = 0; i < rows; i++) {            //iterate through rows
+        fprintf(fp, "\n");
         fprintf(fp, "%c,", sens_names[i]);
         for (int j = 0; j < cols; j++) {        //iterate through columns
             fprintf(fp, "%d", matrix[i][j]);
@@ -14,7 +15,6 @@ void write_matrix_file(short **matrix){
                 fprintf(fp, ",");
             }
         }
-        fprintf(fp, "\n");
     }
     fclose(fp);                                 //close file
 }
