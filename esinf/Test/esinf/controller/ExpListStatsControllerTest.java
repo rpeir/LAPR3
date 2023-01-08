@@ -1,12 +1,19 @@
 package esinf.controller;
 
 import Controller.*;
+import domain.Cabaz;
 import domain.ClienteProdutorEmpresa;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import stats.ListStatistics;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 class ExpListStatsControllerTest {
 
@@ -51,20 +58,49 @@ class ExpListStatsControllerTest {
     }
     @Test
     void testGetStatsByCliente() {
+        System.out.println("getStatsByClienteByDay");
+        for (ListStatistics line : instance.getStatsByCliente(1)) {
+            System.out.println(line.toStringDetailed());
+        }
         System.out.println("getStatsByCliente");
-        //for (ListStatistics line : instance.getStatsByCliente(1)) {
-        //    System.out.println(line.toStringDetailed());
-        //}
+        for (ListStatistics line : instance.getStatsByCliente()) {
+            System.out.println(line.toStringDetailed());
+        }
     }
 
     @Test
     void testGetStatsByCabaz() {
-        System.out.println("getStatsByCliente");
-        //for (ListStatistics line : instance.getStatsByCabaz(1)) {
-        //    System.out.println(line.toStringDetailed());
-        //}
+        System.out.println("getStatsByCabazByDay");
+        for (ListStatistics line : instance.getStatsByCabaz(1)) {
+            System.out.println(line.toStringDetailed());
+        }
+        System.out.println("getStatsByCabaz");
+        for (ListStatistics line : instance.getStatsByCabaz()) {
+            System.out.println(line.toStringDetailed());
+        }
     }
 
+    @Test
+    void testFillClientesStatsForExpedicao() {
+        System.out.println("fillClientesStatsForExpedicao");
+        Map<String, List<Integer>> clientesStats = new HashMap<>();
+        Map<String, Set<String>> clientesDiffProd = new HashMap<>();
+        Map<ClienteProdutorEmpresa, Cabaz> exp = App.getInstance().getListaExpedicoesStore().getExpedicoes().get(1);
+        instance.fillClientesStatsForExpedicao(clientesStats, clientesDiffProd, exp, 1);
+        Assertions.assertEquals(exp.size(), clientesStats.size());
+        Assertions.assertEquals(exp.size(), clientesDiffProd.size());
+        for (Map.Entry<String, Set<String>> entry : clientesDiffProd.entrySet()) {
+            Assertions.assertTrue(entry.getValue().size() <= 3);
+        }
+    }
+
+    @Test
+    void testCreateListStatisticsForEachCabaz() {
+        System.out.println("createListStatisticsForEachCabaz");
+        Map<ClienteProdutorEmpresa, Cabaz> exp = App.getInstance().getListaExpedicoesStore().getExpedicoes().get(1);
+        List<ListStatistics> stats = instance.createListStatisticsForEachCabaz( exp, 1);
+        Assertions.assertEquals(exp.size(), stats.size());
+    }
     @Test
     public void testGetStatsByProdutor() {
         ClienteProdutorEmpresa produtor = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
