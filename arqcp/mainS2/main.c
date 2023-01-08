@@ -16,10 +16,7 @@
 #include "../US112/write_matrix_file.h"
 
 Sensor* getSensorByIndex(int index, TipoSensor* tp) {
-    if (index >= tp->nrSensores) {
-        printf("Indice invalido");
-        return NULL;
-    } else if (index < 0) {
+    if (index >= tp->nrSensores || index < 0) {
         printf("Indice invalido");
         return NULL;
     }
@@ -86,7 +83,7 @@ void remove_sensor_from_list(int i, TipoSensor *tp)
     }
 }
 
-void consult_sensors(TipoSensor *tp)
+void consult_sensors(TipoSensor *tp, char option)
 {
     int nr = tp->nrSensores;
     if (nr == 0)
@@ -106,6 +103,22 @@ void consult_sensors(TipoSensor *tp)
             printf("Limite minimo: %hd\n", (short)sensores[i].min_limit);
             printf("Tamanho do array de leituras: %lu\n", sensores[i].readings_size);
             printf("Array de leituras:\n");
+            if (option == '3') {
+                                        printf("Array de leituras:\n");
+                                        for (int j = 0; j < sensores[i].readings_size; j++)
+                                        {
+                                            //print index
+                                            printf("Valor: %d ", j);
+                                            //print value
+                                            if (sensores[i].sensor_type == 'T'){
+                                                printf("%d", *((char*) (sensores[i].readings)+ j));
+                                            }else if (sensores[i].sensor_type == 'D'){
+                                                printf("%d", *((unsigned short*) (sensores[i].readings)+ j));
+                                            }else {
+                                                printf("%d", *((unsigned char*) (sensores[i].readings)+ j));
+                                            }
+                                        }
+                                    }
             printf("\n");
         }
     }
@@ -509,22 +522,22 @@ int main()
             switch (option)
             {
             case 'T':
-                consult_sensors(&tpTemps);
+                consult_sensors(&tpTemps, choice);
                 break;
             case 'H':
-                consult_sensors(&tpHumAtms);
+                consult_sensors(&tpHumAtms, choice);
                 break;
             case 'P':
-                consult_sensors(&tpPluvios);
+                consult_sensors(&tpPluvios, choice);
                 break;
             case 'V':
-                consult_sensors(&tpVelVents);
+                consult_sensors(&tpVelVents, choice);
                 break;
             case 'D':
-                consult_sensors(&tpDirVents);
+                consult_sensors(&tpDirVents, choice);
                 break;
             case 'S':
-                consult_sensors(&tpHumSolos);
+                consult_sensors(&tpHumSolos, choice);
                 break;
             default:
                 printf("O tipo de sensor nao existe.\n");
@@ -575,7 +588,7 @@ int main()
                                 break;
                             case 'H':
                                 sens = getSensorByIndex(index, &tpHumAtms);
-                                consult_sensors(&tpPluvios);
+                                consult_sensors(&tpPluvios, choice);
                                 printf("Indique o index do sensor de Pluviosodade a utilizar: ");
                                 scanf(" %d", &i);
                                 sens_aux = getSensorByIndex(i, &tpPluvios);
@@ -583,7 +596,7 @@ int main()
                                 break;
                             case 'P':
                                 sens = getSensorByIndex(index, &tpPluvios);
-                                consult_sensors(&tpTemps);
+                                consult_sensors(&tpTemps, choice);
                                 printf("Indique o index do sensor de Temperatura a utilizar: ");
                                 scanf(" %d", &i);
                                 sens_aux = getSensorByIndex(i, &tpTemps);
@@ -599,7 +612,7 @@ int main()
                                 break;
                             case 'S':
                                 sens = getSensorByIndex(index, &tpHumSolos);
-                                consult_sensors(&tpPluvios);
+                                consult_sensors(&tpPluvios, choice);
                                 printf("Indique o index do sensor de Pluviosodade a utilizar: ");
                                 scanf(" %d", &i);
                                 sens_aux = getSensorByIndex(i, &tpPluvios);
