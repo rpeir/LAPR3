@@ -1,6 +1,8 @@
-create or replace Procedure check_calendar (ano CalendariosOperacoes.ano%type) 
-As
+CREATE OR REPLACE PROCEDURE check_calendar (ano CalendariosOperacoes.anoCalendarioOperacoes%type) 
+AS
 anoEx exception;
+temp_cod integer;
+numberRegists integer;
 BEGIN
 --obtem o codigo do calendario que corresponde ao ano inserido
 select codCalendarioOperacoes into temp_cod
@@ -12,10 +14,10 @@ select COUNT(*) into numberRegists from Operacoes where codCalendarioOperacoes=t
 
 -- Caso existam registos, cria uma view com os resultados
 if (numberRegists>=1) then
-create or replace View "v_Calendario" As
-select Operacoes.codOperacao, Operacoes.dataOperacao, Operacoes.tipoOperacao
+EXECUTE IMMEDIATE 'create or replace View "v_Calendario" AS
+select Operacoes.codOperacao, Operacoes.dataOperacao, Operacoes.tipoOperacao 
 from Operacoes
-where operacoes.codCalendarioOperacoes=temp_cod;
+where operacoes.codCalendarioOperacoes=:temp_cod' using temp_cod;
 -- para usar a view select* from "Calendario"
 
 else

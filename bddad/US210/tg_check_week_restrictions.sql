@@ -21,11 +21,10 @@ where codOperacao=temp_codOp;
 
 select COUNT(*) into numberRegists from AplicacaoFatorProducao where codFatorProducao=temp_codFP,;
 if(numberRegists>=1) then
-create or replace View "v_Restricao_Semana" As
+EXECUTE IMMEDIATE 'create or replace View "v_Restricao_Semana" As
 select Restricoes.codZonaGeografica, Restricoes.dataInicio, Restricoes.codFatorProducao
 from Restricoes
-where Restricoes.codFatorProducao=temp_codFP and Restricoes.dataInicio<=temp_dataOp-7<=Restricoes.dataInicio+Restricoes.duracao; -- a data de aplicacao do fator de producao tem de estar entre a data de fim da restricao e a data de inicio da restricao + a duracao da restricao
-
+where Restricoes.codFatorProducao=temp_codFP and Restricoes.dataInicio<=temp_dataOp-7<=Restricoes.dataInicio+Restricoes.duracao;'  using temp_codFP,temp_dataOp;
 else 
 raise ex;
 END IF;

@@ -4,6 +4,9 @@ on AplicacaoFatorProducao
 for each row
 Declare
 ex exception;
+temp_codFP integer;
+numberRegists integer;
+
 BEGIN
 select codFatorProducao into temp_codFP
 from AplicacaoFatorProducao
@@ -11,10 +14,10 @@ where codOperacao=NEW.codOperacao,codSetorAgricola=NEW.codSetorAgricola,codCultu
 
 select COUNT(*) into numberRegists from AplicacaoFatorProducao where codFatorProducao=temp_codFP;
 if(numberRegists>=1) then
-create or replace View "v_Restricao" As
-select Restricoes.codZonaGeografica, Restricoes.dataInicio, Restricoes.codFatorProducao
+execute immediate 'create or replace View "v_Restricao" As
+select codZonaGeografica, dataInicio, codFatorProducao
 from Restricoes
-where Restricoes.codFatorProducao=temp_codFP;
+where codFatorProducao=temp_codFP;' using temp_codFP;
 
 else 
 raise ex;
