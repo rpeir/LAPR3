@@ -83,7 +83,7 @@ void remove_sensor_from_list(int i, TipoSensor *tp)
     }
 }
 
-void consult_sensors(TipoSensor *tp, char option)
+void consult_sensors(TipoSensor *tp, int option)
 {
     int nr = tp->nrSensores;
     if (nr == 0)
@@ -102,23 +102,23 @@ void consult_sensors(TipoSensor *tp, char option)
             printf("Limite maximo: %hu\n", sensores[i].max_limit);
             printf("Limite minimo: %hd\n", (short)sensores[i].min_limit);
             printf("Tamanho do array de leituras: %lu\n", sensores[i].readings_size);
-            printf("Array de leituras:\n");
-            if (option == '3') {
-                                        printf("Array de leituras:\n");
-                                        for (int j = 0; j < sensores[i].readings_size; j++)
-                                        {
-                                            //print index
-                                            printf("Valor: %d ", j);
-                                            //print value
-                                            if (sensores[i].sensor_type == 'T'){
-                                                printf("%d", *((char*) (sensores[i].readings)+ j));
-                                            }else if (sensores[i].sensor_type == 'D'){
-                                                printf("%d", *((unsigned short*) (sensores[i].readings)+ j));
-                                            }else {
-                                                printf("%d", *((unsigned char*) (sensores[i].readings)+ j));
-                                            }
-                                        }
-                                    }
+            if (option == 4) {
+                printf("Array de leituras:\n");
+                for (int j = 0; j < sensores[i].readings_size; j++)
+                {
+                    //print index
+                    printf("Valor: %d ", j);
+                    //print value
+                    if (sensores[i].sensor_type == 'T'){
+                        printf("%d", *((char*) (sensores[i].readings)+ j));
+                    }else if (sensores[i].sensor_type == 'D'){
+                        printf("%d", *((unsigned short*) (sensores[i].readings)+ j));
+                    }else {
+                        printf("%d", *((unsigned char*) (sensores[i].readings)+ j));
+                    }
+                    printf("\n");
+                }
+            }
             printf("\n");
         }
     }
@@ -350,7 +350,7 @@ int main()
         }
         else if (choice == 1)
         {
-            FILE *file = fopen("input_sensores.csv", "r");
+            FILE *file = fopen("../input_sensores.csv", "r");
             if (file == NULL)
             {
                 perror("Error opening file");

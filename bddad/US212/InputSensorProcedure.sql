@@ -63,6 +63,11 @@ Begin
                 nrInvalidos := nrInvalidos + 1;
             end if;
     End Loop;
+    Close c_idSensor;
+    Close c_tipoSensor;
+    Close c_valorLido;
+    Close c_valorReferencia;
+    Close c_instanteLeitura;
     Select current_date into currentDate from dual;
     dbms_output.put_line('Nr de Registos lidos: '|| nrRegistoLidos || '     Nr de Sucessos: '|| nrSucessos || '     Nr de Registos Inválidos: ' || nrInvalidos || '     Hora de Execução: ' || currentDate);
 End;
