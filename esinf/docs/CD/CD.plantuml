@@ -1,255 +1,519 @@
 @startuml
 
-
+!theme plain
 top to bottom direction
 skinparam linetype ortho
 
 class Algorithms {
-  + allPaths(Graph<V, E>, V, V): ArrayList<LinkedList<V>>
-  + DepthFirstSearch(Graph<V, E>, V): LinkedList<V>?
-  + shortestPaths(Graph<V, E>, V, Comparator<E>, BinaryOperator<E>, E, ArrayList<LinkedList<V>>, ArrayList<E>): boolean
-  + shortestPath(Graph<V, E>, V, V, Comparator<E>, BinaryOperator<E>, E, LinkedList<V>): E?
-  + minDistGraph(Graph<V, E>, Comparator<E>, BinaryOperator<E>): MatrixGraph<V, E>
-  + minConnections(Graph<V, E>, Comparator<E>, BinaryOperator<E>, E): int
+  - getPath(Graph<V, E>, V, V, V[], LinkedList<V>): void
   + kruskall(Graph<V, E>, Comparator<E>): Graph<V, E>
   + BreadthFirstSearch(Graph<V, E>, V): LinkedList<V>?
-  + totalWeight(Graph<V, E>, BinaryOperator<E>, E): E
+  + DepthFirstSearch(Graph<V, E>, V): LinkedList<V>?
+  - shortestPathDijkstra(Graph<V, E>, V, Comparator<E>, BinaryOperator<E>, E, boolean[], V[], E[]): void
+  + shortestPaths(Graph<V, E>, V, Comparator<E>, BinaryOperator<E>, E, ArrayList<LinkedList<V>>, ArrayList<E>): boolean
+  + minConnections(Graph<V, E>, Comparator<E>, BinaryOperator<E>, E): int
+  + shortestPath(Graph<V, E>, V, V, Comparator<E>, BinaryOperator<E>, E, LinkedList<V>): E?
+  + allPaths(Graph<V, E>, V, V): ArrayList<LinkedList<V>>
+  - allPaths(Graph<V, E>, V, V, boolean[], LinkedList<V>, ArrayList<LinkedList<V>>): void
   + prim(Graph<V, E>, Comparator<E>, E): Graph<V, E>
+  - DepthFirstSearch(Graph<V, E>, V, boolean[], LinkedList<V>): void
+  - getVertMinDist(Graph<V, E>, E[], boolean[], Comparator<E>, E): V
+  + totalWeight(Graph<V, E>, BinaryOperator<E>, E): E
+  + minDistGraph(Graph<V, E>, Comparator<E>, BinaryOperator<E>): MatrixGraph<V, E>
+  - buildMst(Graph<V, E>, V[], E[]): Graph<V, E>
 }
 class App {
-  + getGraph(): Graph<Localizacao, Integer>
-  + setGraph(Graph<Localizacao, Integer>): void
-  + getSectorStore(): SectorStore
-  + getInstance(): App
+  - pedidosStore: PedidosStore
+  - localizacaoStore: LocalizacaoStore
+  - sectorStore: SectorStore
+  - stock: Stock
+  - leStore: ListaExpedicoesStore
+  - singleton: App
+  - graph: Graph<Localizacao, Integer>
+  - cpeStore: ClienteProdutorEmpresaStore
+  - waterController: WaterController
+  - hubsStore: HubsStore
   + getLocalizacaoStore(): LocalizacaoStore
+  + getInstance(): App
+  + getStock(): Stock
+  + setGraph(Graph<Localizacao, Integer>): void
+  + getHubsStore(): HubsStore
   + getWaterController(): WaterController
-  + getProdutoStore(): ProdutoStore
+  + getGraph(): Graph<Localizacao, Integer>
+  + getSectorStore(): SectorStore
+  - bootstrap(): void
   + getClienteProdutorEmpresaStore(): ClienteProdutorEmpresaStore
+  + getListaExpedicoesStore(): ListaExpedicoesStore
+  + getPedidosStore(): PedidosStore
+}
+class Cabaz {
+  - produtorProdutos: Map<ClienteProdutorEmpresa, List<SimpleEntry<String, Float>>>
+  - cliente: String
+  + get(ClienteProdutorEmpresa): List<SimpleEntry<String, Float>>
+  + getDiffProdutores(): List<String>
+  + containsKey(ClienteProdutorEmpresa): boolean
+  + toString(): String
+  + getCliente(): String
+  + satisfiedCabaz(List<Float>): int
+  + setProdutorProdutos(Map<ClienteProdutorEmpresa, List<SimpleEntry<String, Float>>>): void
+  + put(ClienteProdutorEmpresa, List<SimpleEntry<String, Float>>): void
+  + getProdutorProdutos(): Map<ClienteProdutorEmpresa, List<SimpleEntry<String, Float>>>
+  + getProdutos(): List<Float>
+  + equals(Object): boolean
+  + satisfiedCabaz(List<Float>, List<Float>): int
+  + setCliente(String): void
+  + hashCode(): int
 }
 class ClienteProdutorEmpresa {
-  + toString(): String
-  + setNotHub(): void
-  + setId(String): void
-  + validateClienteID(String): boolean
-  + isHub(): boolean
-  + setLocalizacao(String, float, float): void
-  + setDesignacao(String): void
-  + validateEmpresaID(String): boolean
+  - empresa: boolean
+  - hub: boolean
+  - cabazes: Map<Integer, Pedido>
+  - flag: boolean
+  - localizacao: Localizacao
+  - designacao: String
+  - id: String
   + validateProdutorID(String): boolean
-  + setHub(): void
-  + getLocalizacao(): Localizacao
-  + getId(): String
+  + setEmpresa(boolean): void
+  + validateClienteID(String): boolean
+  + isCliente(): boolean
+  + toString(): String
+  + setLocalizacao(String, float, float): void
+  + setId(String): void
+  + setDesignacao(String): void
+  + isHub(): boolean
+  + getCabazes(): List<Pedido>
+  + isProdutor(): boolean
   + setLocalizacao(Localizacao): void
+  + isEmpresa(): boolean
+  + setCabazes(List<Pedido>): void
+  + validateEmpresaID(String): boolean
+  + getLocalizacao(): Localizacao
   + hashCode(): int
   + equals(Object): boolean
-  + isEmpresa(): boolean
-  + setEmpresa(boolean): void
+  + setCabaz(Pedido): void
+  + setHub(): void
+  + setNotHub(): void
+  + isSatisfied(): boolean
+  + getId(): String
   + getDesignacao(): String
+  + getCabaz(int): Pedido
 }
 class ClienteProdutorEmpresaStore {
-  + toString(): String
+  - listCabazes: ArrayList<Pedido>
+  - mapCPE: Map<String, ClienteProdutorEmpresa>
   + getMapCPE(): Map<String, ClienteProdutorEmpresa>
-  + isEmpty(): boolean
-  + addCPE(ClienteProdutorEmpresa): void
-  + getCPE(String): ClienteProdutorEmpresa
-  + containsCPE(String): boolean
-  + removeCPE(String): void
   + clear(): void
+  + isEmpty(): boolean
+  + getCPE(String): ClienteProdutorEmpresa
+  + toString(): String
+  + addCPE(ClienteProdutorEmpresa): void
+  + containsCPE(String): boolean
+  + getCPEbyID(String): ClienteProdutorEmpresa
+  + removeCPE(String): void
   + size(): int
 }
 class ClosestHubController {
-  + getClosestHub(ClienteProdutorEmpresa): ClienteProdutorEmpresa
+  - graph: Graph<Localizacao, Integer>
+  ~ hubsStore: HubsStore
   + getAllClosestHubs(): HashMap<ClienteProdutorEmpresa, ClienteProdutorEmpresa>
+  + getClosestHub(ClienteProdutorEmpresa): ClienteProdutorEmpresa
 }
 class ClosestHubUI {
+  - CTRL: ClosestHubController
   + run(): void
 }
-class CommonGraph<V, E> {
-  + isDirected(): boolean
-  + validVertex(V): boolean
-  + vertices(): ArrayList<V>
-  + edgeExists(V, V): boolean
-  + numEdges(): int
-  + vertex(int): V
-  + hashCode(): int
-  + numVertices(): int
-  + vertex(Predicate<V>): V
-  + equals(Object): boolean
-  + clone(): Graph<V, E>
-  + key(V): int
-}
 class ConnectionsController {
+  - app: App
   + minConnevtions(): int
 }
 class ConnectionsUI {
+  - CTRL: ConnectionsController
   + run(): void
 }
-class Edge<V, E> {
-  + getVOrig(): V
-  + setWeight(E): void
-  + toString(): String
-  + hashCode(): int
-  + getWeight(): E
-  + getVDest(): V
-  + equals(Object): boolean
+class CreateExpeditionList {
+  - graph: Graph<Localizacao, Integer>
+  + getNProdutores(ClienteProdutorEmpresa, int): List<ClienteProdutorEmpresa>
+  + validStock(List<Pedido>, List<ClienteProdutorEmpresa>): List<Pedido>
+  + createDailyExpeditionList(int): Map<ClienteProdutorEmpresa, Cabaz>
+  + createExpeditionList(int, int): Map<ClienteProdutorEmpresa, Cabaz>
+  + getProdutores(): List<ClienteProdutorEmpresa>
+}
+class CreateExpeditionListController {
+  - app: App
+  - createExpeditionList: CreateExpeditionList
+  + createDailyExpeditionList(int): Map<ClienteProdutorEmpresa, Cabaz>
+  + createExpeditionList(int, int): Map<ClienteProdutorEmpresa, Cabaz>
+}
+class CreateExpeditionListUI {
+  - CTRL: CreateExpeditionListController
+  - sc: Scanner
+  + run(): void
+}
+class DailyExpeditionListUI {
+  - CTRL: CreateExpeditionListController
+  - sc: Scanner
+  + run(): void
+}
+class ExpListStatsController {
+  ~ statNamePFOC: String
+  ~ statNameCPS: String
+  ~ statNameCTS: String
+  ~ statNamePPS: String
+  - expedicoes: Map<Integer, Map<ClienteProdutorEmpresa, Cabaz>>
+  ~ statNamePFC: String
+  ~ statNamePTS: String
+  - mapCPE: Map<String, ClienteProdutorEmpresa>
+  ~ statNamePNS: String
+  ~ statNamePer: String
+  + numberOfDistinctClientesByHub(ClienteProdutorEmpresa): Integer
+  + numberOfDistinctClientesByHub(ClienteProdutorEmpresa, int): Integer
+  + numberOfCabazesPartiallyDelivered(ClienteProdutorEmpresa, int): Integer
+  + numberOfProductsOutOfStock(ClienteProdutorEmpresa, int): Integer
+  + createListStatisticsForEachCabaz(Map<ClienteProdutorEmpresa, Cabaz>, int): List<ListStatistics>
+  + numberOfCabazesTotallyDelivered(ClienteProdutorEmpresa, int): Integer
+  - createListStatisticsForEachCliente(Map<String, List<Integer>>, Map<String, Set<String>>): List<ListStatistics>
+  + numberOfCabazesPartiallyDelivered(ClienteProdutorEmpresa): Integer
+  + getStatsByCabaz(): List<ListStatistics>
+  + numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa): Integer
+  + getStatsByHub(int): List<ListStatistics>
+  + numberOfHubsSatisfiedByProducer(ClienteProdutorEmpresa, int): Integer
+  + numberOfProdutoresByHub(ClienteProdutorEmpresa, int): Integer
+  + getStatsByProdutor(int): List<ListStatistics>
+  + getStatsByCliente(): List<ListStatistics>
+  + numberOfDistinctClientesDelivered(ClienteProdutorEmpresa, int): Integer
+  + numberOfProductsOutOfStock(ClienteProdutorEmpresa): Integer
+  + numberOfCabazesTotallyDelivered(ClienteProdutorEmpresa): Integer
+  + fillClientesStatsForExpedicao(Map<String, List<Integer>>, Map<String, Set<String>>, Map<ClienteProdutorEmpresa, Cabaz>, int): void
+  + getStatsByProdutor(): List<ListStatistics>
+  + numberOfProdutoresByHub(ClienteProdutorEmpresa): Integer
+  + getStatsByCabaz(int): List<ListStatistics>
+  + getStatsByCliente(int): List<ListStatistics>
+  + numberOfDistinctClientesDelivered(ClienteProdutorEmpresa): Integer
+  + getStatsByHub(): List<ListStatistics>
+}
+class ExpListStatsUI {
+  - CTRL: ExpListStatsController
+  - printStats(List<ListStatistics>): void
+  + run(): void
 }
 interface Graph<V, E> << interface >> {
-  + inDegree(V): int
-  + vertices(): ArrayList<V>
-  + numEdges(): int
-  + addEdge(V, V, E): boolean
-  + clone(): Graph<V, E>
-  + outDegree(V): int
-  + incomingEdges(V): Collection<Edge<V, E>>
-  + removeEdge(V, V): boolean
-  + vertex(Predicate<V>): V
-  + outgoingEdges(V): Collection<Edge<V, E>>
   + edge(int, int): Edge<V, E>
-  + numVertices(): int
-  + validVertex(V): boolean
-  + edges(): Collection<Edge<V, E>>
-  + edgeExists(V, V): boolean
   + adjVertices(V): Collection<V>
-  + edge(V, V): Edge<V, E>
-  + addVertex(V): boolean
-  + removeVertex(V): boolean
+  + removeEdge(V, V): boolean
   + isDirected(): boolean
+  + numVertices(): int
+  + vertex(Predicate<V>): V
+  + clone(): Graph<V, E>
+  + numEdges(): int
+  + outDegree(V): int
+  + outgoingEdges(V): Collection<Edge<V, E>>
+  + addVertex(V): boolean
+  + validVertex(V): boolean
+  + edgeExists(V, V): boolean
+  + edges(): Collection<Edge<V, E>>
+  + edge(V, V): Edge<V, E>
+  + vertices(): ArrayList<V>
   + key(V): int
+  + inDegree(V): int
+  + incomingEdges(V): Collection<Edge<V, E>>
   + vertex(int): V
+  + removeVertex(V): boolean
+  + addEdge(V, V, E): boolean
 }
 class HubsDistributionController {
   ~ app: App
-  + getMediaDistancia(Graph<Localizacao, Integer>, int): Map<ClienteProdutorEmpresa, Double>
+  ~ hubsStore: HubsStore
   + getEmpresas(): List<ClienteProdutorEmpresa>
+  + getMediaDistancia(Graph<Localizacao, Integer>, int): Map<ClienteProdutorEmpresa, Double>
 }
 class HubsDistributionUI {
   ~ app: App
   ~ ctrl: HubsDistributionController
   + run(): void
 }
+class HubsStore {
+  - hubs: Map<ClienteProdutorEmpresa, Double>
+  ~ closestHubToEachClient: HashMap<ClienteProdutorEmpresa, ClienteProdutorEmpresa>
+  + getHubs(): Map<ClienteProdutorEmpresa, Double>
+  + getClosestHubToEachClient(): HashMap<ClienteProdutorEmpresa, ClienteProdutorEmpresa>
+  + setClosestHubToEachClient(HashMap<ClienteProdutorEmpresa, ClienteProdutorEmpresa>): void
+  + setHubs(Map<ClienteProdutorEmpresa, Double>): void
+}
 class ImportCSVUI {
+  - controller: ReadCSVController
+  - sc: Scanner
   ~ app: App
+  + readClientesProdutorasEmpresasFile(): void
+  + readDistancesFile(): void
+  + readCabazesFile(): void
   + run(): void
+}
+class ImportWaterControllerController {
+  + importWaterController(File): void
 }
 class ImportWaterControllerUI {
+  - date: LocalDateTime
+  - controller: ImportWaterControllerController
   ~ app: App
   + run(): void
 }
-class Localizacao {
-  + equals(Object): boolean
-  + getLocID(): String
-  + hashCode(): int
-  + getLatitude(): float
-  + setLongitude(float): void
-  + validateID(String): boolean
-  + getLongitude(): float
-  + setLatitude(float): void
-  + setLocID(String): void
+class ListStatistics {
+  - owner: String
+  - stats: List<Statistic<?>>
+  + getOwner(): String
+  + setStats(List<Statistic<?>>): void
+  + getStats(): List<Statistic<?>>
+  + toStringDetailed(): String
   + toString(): String
+  + addStat(String, E): void
+  + addStat(Statistic<?>): void
+  + setOwner(String): void
+}
+class ListaExpedicoesStore {
+  - expedicoes: Map<Integer, Map<ClienteProdutorEmpresa, Cabaz>>
+  + getExpedicoes(): Map<Integer, Map<ClienteProdutorEmpresa, Cabaz>>
+  + size(): int
+  + setExpedicoes(Map<Integer, Map<ClienteProdutorEmpresa, Cabaz>>): void
+  + getExpedicaoNumDia(int): Map<ClienteProdutorEmpresa, Cabaz>
+  + setExpedicaoNumDia(Map<ClienteProdutorEmpresa, Cabaz>, int): void
+}
+class Localizacao {
+  - latitude: float
+  - longitude: float
+  - locID: String
+  + setLongitude(float): void
+  + getLongitude(): float
+  + hashCode(): int
+  + getLocID(): String
+  + setLatitude(float): void
+  + toString(): String
+  + getLatitude(): float
+  + equals(Object): boolean
+  + setLocID(String): void
+  + validateID(String): boolean
 }
 class LocalizacaoStore {
-  + removeLocalizacao(Localizacao): void
-  + clear(): void
+  - localizacoes: Map<String, Localizacao>
   + addLocalizacao(Localizacao): void
-  + removeLocalizacao(String): void
+  + clear(): void
   + getLocalizacao(String): Localizacao
+  + removeLocalizacao(Localizacao): void
   + size(): int
+  + removeLocalizacao(String): void
 }
 class MSTNetworkController {
+  - graph: Graph<Localizacao, Integer>
+  - kruskallBetterToUse(): boolean
   + getMSTNetworkDistance(Graph<Localizacao, Integer>): int
   + getMSTNetwork(): Graph<Localizacao, Integer>
 }
 class MSTNetworkUI {
+  - CTRL: MSTNetworkController
   + run(): void
 }
 class Main {
   + main(String[]): void
 }
 class MapGraph<V, E> {
-  + toString(): String
-  + clone(): MapGraph<V, E>
+  - mapVertices: Map<V, MapVertex<V, E>>
+  + edge(int, int): Edge<V, E>
+  + adjVertices(V): Collection<V>
+  + addVertex(V): boolean
+  + validVertex(V): boolean
   + edges(): Collection<Edge<V, E>>
   + outgoingEdges(V): Collection<Edge<V, E>>
   + removeVertex(V): boolean
-  + incomingEdges(V): Collection<Edge<V, E>>
-  + removeEdge(V, V): boolean
-  + inDegree(V): int
-  + addVertex(V): boolean
-  + validVertex(V): boolean
   + addEdge(V, V, E): boolean
+  + removeEdge(V, V): boolean
+  + clone(): MapGraph<V, E>
+  + inDegree(V): int
   + outDegree(V): int
-  + edge(int, int): Edge<V, E>
+  + incomingEdges(V): Collection<Edge<V, E>>
   + edge(V, V): Edge<V, E>
-  + adjVertices(V): Collection<V>
+  + toString(): String
 }
 class MapVertex<V, E> {
-  + getElement(): V
+  - element: V
+  - outVerts: Map<V, Edge<V, E>>
   + getAllAdjVerts(): Collection<V>
-  + toString(): String
-  + remAdjVert(V): void
-  + getAllOutEdges(): Collection<Edge<V, E>>
   + addAdjVert(V, Edge<V, E>): void
   + getEdge(V): Edge<V, E>
   + numAdjVerts(): int
+  + remAdjVert(V): void
+  + getAllOutEdges(): Collection<Edge<V, E>>
+  + toString(): String
+  + getElement(): V
 }
 class MatrixGraph<V, E> {
-  ~ edgeMatrix: Edge<V, E>[][]
-  + RESIZE_FACTOR: float
   + INITIAL_CAPACITY: int
-  + inDegree(V): int
-  + edge(V, V): Edge<V, E>
-  + removeVertex(V): boolean
-  + edge(int, int): Edge<V, E>
-  + outgoingEdges(V): Collection<Edge<V, E>>
+  + RESIZE_FACTOR: float
+  ~ edgeMatrix: Edge<V, E>[][]
   + addEdge(V, V, E): boolean
-  + removeEdge(V, V): boolean
-  + addVertex(V): boolean
-  + outDegree(V): int
-  + incomingEdges(V): Collection<Edge<V, E>>
-  + adjVertices(V): Collection<V>
-  + clone(): MatrixGraph<V, E>
-  + toString(): String
   + edges(): Collection<Edge<V, E>>
+  + outDegree(V): int
+  + inDegree(V): int
+  - resizeMatrix(): void
+  + removeVertex(V): boolean
+  - removeEdge(int, int): void
+  + edge(int, int): Edge<V, E>
+  + toString(): String
+  + removeEdge(V, V): boolean
+  + adjVertices(V): Collection<V>
+  + incomingEdges(V): Collection<Edge<V, E>>
+  + addVertex(V): boolean
+  + edge(V, V): Edge<V, E>
+  + outgoingEdges(V): Collection<Edge<V, E>>
+  + clone(): MatrixGraph<V, E>
 }
-class ProdutoStore {
-  + produtos: List<Produto>
-  + addProduto(Produto): void
-  + getProduto(int): Produto
-  + getProdutos(): List<Produto>
-  + setNProdutos(int): void
-  + setProdutos(List<Produto>): void
+class MinimumRouteController {
+  ~ hubsStore: HubsStore
+  ~ ctrl: ClosestHubController
+  ~ createExpeditionList: CreateExpeditionList
+  ~ cpeStore: ClienteProdutorEmpresaStore
+  ~ app: App
+  + getMinimumRoute(String, int): List<Localizacao>
+}
+class MinimumRouteUI {
+  ~ app: App
+  ~ ctrl: MinimumRouteController
+  + run(): void
+}
+class Pedido {
+  - diaDeProducao: int
+  - clienteProdutorEmpresa: String
+  - produtos: List<Float>
+  + getProdutos(): List<Float>
+  + toString(): String
+  + setClienteProdutorEmpresa(String): void
+  + setProdutoByIndex(int, float): void
+  + getClienteProdutor(): String
+  + equals(Object): boolean
+  + setDiaDeProducao(int): void
+  + setProdutos(List<Float>): void
+  + getProduto(int): Float
+  + getDiaDeProducao(): int
+  + hashCode(): int
+}
+class PedidosStore {
+  - pedidoMap: Map<Integer, List<Pedido>>
+  + insertPedido(Pedido): void
+  + getPedidoMap(): Map<Integer, List<Pedido>>
 }
 class ReadCSVController {
-  + readClientesProdutoresFile(File): void
+  - SPLIT_REGEX: String
+  - MAIN_SPLIT_REGEX: String
+  - cpe: ClienteProdutorEmpresa
+  - localizacaoStore: LocalizacaoStore
+  - graph: Graph<Localizacao, Integer>
+  - cpeStore: ClienteProdutorEmpresaStore
   + readDistancesFile(File): void
+  + readCabazesFile(File): void
+  + readClientesProdutoresFile(File): void
+}
+class Statistic<E> {
+  - statName: String
+  - statValue: E
+  + setStatValue(E): void
+  + getStatName(): String
+  + setStatName(String): void
+  + toString(): String
+  + getStatValue(): E
+}
+class Stock {
+  - stockMap: Map<Integer, List<Pedido>>
+  + insertStock(Pedido): void
+  + getStockByProdutor(int, String): Pedido
+  + getStockMap(): Map<Integer, List<Pedido>>
 }
 
-App                         "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore 
-App                         "1" *-[#595959,plain]-> "graph\n1" Graph                       
-App                         "1" *-[#595959,plain]-> "localizacaoStore\n1" LocalizacaoStore            
-App                         "1" *-[#595959,plain]-> "produtoStore\n1" ProdutoStore                
-ClienteProdutorEmpresa      "1" *-[#595959,plain]-> "localizacao\n1" Localizacao                 
-ClienteProdutorEmpresaStore "1" *-[#595959,plain]-> "mapCPE\n*" ClienteProdutorEmpresa      
-ClosestHubController        "1" *-[#595959,plain]-> "graph\n1" Graph                       
-ClosestHubUI                "1" *-[#595959,plain]-> "CTRL\n1" ClosestHubController        
-CommonGraph                  -[#008200,dashed]-^  Graph                       
-ConnectionsController       "1" *-[#595959,plain]-> "app\n1" App                         
-ConnectionsUI               "1" *-[#595959,plain]-> "CTRL\n1" ConnectionsController       
-HubsDistributionController  "1" *-[#595959,plain]-> "app\n1" App                         
-HubsDistributionUI          "1" *-[#595959,plain]-> "app\n1" App                         
-HubsDistributionUI          "1" *-[#595959,plain]-> "ctrl\n1" HubsDistributionController  
-ImportCSVUI                 "1" *-[#595959,plain]-> "app\n1" App                         
-ImportCSVUI                 "1" *-[#595959,plain]-> "controller\n1" ReadCSVController           
-ImportWaterControllerUI     "1" *-[#595959,plain]-> "app\n1" App                         
-LocalizacaoStore            "1" *-[#595959,plain]-> "localizacoes\n*" Localizacao                 
-MSTNetworkController        "1" *-[#595959,plain]-> "graph\n1" Graph                       
-MSTNetworkUI                "1" *-[#595959,plain]-> "CTRL\n1" MSTNetworkController        
-MapGraph                     -[#000082,plain]-^  CommonGraph                 
-MapGraph                    "1" *-[#595959,plain]-> "mapVertices\n*" MapVertex                   
-MapVertex                   "1" *-[#595959,plain]-> "outVerts\n*" Edge                        
-MatrixGraph                  -[#000082,plain]-^  CommonGraph                 
-MatrixGraph                 "1" *-[#595959,plain]-> "edgeMatrix\n*" Edge                        
-ReadCSVController           "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore 
-ReadCSVController           "1" *-[#595959,plain]-> "graph\n1" Graph                       
-ReadCSVController           "1" *-[#595959,plain]-> "localizacaoStore\n1" LocalizacaoStore            
+Algorithms                       -[#595959,dashed]->  MatrixGraph                     : "«create»"
+App                             "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore     
+App                              -[#595959,dashed]->  ClienteProdutorEmpresaStore     : "«create»"
+App                             "1" *-[#595959,plain]-> "graph\n1" Graph                           
+App                             "1" *-[#595959,plain]-> "hubsStore\n1" HubsStore                       
+App                              -[#595959,dashed]->  HubsStore                       : "«create»"
+App                              -[#595959,dashed]->  ListaExpedicoesStore            : "«create»"
+App                             "1" *-[#595959,plain]-> "leStore\n1" ListaExpedicoesStore            
+App                              -[#595959,dashed]->  LocalizacaoStore                : "«create»"
+App                             "1" *-[#595959,plain]-> "localizacaoStore\n1" LocalizacaoStore                
+App                              -[#595959,dashed]->  MapGraph                        : "«create»"
+App                             "1" *-[#595959,plain]-> "pedidosStore\n1" PedidosStore                    
+App                              -[#595959,dashed]->  PedidosStore                    : "«create»"
+App                             "1" *-[#595959,plain]-> "stock\n1" Stock                           
+App                              -[#595959,dashed]->  Stock                           : "«create»"
+Cabaz                           "1" *-[#595959,plain]-> "produtorProdutos\n*" ClienteProdutorEmpresa          
+ClienteProdutorEmpresa           -[#595959,dashed]->  Localizacao                     : "«create»"
+ClienteProdutorEmpresa          "1" *-[#595959,plain]-> "localizacao\n1" Localizacao                     
+ClienteProdutorEmpresa          "1" *-[#595959,plain]-> "cabazes\n*" Pedido                          
+ClienteProdutorEmpresaStore     "1" *-[#595959,plain]-> "mapCPE\n*" ClienteProdutorEmpresa          
+ClienteProdutorEmpresaStore     "1" *-[#595959,plain]-> "listCabazes\n*" Pedido                          
+ClosestHubController            "1" *-[#595959,plain]-> "graph\n1" Graph                           
+ClosestHubController            "1" *-[#595959,plain]-> "hubsStore\n1" HubsStore                       
+ClosestHubUI                     -[#595959,dashed]->  ClosestHubController            : "«create»"
+ClosestHubUI                    "1" *-[#595959,plain]-> "CTRL\n1" ClosestHubController            
+ConnectionsController           "1" *-[#595959,plain]-> "app\n1" App                             
+ConnectionsUI                   "1" *-[#595959,plain]-> "CTRL\n1" ConnectionsController           
+ConnectionsUI                    -[#595959,dashed]->  ConnectionsController           : "«create»"
+CreateExpeditionList             -[#595959,dashed]->  Cabaz                           : "«create»"
+CreateExpeditionList             -[#595959,dashed]->  ClosestHubController            : "«create»"
+CreateExpeditionList            "1" *-[#595959,plain]-> "graph\n1" Graph                           
+CreateExpeditionListController  "1" *-[#595959,plain]-> "app\n1" App                             
+CreateExpeditionListController  "1" *-[#595959,plain]-> "createExpeditionList\n1" CreateExpeditionList            
+CreateExpeditionListController   -[#595959,dashed]->  CreateExpeditionList            : "«create»"
+CreateExpeditionListUI          "1" *-[#595959,plain]-> "CTRL\n1" CreateExpeditionListController  
+CreateExpeditionListUI           -[#595959,dashed]->  CreateExpeditionListController  : "«create»"
+DailyExpeditionListUI            -[#595959,dashed]->  CreateExpeditionListController  : "«create»"
+DailyExpeditionListUI           "1" *-[#595959,plain]-> "CTRL\n1" CreateExpeditionListController  
+ExpListStatsController          "1" *-[#595959,plain]-> "mapCPE\n*" ClienteProdutorEmpresa          
+ExpListStatsController           -[#595959,dashed]->  ListStatistics                  : "«create»"
+ExpListStatsUI                  "1" *-[#595959,plain]-> "CTRL\n1" ExpListStatsController          
+ExpListStatsUI                   -[#595959,dashed]->  ExpListStatsController          : "«create»"
+HubsDistributionController      "1" *-[#595959,plain]-> "app\n1" App                             
+HubsDistributionController      "1" *-[#595959,plain]-> "hubsStore\n1" HubsStore                       
+HubsDistributionUI              "1" *-[#595959,plain]-> "app\n1" App                             
+HubsDistributionUI              "1" *-[#595959,plain]-> "ctrl\n1" HubsDistributionController      
+HubsDistributionUI               -[#595959,dashed]->  HubsDistributionController      : "«create»"
+HubsStore                       "1" *-[#595959,plain]-> "hubs\n*" ClienteProdutorEmpresa          
+ImportCSVUI                     "1" *-[#595959,plain]-> "app\n1" App                             
+ImportCSVUI                     "1" *-[#595959,plain]-> "controller\n1" ReadCSVController               
+ImportCSVUI                      -[#595959,dashed]->  ReadCSVController               : "«create»"
+ImportWaterControllerUI         "1" *-[#595959,plain]-> "app\n1" App                             
+ImportWaterControllerUI          -[#595959,dashed]->  ImportWaterControllerController : "«create»"
+ImportWaterControllerUI         "1" *-[#595959,plain]-> "controller\n1" ImportWaterControllerController 
+ListStatistics                  "1" *-[#595959,plain]-> "stats\n*" Statistic                       
+ListStatistics                   -[#595959,dashed]->  Statistic                       : "«create»"
+LocalizacaoStore                "1" *-[#595959,plain]-> "localizacoes\n*" Localizacao                     
+MSTNetworkController            "1" *-[#595959,plain]-> "graph\n1" Graph                           
+MSTNetworkUI                     -[#595959,dashed]->  MSTNetworkController            : "«create»"
+MSTNetworkUI                    "1" *-[#595959,plain]-> "CTRL\n1" MSTNetworkController            
+Main                             -[#595959,dashed]->  ClosestHubUI                    : "«create»"
+Main                             -[#595959,dashed]->  ConnectionsUI                   : "«create»"
+Main                             -[#595959,dashed]->  CreateExpeditionListUI          : "«create»"
+Main                             -[#595959,dashed]->  DailyExpeditionListUI           : "«create»"
+Main                             -[#595959,dashed]->  ExpListStatsUI                  : "«create»"
+Main                             -[#595959,dashed]->  HubsDistributionUI              : "«create»"
+Main                             -[#595959,dashed]->  ImportCSVUI                     : "«create»"
+Main                             -[#595959,dashed]->  ImportWaterControllerUI         : "«create»"
+Main                             -[#595959,dashed]->  MSTNetworkUI                    : "«create»"
+Main                             -[#595959,dashed]->  MinimumRouteUI                  : "«create»"
+MapGraph                         -[#008200,dashed]-^  Graph                           
+MapGraph                        "1" *-[#595959,plain]-> "mapVertices\n*" MapVertex                       
+MapGraph                         -[#595959,dashed]->  MapVertex                       : "«create»"
+MatrixGraph                      -[#008200,dashed]-^  Graph                           
+MinimumRouteController          "1" *-[#595959,plain]-> "app\n1" App                             
+MinimumRouteController          "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore     
+MinimumRouteController           -[#595959,dashed]->  ClosestHubController            : "«create»"
+MinimumRouteController          "1" *-[#595959,plain]-> "ctrl\n1" ClosestHubController            
+MinimumRouteController          "1" *-[#595959,plain]-> "createExpeditionList\n1" CreateExpeditionList            
+MinimumRouteController           -[#595959,dashed]->  CreateExpeditionList            : "«create»"
+MinimumRouteController          "1" *-[#595959,plain]-> "hubsStore\n1" HubsStore                       
+MinimumRouteUI                  "1" *-[#595959,plain]-> "app\n1" App                             
+MinimumRouteUI                   -[#595959,dashed]->  MinimumRouteController          : "«create»"
+MinimumRouteUI                  "1" *-[#595959,plain]-> "ctrl\n1" MinimumRouteController          
+ReadCSVController               "1" *-[#595959,plain]-> "cpe\n1" ClienteProdutorEmpresa          
+ReadCSVController                -[#595959,dashed]->  ClienteProdutorEmpresa          : "«create»"
+ReadCSVController               "1" *-[#595959,plain]-> "cpeStore\n1" ClienteProdutorEmpresaStore     
+ReadCSVController               "1" *-[#595959,plain]-> "graph\n1" Graph                           
+ReadCSVController               "1" *-[#595959,plain]-> "localizacaoStore\n1" LocalizacaoStore                
+ReadCSVController                -[#595959,dashed]->  Pedido                          : "«create»"
 @enduml
