@@ -104,15 +104,6 @@ void consult_sensors(TipoSensor *tp)
             printf("Limite maximo: %hu\n", sensores[i].max_limit);
             printf("Limite minimo: %hd\n", (short)sensores[i].min_limit);
             printf("Tamanho do array de leituras: %lu\n", sensores[i].readings_size);
-            printf("Array de leituras:\n");
-            for (int j = 0; j < sensores[i].readings_size; j++)
-            {
-                //print index
-                printf("Valor: %d ", j);
-                //print value
-                printf("%d \n", sensores[i].readings[j]);
-
-            }
             printf("\n");
         }
     }
