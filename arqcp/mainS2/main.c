@@ -496,7 +496,7 @@ int main()
             // }
         }
         else if (choice == 6){
-            short temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
+            unsigned short temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
             for ( int i = 0; i< tpTemps.nrSensores; i++){
                 write_sensor_file(&tpTemps.sensores[i]);
                 for ( int j = 0; j< tpTemps.sensores[i].readings_size; j++){
@@ -505,7 +505,7 @@ int main()
                     temps[i*tpTemps.sensores[i].readings_size + j] = reading;
                 }
             }
-            short humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
+            unsigned short humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
             for ( int i = 0; i< tpHumAtms.nrSensores; i++){
                 write_sensor_file(&tpHumAtms.sensores[i]);
                 for ( int j = 0; j< tpHumAtms.sensores[i].readings_size; j++){
@@ -514,7 +514,7 @@ int main()
                     humAtms[i*tpHumAtms.sensores[i].readings_size + j] = reading;
                 }
             }
-            short pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
+            unsigned short pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
             for ( int i = 0; i< tpPluvios.nrSensores; i++){
                 write_sensor_file(&tpPluvios.sensores[i]);
                 for ( int j = 0; j< tpPluvios.sensores[i].readings_size; j++){
@@ -523,7 +523,7 @@ int main()
                     pluvios[i*tpPluvios.sensores[i].readings_size + j] = reading;
                 }
             }
-            short velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
+            unsigned short velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
             for ( int i = 0; i< tpVelVents.nrSensores; i++){
                 write_sensor_file(&tpVelVents.sensores[i]);
                 for ( int j = 0; j< tpVelVents.sensores[i].readings_size; j++){
@@ -532,7 +532,7 @@ int main()
                     velVents[i*tpVelVents.sensores[i].readings_size + j] = reading;
                 }
             }
-            short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
+            unsigned short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
             for ( int i = 0; i< tpDirVents.nrSensores; i++){
                 write_sensor_file(&tpDirVents.sensores[i]);
                 for ( int j = 0; j< tpDirVents.sensores[i].readings_size; j++){
@@ -541,7 +541,7 @@ int main()
                     dirVents[i*tpDirVents.sensores[i].readings_size + j] = reading;
                 }
             }
-            short humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
+            unsigned short humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
             for ( int i = 0; i< tpHumSolos.nrSensores; i++){
                 write_sensor_file(&tpHumSolos.sensores[i]);
                 for ( int j = 0; j< tpHumSolos.sensores[i].readings_size; j++){
@@ -550,15 +550,23 @@ int main()
                     humSolos[i*tpHumSolos.sensores[i].readings_size + j] = reading;
                 }
             }
-            //creating matrix
-            unsigned short* tempsDaily = dailyUShortValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
-            unsigned short* humAtmsDaily = dailyUShortValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
-            unsigned short* pluviosDaily = dailyUShortValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
-            unsigned short* velVentsDaily = dailyUShortValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
-            unsigned short* dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
-            unsigned short* humSolosDaily = dailyUShortValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
-            short** matrix = createMatrix(tempsDaily, velVentsDaily, dirVentsDaily, humAtmsDaily, humSolosDaily, pluviosDaily);
-            write_matrix_file(matrix);
+            if (tpTemps.nrSensores == 0 || tpHumAtms.nrSensores == 0 || tpPluvios.nrSensores == 0 || tpVelVents.nrSensores == 0 || tpDirVents.nrSensores == 0 || tpHumSolos.nrSensores == 0){
+                printf("Nao existem dados suficientes para gerar o relatorio.\n");
+                
+            }
+            else{
+                printf("Gerando relatorio...\n");
+                unsigned short* tempsDaily = dailyUShortValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
+                unsigned short* humAtmsDaily = dailyUShortValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
+                unsigned short* pluviosDaily = dailyUShortValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
+                unsigned short* velVentsDaily = dailyUShortValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
+                unsigned short* dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
+                unsigned short* humSolosDaily = dailyUShortValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
+                short** matrix = createMatrix(tempsDaily, velVentsDaily, dirVentsDaily, humAtmsDaily, humSolosDaily, pluviosDaily);
+                write_matrix_file(matrix);
+                //creating matrix*/
+            }
+            
         }else{
             printf("Invalid choice\n");
         }
