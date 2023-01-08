@@ -15,6 +15,22 @@
 #include "../US112/write_sensor_file.h"
 #include "../US112/write_matrix_file.h"
 
+// void change_freq_sensor(Sensor *sensor, Sensor* sensor_aux, char tipo_sensor, int n)
+// {
+//     printf("Insira a nova frequencia do sensor: ");
+//     scanf("%lu", sensor->frequency);
+//     switch (tipo_sensor)
+//     {
+//     case 'T':
+//         createArrayTemp(sensor, n);
+//         break;
+//     case 'H':
+//         createArrayHumd(sensor, n);
+//         break;
+//     }
+
+// }
+
 void remove_sensor_from_list(int i, TipoSensor *tp)
 {
     if (tp->nrSensores == 0) {
@@ -235,7 +251,8 @@ int main()
     int choice;
     do
     {
-        printf("1 - Importar ficheiro\n2 - Adicionar Sensores\n3 - Remover Sensores\n4 - Consultar Sensores\n5 - Exportar informacao dos Sensores para .csv\n0 - Exit\n");
+        printf("1 - Importar ficheiro\n2 - Adicionar Sensores\n3 - Remover Sensores\n4 - Consultar Sensores\n");
+        printf("5 - Alterar frequencia de leituras\n6 - Exportar informacao para .csv\n0 - Sair\n");
         scanf("%d", &choice);
         if (choice == 0)
         {
@@ -243,7 +260,7 @@ int main()
         }
         else if (choice == 1)
         {
-            FILE *file = fopen("input_sensores.csv", "r");
+            FILE *file = fopen("../input_sensores.csv", "r");
             if (file == NULL)
             {
                 perror("Error opening file");
@@ -305,6 +322,7 @@ int main()
                             printf("Qual a frequencia? ");
                             scanf("%lu", &sensor.frequency);
                             sensor.id = ID;
+                            sensor.readings = NULL;
                             ID++;
                             createArrayHumAtm(&sensor, &chosenSensor, n);
                             add_sensor_to_list(&sensor, &tpHumAtms);
@@ -328,6 +346,7 @@ int main()
                             printf("Qual a frequencia? ");
                             scanf("%lu", &sensor.frequency);
                             sensor.id = ID;
+                            sensor.readings = NULL;
                             ID++;
                             createArrayPluvio(&sensor, &chosenSensor, n);
                             add_sensor_to_list(&sensor, &tpPluvios);
@@ -345,6 +364,7 @@ int main()
                         printf("Qual a frequencia? ");
                         scanf("%lu", &sensor.frequency);
                         sensor.id = ID;
+                        sensor.readings = NULL;
                         ID++;
                         createArrayVelVento(&sensor, n);
                         add_sensor_to_list(&sensor, &tpVelVents);
@@ -357,6 +377,7 @@ int main()
                         printf("Qual a frequencia? ");
                         scanf("%lu", &sensor.frequency);
                         sensor.id = ID;
+                        sensor.readings = NULL;
                         ID++;
                         createArrayDirVento(&sensor, n);
                         add_sensor_to_list(&sensor, &tpDirVents);
@@ -375,6 +396,7 @@ int main()
                             printf("Qual a frequencia? ");
                             scanf("%lu", &sensor.frequency);
                             sensor.id = ID;
+                            sensor.readings = NULL;
                             ID++;
                             createArrayHumSolo(&sensor, &chosenSensor, n);
                             add_sensor_to_list(&sensor, &tpHumSolos);
@@ -396,7 +418,7 @@ int main()
                 printf("Invalid number of sensors\n");
             }
         }
-        else if (choice == 4 || choice == 3)
+        else if (choice == 3 || choice == 4 || choice == 5)
         {
             printf("Indique o tipo de sensor: \n");
             printf("T - Temperatura\n");
@@ -461,8 +483,19 @@ int main()
                     break;
                 }
             }
+            // else if (choice == 5)
+            // {
+            //     printf("Indique o index do sensor a remover: ");
+            //     int index;
+            //     scanf("%d", &index);
+            //     switch (option)
+            //     {
+            //     case 'T':
+
+            //     }
+            // }
         }
-        else if (choice == 5){
+        else if (choice == 6){
             short temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
             for ( int i = 0; i< tpTemps.nrSensores; i++){
                 write_sensor_file(&tpTemps.sensores[i]);

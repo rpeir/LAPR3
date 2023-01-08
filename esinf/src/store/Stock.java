@@ -28,4 +28,11 @@ public class Stock {
     public Map<Integer, List<Pedido>> getStockMap() {
         return stockMap;
     }
+    public  Pedido  getStockByProdutor(int dia, String produtor){
+        for (Pedido stock: stockMap.get(dia)) {
+            if (stock.getClienteProdutor().equals(produtor))
+                return stock;
+        }
+        return null;
+    }
 }
