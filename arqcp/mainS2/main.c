@@ -12,6 +12,8 @@
 #include "../US103/dailyValues.h"
 #include "../US103/createMatrix.h"
 #include "sensores.h"
+#include "../US112/write_sensor_file.h"
+#include "../US112/write_matrix_file.h"
 
 void remove_sensor_from_list(int i, TipoSensor *tp)
 {
@@ -233,7 +235,7 @@ int main()
     int choice;
     do
     {
-        printf("1 - Importar ficheiro\n2 - Adicionar Sensores\n3 - Remover Sensores\n4 - Consultar Sensores\n0 - Exit\n");
+        printf("1 - Importar ficheiro\n2 - Adicionar Sensores\n3 - Remover Sensores\n4 - Consultar Sensores\n5 - Exportar informacao dos Sensores para .csv\n0 - Exit\n");
         scanf("%d", &choice);
         if (choice == 0)
         {
@@ -460,8 +462,71 @@ int main()
                 }
             }
         }
-        else
-        {
+        else if (choice == 5){
+            short temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
+            for ( int i = 0; i< tpTemps.nrSensores; i++){
+                write_sensor_file(&tpTemps.sensores[i]);
+                for ( int j = 0; j< tpTemps.sensores[i].readings_size; j++){
+                    unsigned short *temp = tpTemps.sensores[i].readings;
+                    unsigned short reading = temp[j];
+                    temps[i*tpTemps.sensores[i].readings_size + j] = reading;
+                }
+            }
+            short humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
+            for ( int i = 0; i< tpHumAtms.nrSensores; i++){
+                write_sensor_file(&tpHumAtms.sensores[i]);
+                for ( int j = 0; j< tpHumAtms.sensores[i].readings_size; j++){
+                    unsigned short *hum = tpHumAtms.sensores[i].readings;
+                    unsigned short reading = hum[j];
+                    humAtms[i*tpHumAtms.sensores[i].readings_size + j] = reading;
+                }
+            }
+            short pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
+            for ( int i = 0; i< tpPluvios.nrSensores; i++){
+                write_sensor_file(&tpPluvios.sensores[i]);
+                for ( int j = 0; j< tpPluvios.sensores[i].readings_size; j++){
+                    unsigned short *pluv = tpPluvios.sensores[i].readings;
+                    unsigned short reading = pluv[j];
+                    pluvios[i*tpPluvios.sensores[i].readings_size + j] = reading;
+                }
+            }
+            short velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
+            for ( int i = 0; i< tpVelVents.nrSensores; i++){
+                write_sensor_file(&tpVelVents.sensores[i]);
+                for ( int j = 0; j< tpVelVents.sensores[i].readings_size; j++){
+                    unsigned short *vel = tpVelVents.sensores[i].readings;
+                    unsigned short reading = vel[j];
+                    velVents[i*tpVelVents.sensores[i].readings_size + j] = reading;
+                }
+            }
+            short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
+            for ( int i = 0; i< tpDirVents.nrSensores; i++){
+                write_sensor_file(&tpDirVents.sensores[i]);
+                for ( int j = 0; j< tpDirVents.sensores[i].readings_size; j++){
+                    unsigned short *dir = tpDirVents.sensores[i].readings;
+                    unsigned short reading = dir[j];
+                    dirVents[i*tpDirVents.sensores[i].readings_size + j] = reading;
+                }
+            }
+            short humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
+            for ( int i = 0; i< tpHumSolos.nrSensores; i++){
+                write_sensor_file(&tpHumSolos.sensores[i]);
+                for ( int j = 0; j< tpHumSolos.sensores[i].readings_size; j++){
+                    unsigned short *hum = tpHumSolos.sensores[i].readings;
+                    unsigned short reading = hum[j];
+                    humSolos[i*tpHumSolos.sensores[i].readings_size + j] = reading;
+                }
+            }
+            //creating matrix
+            unsigned short* tempsDaily = dailyUShortValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
+            unsigned short* humAtmsDaily = dailyUShortValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
+            unsigned short* pluviosDaily = dailyUShortValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
+            unsigned short* velVentsDaily = dailyUShortValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
+            unsigned short* dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
+            unsigned short* humSolosDaily = dailyUShortValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
+            short** matrix = createMatrix(tempsDaily, velVentsDaily, dirVentsDaily, humAtmsDaily, humSolosDaily, pluviosDaily);
+            write_matrix_file(matrix);
+        }else{
             printf("Invalid choice\n");
         }
     } while (1);
