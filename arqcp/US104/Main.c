@@ -1,22 +1,22 @@
 #include <stdint.h>
 
-char MAX_TEMP = 0;
-char MIN_TEMP = 0;
+short MAX_TEMP = 0;
+short MIN_TEMP = 0;
 
-unsigned char MAX_WVEL = 0;
-unsigned char MIN_WVEL = 0;
+unsigned short MAX_WVEL = 0;
+unsigned short MIN_WVEL = 0;
 
 unsigned short MAX_WINDDEG = 0;
 unsigned short MIN_WINDDEG = 0;
 
-unsigned char MAX_ATMHUM = 0;
-unsigned char MIN_ATMHUM = 0;
+unsigned short MAX_ATMHUM = 0;
+unsigned short MIN_ATMHUM = 0;
 
-unsigned char MAX_SOILHUM = 0;
-unsigned char MIN_SOILHUM = 0;
+unsigned short MAX_SOILHUM = 0;
+unsigned short MIN_SOILHUM = 0;
 
-unsigned char MAX_PLUV = 0;
-unsigned char MIN_PLUV = 0;
+unsigned short MAX_PLUV = 0;
+unsigned short MIN_PLUV = 0;
 int N = 0;
 
 int main()
@@ -56,10 +56,10 @@ int main()
     printf("insert numero maximo de leituras erradas: %s\n", N);
     scanf("%s", &N);
 
-    char *temp = createArrayTemp(MAX_TEMP, MIN_TEMP, 20, N);
-    unsigned char *velVento = createArrayVelVento(MAX_WVEL, MIN_WVEL, 20, N);
-    unsigned char *pluvio = createArrayPluvio(MAX_PLUV, MIN_PLUV, 40, N);
+    short *temp = createArrayTemp(MAX_TEMP, MIN_TEMP, 20, N);
+    unsigned short *velVento = createArrayVelVento(MAX_WVEL, MIN_WVEL, 20, N);
+    unsigned short *pluvio = createArrayPluvio(MAX_PLUV, MIN_PLUV, 40, N);
     unsigned short *dirVento = createArrayDirVento(MAX_WINDDEG, MIN_WINDDEG, 30, N);
-    unsigned char *humAtm = createArrayHumAtm(MAX_ATMHUM, MIN_ATMHUM, 20, N);
-    unsigned char *humSolo = createArrayHumAtm(MAX_SOILHUM, MIN_SOILHUM, 30, N);
+    unsigned short *humAtm = createArrayHumAtm(MAX_ATMHUM, MIN_ATMHUM, 20, N);
+    unsigned short *humSolo = createArrayHumAtm(MAX_SOILHUM, MIN_SOILHUM, 30, N);
 }

@@ -69,7 +69,7 @@ public class ExpListStatsController {
         return createListStatisticsForEachCliente(clientesStatsValues, clientesDiffProdutores);
     }
 
-    private void fillClientesStatsForExpedicao(Map<String, List<Integer>> clientesStatsValues, Map<String, Set<String>> clientesDiffProdutores, Map<ClienteProdutorEmpresa, Cabaz> expedicao, int dia) {
+    public void fillClientesStatsForExpedicao(Map<String, List<Integer>> clientesStatsValues, Map<String, Set<String>> clientesDiffProdutores, Map<ClienteProdutorEmpresa, Cabaz> expedicao, int dia) {
         for (Map.Entry<ClienteProdutorEmpresa, Cabaz> cliente : expedicao.entrySet()) { // para cada cliente
             ClienteProdutorEmpresa cpe = cliente.getKey();
             Cabaz cabaz = cliente.getValue();
@@ -148,7 +148,7 @@ public class ExpListStatsController {
      * @param expedicao Map with the cabazes for the given day
      * @return List of statistics for each cabaz
      */
-    private List<ListStatistics> createListStatisticsForEachCabaz(Map<ClienteProdutorEmpresa, Cabaz> expedicao, int dia) {
+    public List<ListStatistics> createListStatisticsForEachCabaz(Map<ClienteProdutorEmpresa, Cabaz> expedicao, int dia) {
         HashMap<String, ListStatistics> finalStats = new HashMap<>(); // lista final para ser retornada
 
         for (Map.Entry<ClienteProdutorEmpresa, Cabaz> entry : expedicao.entrySet()) { // para cada cabaz

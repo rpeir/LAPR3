@@ -15,21 +15,42 @@
 #include "../US112/write_sensor_file.h"
 #include "../US112/write_matrix_file.h"
 
-// void change_freq_sensor(Sensor *sensor, Sensor* sensor_aux, char tipo_sensor, int n)
-// {
-//     printf("Insira a nova frequencia do sensor: ");
-//     scanf("%lu", sensor->frequency);
-//     switch (tipo_sensor)
-//     {
-//     case 'T':
-//         createArrayTemp(sensor, n);
-//         break;
-//     case 'H':
-//         createArrayHumd(sensor, n);
-//         break;
-//     }
+Sensor* getSensorByIndex(int index, TipoSensor* tp) {
+    if (index >= tp->nrSensores || index < 0) {
+        printf("Indice invalido");
+        return NULL;
+    }
+    return &tp->sensores[index];
+}
 
-// }
+
+void change_freq_sensor(Sensor *sensor, Sensor* sensor_aux, char tipo_sensor, int n)
+{
+    printf("Insira a nova frequencia do sensor: ");
+    scanf("%lu", &(sensor->frequency));
+    switch (tipo_sensor)
+    {
+    case 'T':
+        createArrayTemp(sensor, n);
+        break;
+    case 'V':
+        createArrayVelVento(sensor, n);
+        break;
+    case 'D':
+        createArrayDirVento(sensor, n);
+        break;
+    case 'P':
+        createArrayPluvio(sensor, sensor_aux, n);
+        break;
+    case 'H':
+        createArrayHumAtm(sensor, sensor_aux, n);
+        break;
+    case 'S':
+        createArrayHumSolo(sensor, sensor_aux, n);
+        break;
+    }
+
+}
 
 void remove_sensor_from_list(int i, TipoSensor *tp)
 {
@@ -62,7 +83,7 @@ void remove_sensor_from_list(int i, TipoSensor *tp)
     }
 }
 
-void consult_sensors(TipoSensor *tp)
+void consult_sensors(TipoSensor *tp, int option)
 {
     int nr = tp->nrSensores;
     if (nr == 0)
@@ -81,6 +102,23 @@ void consult_sensors(TipoSensor *tp)
             printf("Limite maximo: %hu\n", sensores[i].max_limit);
             printf("Limite minimo: %hd\n", (short)sensores[i].min_limit);
             printf("Tamanho do array de leituras: %lu\n", sensores[i].readings_size);
+            if (option == 4) {
+                printf("Array de leituras:\n");
+                for (int j = 0; j < sensores[i].readings_size; j++)
+                {
+                    //print index
+                    printf("Valor: %d ", j);
+                    //print value
+                    if (sensores[i].sensor_type == 'T'){
+                        printf("%d", *((char*) (sensores[i].readings)+ j));
+                    }else if (sensores[i].sensor_type == 'D'){
+                        printf("%d", *((unsigned short*) (sensores[i].readings)+ j));
+                    }else {
+                        printf("%d", *((unsigned char*) (sensores[i].readings)+ j));
+                    }
+                    printf("\n");
+                }
+            }
             printf("\n");
         }
     }
@@ -131,110 +169,162 @@ void add_sensor_to_list(Sensor *sensor, TipoSensor *tp)
 
 void parse_sensor_line(char *line, Sensor *sensor, int ID, int n, TipoSensor *tpTemps, TipoSensor *tpVelVents, TipoSensor *tpDirVents, TipoSensor *tpPluvios, TipoSensor *tpHumAtms, TipoSensor *tpHumSolos)
 {
-    char *token;
-    char *line_copy = strdup(line);
+        char *line_copy = strdup(line);
 
-    token = strtok(line_copy, ",");
-    sensor->sensor_type = (unsigned char)token[0];
+        sscanf(line_copy, "%c,%lu", &sensor->sensor_type, &sensor->frequency);
 
-    token = strtok(NULL, ",");
-    sensor->frequency = (unsigned long)atoi(token);
-    int i = 0;
-    // switch case for sensor type
-    switch (sensor->sensor_type)
-    {
-    case 'T':
-        // associar constantes de max e min
-        sensor->max_limit = 30;
-        sensor->min_limit = -5;
-        // gerar id
-        sensor->id = ID;
-        // icrementar id
-        ID++;
-        // gerar as leituras
-        createArrayTemp(sensor, n);
-        // guardar no array
-        add_sensor_to_list(sensor, tpTemps);
-        break;
-    case 'H':
-        // pedir o index do sensor a usar
-        printf("Qual o index do sensor de temp a usar? ");
-        scanf("%d", &i);
-        if (tpPluvios->nrSensores != 0 && i >= 0 && i < tpPluvios->nrSensores)
+        int i = 0;
+        // switch case for sensor type
+        switch (sensor->sensor_type)
         {
-            Sensor chosenSensor = tpPluvios->sensores[i];
-            sensor->max_limit = 100;
-            sensor->min_limit = 0;
+        case 'T':
+            // preencher o resto dos dados
+            printf("Qual o valor maximo? ");
+            scanf("%hu", &sensor->max_limit);
+            printf("Qual o valor minimo? ");
+            scanf("%hu", &sensor->min_limit);
             sensor->id = ID;
+            sensor->readings = NULL;
             ID++;
-            createArrayHumAtm(sensor, &chosenSensor, n);
-            add_sensor_to_list(sensor, tpHumAtms);
-        }
-        else
-        {
-            printf("Index invalido ou nao existem sensores de pluviosidade");
-        }
-        break;
-    case 'P':
-        // pedir o index do sensor a usar
-        printf("Qual o index do sensor de temp a usar? ");
-        scanf("%d", &i);
-        if (tpTemps->nrSensores != 0 && i >= 0 && i < tpTemps->nrSensores)
-        {
-            Sensor chosenSensor = tpTemps->sensores[i];
-            sensor->max_limit = 150;
-            sensor->min_limit = 0;
+            createArrayTemp(sensor, n);
+            add_sensor_to_list(sensor, tpTemps);
+            //print da info dos sensores
+            printf("Tipo de sensor: %c\n", sensor->sensor_type);
+            printf("Frequencia: %lu\n", sensor->frequency);
+            printf("Valor maximo: %hu\n", sensor->max_limit);
+            printf("Valor minimo: %hu\n", sensor->min_limit);
+            printf("ID: %d\n", sensor->id);
+            printf("Tamanho do array de leituras: %lu\n", sensor->readings_size);
+            break;
+        case 'H':
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de pluviosidade a usar? ");
+            scanf("%d", &i);
+            if (tpPluvios->nrSensores != 0 && i >= 0 && i < tpPluvios->nrSensores)
+            {
+                Sensor chosenSensor = tpPluvios->sensores[i];
+                printf("Qual o valor maximo? ");
+                scanf("%hu", &sensor->max_limit);
+                printf("Qual o valor minimo? ");
+                scanf("%hu", &sensor->min_limit);
+                sensor->id = ID;
+                sensor->readings = NULL;
+                ID++;
+                createArrayHumAtm(sensor, &chosenSensor, n);
+                add_sensor_to_list(sensor, tpHumAtms);
+                //print da info dos sensores
+                printf("Tipo de sensor: %c\n", sensor->sensor_type);
+                printf("Frequencia: %lu\n", sensor->frequency);
+                printf("Valor maximo: %hu\n", sensor->max_limit);
+                printf("Valor minimo: %hu\n", sensor->min_limit);
+                printf("ID: %d\n", sensor->id);
+                printf("Tamanho do array de leituras: %lu\n", sensor->readings_size);
+            }
+            else
+            {
+                printf("Index invalido ou nao existem sensores de pluviosidade");
+            }
+            break;
+        case 'P':
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de temp a usar? ");
+            scanf("%d", &i);
+            if (tpTemps->nrSensores != 0 && i >= 0 && i < tpTemps->nrSensores)
+            {
+                Sensor chosenSensor = tpTemps->sensores[i];
+                printf("Qual o valor maximo? ");
+                scanf("%hu", &sensor->max_limit);
+                printf("Qual o valor minimo? ");
+                scanf("%hu", &sensor->min_limit);
+                sensor->id = ID;
+                sensor->readings = NULL;
+                ID++;
+                createArrayPluvio(sensor, &chosenSensor, n);
+                add_sensor_to_list(sensor, tpPluvios);
+                //print da info dos sensores
+                printf("Tipo de sensor: %c\n", sensor->sensor_type);
+                printf("Frequencia: %lu\n", sensor->frequency);
+                printf("Valor maximo: %hu\n", sensor->max_limit);
+                printf("Valor minimo: %hu\n", sensor->min_limit);
+                printf("ID: %d\n", sensor->id);
+                printf("Tamanho do array de leituras: %lu\n", sensor->readings_size);
+            }
+            else
+            {
+                printf("Index invalido ou nao existem sensores de temperatura");
+            }
+            break;
+        case 'V':
+             printf("Qual o valor maximo? ");
+            scanf("%hu", &sensor->max_limit);
+            printf("Qual o valor minimo? ");
+            scanf("%hu", &sensor->min_limit);
             sensor->id = ID;
+            sensor->readings = NULL;
             ID++;
-            createArrayPluvio(sensor, &chosenSensor, n);
-            add_sensor_to_list(sensor, tpPluvios);
-        }
-        else
-        {
-            printf("Index invalido ou nao existem sensores de temperatura");
-        }
-        break;
-    case 'V':
-        sensor->max_limit = 150;
-        sensor->min_limit = 0;
-        sensor->id = ID;
-        ID++;
-        createArrayVelVento(sensor, n);
-        add_sensor_to_list(sensor, tpVelVents);
-        break;
-    case 'D':
-        sensor->max_limit = 359;
-        sensor->min_limit = 0;
-        sensor->id = ID;
-        ID++;
-        createArrayDirVento(sensor, n);
-        add_sensor_to_list(sensor, tpDirVents);
-        break;
-    case 'S':
-        // pedir o index do sensor a usar
-        printf("Qual o index do sensor de temp a usar? ");
-        scanf("%d", &i);
-        if (tpPluvios->nrSensores != 0 && i >= 0 && i < tpPluvios->nrSensores)
-        {
-            Sensor chosenSensor = tpPluvios->sensores[i];
-            sensor->max_limit = 100;
-            sensor->min_limit = 0;
+            createArrayVelVento(sensor, n);
+            add_sensor_to_list(sensor, tpVelVents);
+            //print da info dos sensores
+            printf("Tipo de sensor: %c\n", sensor->sensor_type);
+            printf("Frequencia: %lu\n", sensor->frequency);
+            printf("Valor maximo: %hu\n", sensor->max_limit);
+            printf("Valor minimo: %hu\n", sensor->min_limit);
+            printf("ID: %d\n", sensor->id);
+            printf("Tamanho do array de leituras: %lu\n", sensor->readings_size);
+            break;
+        case 'D':
+             printf("Qual o valor maximo? ");
+            scanf("%hu", &sensor->max_limit);
+            printf("Qual o valor minimo? ");
+            scanf("%hu", &sensor->min_limit);
             sensor->id = ID;
+            sensor->readings = NULL;
             ID++;
-            createArrayHumSolo(sensor, &chosenSensor, n);
-            add_sensor_to_list(sensor, tpHumSolos);
+            createArrayDirVento(sensor, n);
+            add_sensor_to_list(sensor, tpDirVents);
+            //print da info dos sensores
+            printf("Tipo de sensor: %c\n", sensor->sensor_type);
+            printf("Frequencia: %lu\n", sensor->frequency);
+            printf("Valor maximo: %hu\n", sensor->max_limit);
+            printf("Valor minimo: %hu\n", sensor->min_limit);
+            printf("ID: %d\n", sensor->id);
+            printf("Tamanho do array de leituras: %lu\n", sensor->readings_size);
+            break;
+        case 'S':
+            // pedir o index do sensor a usar
+            printf("Qual o index do sensor de pluviosidade a usar? ");
+            scanf("%d", &i);
+            if (tpPluvios->nrSensores != 0 && i >= 0 && i < tpPluvios->nrSensores)
+            {
+                Sensor chosenSensor = tpPluvios->sensores[i];
+                printf("Qual o valor maximo? ");
+                scanf("%hu", &sensor->max_limit);
+                printf("Qual o valor minimo? ");
+                scanf("%hu", &sensor->min_limit);
+                sensor->id = ID;
+                sensor->readings = NULL;
+                ID++;
+                createArrayHumSolo(sensor, &chosenSensor, n);
+                add_sensor_to_list(sensor, tpHumSolos);
+                //print da info dos sensores
+                printf("Tipo de sensor: %c\n", sensor->sensor_type);
+                printf("Frequencia: %lu\n", sensor->frequency);
+                printf("Valor maximo: %hu\n", sensor->max_limit);
+                printf("Valor minimo: %hu\n", sensor->min_limit);
+                printf("ID: %d\n", sensor->id);
+                printf("Tamanho do array de leituras: %lu\n", sensor->readings_size);
+            }
+            else
+            {
+                printf("Index invalido ou nao existem sensores de pluviosidade");
+            }
+            break;
+        default:
+            break;
         }
-        else
-        {
-            printf("Index invalido ou nao existem sensores de pluviosidade");
-        }
-        break;
-    default:
-        break;
+
+        free(line_copy);
     }
-
-    free(line_copy);
-}
 ///////////////////////////////////////////////////////////////////////////////////
 int main()
 {
@@ -260,7 +350,7 @@ int main()
         }
         else if (choice == 1)
         {
-            FILE *file = fopen("../input_sensores.csv", "r");
+            FILE *file = fopen("input_sensores.csv", "r");
             if (file == NULL)
             {
                 perror("Error opening file");
@@ -432,22 +522,22 @@ int main()
             switch (option)
             {
             case 'T':
-                consult_sensors(&tpTemps);
+                consult_sensors(&tpTemps, choice);
                 break;
             case 'H':
-                consult_sensors(&tpHumAtms);
+                consult_sensors(&tpHumAtms, choice);
                 break;
             case 'P':
-                consult_sensors(&tpPluvios);
+                consult_sensors(&tpPluvios, choice);
                 break;
             case 'V':
-                consult_sensors(&tpVelVents);
+                consult_sensors(&tpVelVents, choice);
                 break;
             case 'D':
-                consult_sensors(&tpDirVents);
+                consult_sensors(&tpDirVents, choice);
                 break;
             case 'S':
-                consult_sensors(&tpHumSolos);
+                consult_sensors(&tpHumSolos, choice);
                 break;
             default:
                 printf("O tipo de sensor nao existe.\n");
@@ -483,82 +573,167 @@ int main()
                     break;
                 }
             }
-            // else if (choice == 5)
-            // {
-            //     printf("Indique o index do sensor a remover: ");
-            //     int index;
-            //     scanf("%d", &index);
-            //     switch (option)
-            //     {
-            //     case 'T':
-
-            //     }
-            // }
-        }
+            else if (choice == 5)
+                        {
+                            printf("Indique o index do sensor a alterar: ");
+                            int index;
+                            scanf("%d", &index);
+                            Sensor *sens, *sens_aux = NULL;
+                            int i;
+                            switch (option)
+                            {
+                            case 'T':
+                                sens = getSensorByIndex(index, &tpTemps);
+                                change_freq_sensor(sens, sens_aux, option, n);
+                                break;
+                            case 'H':
+                                sens = getSensorByIndex(index, &tpHumAtms);
+                                consult_sensors(&tpPluvios, choice);
+                                printf("Indique o index do sensor de Pluviosodade a utilizar: ");
+                                scanf(" %d", &i);
+                                sens_aux = getSensorByIndex(i, &tpPluvios);
+                                change_freq_sensor(sens, sens_aux, option, n);
+                                break;
+                            case 'P':
+                                sens = getSensorByIndex(index, &tpPluvios);
+                                consult_sensors(&tpTemps, choice);
+                                printf("Indique o index do sensor de Temperatura a utilizar: ");
+                                scanf(" %d", &i);
+                                sens_aux = getSensorByIndex(i, &tpTemps);
+                                change_freq_sensor(sens, sens_aux, option, n);
+                                break;
+                            case 'V':
+                                sens = getSensorByIndex(index, &tpVelVents);
+                                change_freq_sensor(sens, sens_aux, option, n);
+                                break;
+                            case 'D':
+                                sens = getSensorByIndex(index, &tpDirVents);
+                                change_freq_sensor(sens, sens_aux, option, n);
+                                break;
+                            case 'S':
+                                sens = getSensorByIndex(index, &tpHumSolos);
+                                consult_sensors(&tpPluvios, choice);
+                                printf("Indique o index do sensor de Pluviosodade a utilizar: ");
+                                scanf(" %d", &i);
+                                sens_aux = getSensorByIndex(i, &tpPluvios);
+                                change_freq_sensor(sens, sens_aux, option, n);
+                                break;
+                            default:
+                                printf("O tipo de sensor nao existe.\n");
+                                break;
+                            }
+                        }
+                    }
         else if (choice == 6){
-            short temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
-            for ( int i = 0; i< tpTemps.nrSensores; i++){
-                write_sensor_file(&tpTemps.sensores[i]);
-                for ( int j = 0; j< tpTemps.sensores[i].readings_size; j++){
-                    unsigned short *temp = tpTemps.sensores[i].readings;
-                    unsigned short reading = temp[j];
-                    temps[i*tpTemps.sensores[i].readings_size + j] = reading;
+            char temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
+            char* tempsDaily;
+            if (tpTemps.nrSensores != 0){
+                for ( int i = 0; i< tpTemps.nrSensores; i++){
+                    write_sensor_file(&tpTemps.sensores[i]);
+                    for ( int j = 0; j< tpTemps.sensores[i].readings_size; j++){
+                        char *temp = tpTemps.sensores[i].readings;
+                        char reading = temp[j];
+                        temps[i*tpTemps.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                tempsDaily = dailyCharValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
             }
-            short humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
-            for ( int i = 0; i< tpHumAtms.nrSensores; i++){
-                write_sensor_file(&tpHumAtms.sensores[i]);
-                for ( int j = 0; j< tpHumAtms.sensores[i].readings_size; j++){
-                    unsigned short *hum = tpHumAtms.sensores[i].readings;
-                    unsigned short reading = hum[j];
-                    humAtms[i*tpHumAtms.sensores[i].readings_size + j] = reading;
+            unsigned char* velVentsDaily;
+            if (tpVelVents.nrSensores != 0){
+                unsigned char velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
+                for ( int i = 0; i< tpVelVents.nrSensores; i++){
+                    write_sensor_file(&tpVelVents.sensores[i]);
+                    for ( int j = 0; j< tpVelVents.sensores[i].readings_size; j++){
+                        unsigned char *vel = tpVelVents.sensores[i].readings;
+                        unsigned char reading = vel[j];
+                        velVents[i*tpVelVents.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                velVentsDaily = dailyUCharValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
             }
-            short pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
-            for ( int i = 0; i< tpPluvios.nrSensores; i++){
-                write_sensor_file(&tpPluvios.sensores[i]);
-                for ( int j = 0; j< tpPluvios.sensores[i].readings_size; j++){
-                    unsigned short *pluv = tpPluvios.sensores[i].readings;
-                    unsigned short reading = pluv[j];
-                    pluvios[i*tpPluvios.sensores[i].readings_size + j] = reading;
+
+            unsigned short* dirVentsDaily;
+            if (tpDirVents.nrSensores != 0){
+                unsigned short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
+                for ( int i = 0; i< tpDirVents.nrSensores; i++){
+                    write_sensor_file(&tpDirVents.sensores[i]);
+                    for ( int j = 0; j< tpDirVents.sensores[i].readings_size; j++){
+                        unsigned short *dir = tpDirVents.sensores[i].readings;
+                        unsigned short reading = dir[j];
+                        dirVents[i*tpDirVents.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
             }
-            short velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
-            for ( int i = 0; i< tpVelVents.nrSensores; i++){
-                write_sensor_file(&tpVelVents.sensores[i]);
-                for ( int j = 0; j< tpVelVents.sensores[i].readings_size; j++){
-                    unsigned short *vel = tpVelVents.sensores[i].readings;
-                    unsigned short reading = vel[j];
-                    velVents[i*tpVelVents.sensores[i].readings_size + j] = reading;
+
+            unsigned char* pluviosDaily;
+            if (tpPluvios.nrSensores != 0){
+                unsigned char pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
+                for ( int i = 0; i< tpPluvios.nrSensores; i++){
+                    write_sensor_file(&tpPluvios.sensores[i]);
+                    for ( int j = 0; j< tpPluvios.sensores[i].readings_size; j++){
+                        unsigned char *pluv = tpPluvios.sensores[i].readings;
+                        unsigned char reading = pluv[j];
+                        pluvios[i*tpPluvios.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                pluviosDaily = dailyUCharValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
             }
-            short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
-            for ( int i = 0; i< tpDirVents.nrSensores; i++){
-                write_sensor_file(&tpDirVents.sensores[i]);
-                for ( int j = 0; j< tpDirVents.sensores[i].readings_size; j++){
-                    unsigned short *dir = tpDirVents.sensores[i].readings;
-                    unsigned short reading = dir[j];
-                    dirVents[i*tpDirVents.sensores[i].readings_size + j] = reading;
+
+            unsigned char* humAtmsDaily;
+            if (tpHumAtms.nrSensores != 0){
+                unsigned char humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
+                for ( int i = 0; i< tpHumAtms.nrSensores; i++){
+                    write_sensor_file(&tpHumAtms.sensores[i]);
+                    for ( int j = 0; j< tpHumAtms.sensores[i].readings_size; j++){
+                        unsigned char *hum = tpHumAtms.sensores[i].readings;
+                        unsigned char reading = hum[j];
+                        humAtms[i*tpHumAtms.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                humAtmsDaily = dailyUCharValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
             }
-            short humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
-            for ( int i = 0; i< tpHumSolos.nrSensores; i++){
-                write_sensor_file(&tpHumSolos.sensores[i]);
-                for ( int j = 0; j< tpHumSolos.sensores[i].readings_size; j++){
-                    unsigned short *hum = tpHumSolos.sensores[i].readings;
-                    unsigned short reading = hum[j];
-                    humSolos[i*tpHumSolos.sensores[i].readings_size + j] = reading;
+
+            unsigned char* humSolosDaily;
+            if (tpHumSolos.nrSensores != 0){
+                unsigned char humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
+                for ( int i = 0; i< tpHumSolos.nrSensores; i++){
+                    write_sensor_file(&tpHumSolos.sensores[i]);
+                    for ( int j = 0; j< tpHumSolos.sensores[i].readings_size; j++){
+                        unsigned char *hum = tpHumSolos.sensores[i].readings;
+                        unsigned char reading = hum[j];
+                        humSolos[i*tpHumSolos.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                humSolosDaily = dailyUCharValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
             }
-            //creating matrix
-            unsigned short* tempsDaily = dailyUShortValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
-            unsigned short* humAtmsDaily = dailyUShortValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
-            unsigned short* pluviosDaily = dailyUShortValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
-            unsigned short* velVentsDaily = dailyUShortValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
-            unsigned short* dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
-            unsigned short* humSolosDaily = dailyUShortValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
+            if (tpTemps.nrSensores == 0) {
+                char zeroTemps[] = {0,0,0};
+                tempsDaily = zeroTemps;
+            }
+            if (tpVelVents.nrSensores == 0) {
+                unsigned char zeroVelVents[] = {0,0,0};
+                velVentsDaily = zeroVelVents;
+            }
+            if (tpDirVents.nrSensores == 0) {
+                unsigned short zeroDirVents[] = {0,0,0};
+                dirVentsDaily = zeroDirVents;
+            }
+            if (tpPluvios.nrSensores == 0) {
+                unsigned char zeroPluvios[] = {0,0,0};
+                pluviosDaily = zeroPluvios;
+            }
+            if (tpHumAtms.nrSensores == 0) {
+                unsigned char zeroHumAtms[] = {0,0,0};
+                humAtmsDaily = zeroHumAtms;
+            }
+            if (tpHumSolos.nrSensores == 0) {
+                unsigned char zeroHumSolos[] = {0,0,0};
+                humSolosDaily = zeroHumSolos;
+            }
             short** matrix = createMatrix(tempsDaily, velVentsDaily, dirVentsDaily, humAtmsDaily, humSolosDaily, pluviosDaily);
             write_matrix_file(matrix);
+            
         }else{
             printf("Invalid choice\n");
         }

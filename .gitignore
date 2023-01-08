@@ -60,3 +60,6 @@ out/
 
 # Object files
 *.o
+
+# main
+main

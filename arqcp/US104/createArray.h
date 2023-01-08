@@ -3,14 +3,14 @@
 
 unsigned short *createArrayDirVento(unsigned short max, unsigned short min, unsigned int freq, int n);
 
-unsigned char *createArrayHumAtm(unsigned char max, unsigned char min, unsigned int freq, int n, unsigned char *pluvio);
+unsigned short *createArrayHumAtm(unsigned short max, unsigned short min, unsigned int freq, int n, unsigned short *pluvio);
 
-unsigned char *createArrayHumSolo(unsigned char max, unsigned char min, unsigned int freq, int n, unsigned char *pluvio);
+unsigned short *createArrayHumSolo(unsigned short max, unsigned short min, unsigned int freq, int n, unsigned short *pluvio);
 
-unsigned char *createArrayPluvio(unsigned char max, unsigned char min, unsigned int freq, int n, char *temp);
+unsigned short *createArrayPluvio(unsigned short max, unsigned short min, unsigned int freq, int n, short *temp);
 
-char *createArrayTemp(char max, char min, unsigned int freq, int n);
+short *createArrayTemp(short max, short min, unsigned int freq, int n);
 
-unsigned char *createArrayVelVento(unsigned char max, unsigned char min, unsigned int freq, int n);
+unsigned short *createArrayVelVento(unsigned short max, unsigned short min, unsigned int freq, int n);
 
 #endif
