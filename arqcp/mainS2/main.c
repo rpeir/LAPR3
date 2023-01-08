@@ -350,7 +350,7 @@ int main()
         }
         else if (choice == 1)
         {
-            FILE *file = fopen("input_sensores.csv", "r");
+            FILE *file = fopen("../input_sensores.csv", "r");
             if (file == NULL)
             {
                 perror("Error opening file");

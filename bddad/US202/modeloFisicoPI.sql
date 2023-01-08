@@ -221,7 +221,7 @@ alter table Pedidos_Pagamentos_Entregas add constraint ck_estadoAtual CHECK(esta
 drop table Colheitas_Culturas;
 create table Colheitas_Culturas(
 codColheita integer,
-codCultura integer,
+codCultura integer,operacoes
 valorTotalColheita float constraint nnValorTotalColheita NOT NULL,
     constraint pk_codColheita_codCultura PRIMARY KEY (codColheita,codCultura)
 );
@@ -367,6 +367,7 @@ codZonaGeografica integer,
 codFatorProducao integer,
 dataInicio date,
 duracao integer constraint nnduracao NOT NULL,
+designacaoRestricao varchar(50) constraint nnDesignacaoRestricao NOT NULL,
     constraint pk_codZonaGeografica_codFatorProducao PRIMARY KEY (codZonaGeografica,codFatorProducao,dataInicio)
 );
 alter table Restricoes add constraint fk_Restricoes_codZonaGeografica FOREIGN KEY (codZonaGeografica) references ZonasGeograficas (codZonaGeografica);
