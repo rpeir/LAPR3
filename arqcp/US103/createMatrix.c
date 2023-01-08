@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
-short** createMatrix(char *sens_temp, unsigned char *sens_velc_vento, unsigned short *sens_dir_vento,
-unsigned char *sens_humd_atm, unsigned char *sens_humd_solo, unsigned char *sens_pluvio) {
+short** createMatrix(unsigned short *sens_temp, unsigned short *sens_velc_vento, unsigned short *sens_dir_vento,
+unsigned short *sens_humd_atm, unsigned short *sens_humd_solo, unsigned short *sens_pluvio) {
     short **matrix = (short**) malloc(6 * sizeof(short*));
     short *line = (short*) malloc(3 * sizeof(short));
     for (int i = 0; i < 3; i++) {

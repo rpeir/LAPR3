@@ -23,11 +23,11 @@ char* dailyCharValues(char* sens_vec, int sens_freq){
     return sens_daily_prt;
 }
 
-unsigned short* dailyUShortValues(unsigned short* sens_vec, int sens_size){
+unsigned short* dailyUShortValues(unsigned short* sens_vec, unsigned long sens_size){
     unsigned short max=0;
     unsigned short min=USHRT_MAX;
     unsigned int sum=0;
-    for(int i=0;i<sens_size;i++){
+    for(unsigned long i=0;i<sens_size;i++){
         if (*sens_vec>max)
             max=*sens_vec;
         if (*sens_vec<min)
@@ -35,7 +35,7 @@ unsigned short* dailyUShortValues(unsigned short* sens_vec, int sens_size){
         sum+=*sens_vec;
         sens_vec++;
     }
-    unsigned short avg=sum/sens_size;
+    unsigned short avg=sum/(unsigned short) sens_size;
     unsigned short *sens_daily_data = malloc(3*sizeof(short));
     *sens_daily_data=max;
     *(sens_daily_data+1)=min;
