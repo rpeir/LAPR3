@@ -23,8 +23,8 @@ public class CreateExpeditionList {
     /**
      * Obtains a list with the closest producers for a given client
      * @param cpe client
-     * @param n number of closest producers
-     * @return a map with the client and the cabaz
+     * @param n number of  producers
+     * @return list on n closest produtores from the client  hub
      */
     public List<ClienteProdutorEmpresa> getNProdutores(ClienteProdutorEmpresa cpe, int n) {
         ClosestHubController closestHubController = new ClosestHubController();
@@ -34,7 +34,8 @@ public class CreateExpeditionList {
             LinkedList<Localizacao> list = new LinkedList<>();
             if (currentCPE.isProdutor()) {
                 Integer tempLenPath = Algorithms.shortestPath(graph, closestHub.getLocalizacao(), currentCPE.getLocalizacao(), Integer::compare, Integer::sum, 0, list);
-                produtoresList.add(new AbstractMap.SimpleEntry<>(tempLenPath, currentCPE));
+                if (tempLenPath != null)
+                    produtoresList.add(new AbstractMap.SimpleEntry<>(tempLenPath, currentCPE));
                 if (produtoresList.size() > n) {
                     class DistanceComparator implements Comparator<AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa>> {
                         public int compare(AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o1, AbstractMap.SimpleEntry<Integer, ClienteProdutorEmpresa> o2) {
@@ -80,7 +81,7 @@ public class CreateExpeditionList {
                         if (currentStock.getProduto(indexProduto) >= qtdProduto) {
                             if (result.containsKey(currentCliente)) {
                                 if (result.get(currentCliente).containsKey(currentProdutor)) {
-                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" +( 1 + indexProduto) + ": ", qtdProduto));
+                                    result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                     tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
@@ -89,7 +90,7 @@ public class CreateExpeditionList {
                             } else {
                                 Map<ClienteProdutorEmpresa, List<AbstractMap.SimpleEntry<String, Float>>> tempMap = new HashMap<>();
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" +( 1 + indexProduto) + ": ", qtdProduto));
+                                tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
                                 Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);
                                 result.put(currentCliente, tempCabaz);
@@ -103,7 +104,7 @@ public class CreateExpeditionList {
                                     result.get(currentCliente).get(currentProdutor).add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                 } else {
                                     List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
-                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" +( 1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
+                                    tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                     result.get(currentCliente).put(currentProdutor, tempList);
                                 }
                             } else {
@@ -120,7 +121,7 @@ public class CreateExpeditionList {
                         }
                     }
                     indexProdutor++;
-                } while (qtdProduto > 0 && indexProdutor < validStock.size() && indexProduto < validStock.get(0).getProdutos().size());
+                } while (qtdProduto > 0 && indexProdutor < validStock.size());
                 indexProduto++;
             }
             indexPedido++;
@@ -133,6 +134,7 @@ public class CreateExpeditionList {
      * Validates the stock for the expedition list
      * @param listaStock the stock list
      * @param closestProdutores the producers
+     * @return returns a list of producers who are on both lists
      */
     public List<Pedido> validStock(List<Pedido> listaStock, List<ClienteProdutorEmpresa> closestProdutores) {
         List<Pedido> result = new ArrayList<>();
@@ -144,6 +146,7 @@ public class CreateExpeditionList {
         }
         return result;
     }
+
     /**
      * Creates an expedition list for a given day, without any restrictions
      * @param dia day of the expedition
@@ -154,7 +157,7 @@ public class CreateExpeditionList {
         PedidosStore pedidosStore = App.getInstance().getPedidosStore();
         Stock stock = App.getInstance().getStock();
         List<Pedido> listaPedidos = pedidosStore.getPedidoMap().get(dia);
-        List<Pedido> listaStock = new ArrayList<>(stock.getStockMap().get(dia)) ;
+        List<Pedido> listaStock = new ArrayList<>(stock.getStockMap().get(dia));
         int indexPedido = 0;
         for (Pedido currentPedido : listaPedidos) {
             ClienteProdutorEmpresa currentCliente = App.getInstance().getClienteProdutorEmpresaStore().getCPE(currentPedido.getClienteProdutor());
@@ -180,7 +183,7 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", qtdProduto));
                                 tempMap.put(currentProdutor, tempList);
-                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(),tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);
                                 result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, 0);
@@ -200,7 +203,7 @@ public class CreateExpeditionList {
                                 List<AbstractMap.SimpleEntry<String, Float>> tempList = new ArrayList<>();
                                 tempList.add(new AbstractMap.SimpleEntry<>("Produto" + (1 + indexProduto) + ": ", currentStock.getProduto(indexProduto)));
                                 tempMap.put(currentProdutor, tempList);
-                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(),tempMap);
+                                Cabaz tempCabaz = new Cabaz(currentCliente.getId(), tempMap);
                                 result.put(currentCliente, tempCabaz);
                             }
                             listaPedidos.get(indexPedido).setProdutoByIndex(indexProduto, qtdProduto - currentStock.getProduto(indexProduto));
@@ -209,7 +212,7 @@ public class CreateExpeditionList {
                         }
                     }
                     indexProdutor++;
-                } while (qtdProduto>0  && indexProdutor < listaStock.size());
+                } while (qtdProduto > 0 && indexProdutor < listaStock.size());
                 indexProduto++;
             }
             indexPedido++;

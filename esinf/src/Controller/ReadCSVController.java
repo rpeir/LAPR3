@@ -5,6 +5,7 @@ import domain.Pedido;
 import domain.ClienteProdutorEmpresa;
 import domain.Localizacao;
 import graph.Graph;
+import graph.map.MapGraph;
 import store.ClienteProdutorEmpresaStore;
 import store.LocalizacaoStore;
 import store.PedidosStore;
@@ -44,7 +45,7 @@ public class ReadCSVController {
     /**
      * Graph object
      */
-    private final Graph<Localizacao, Integer> graph;
+    private Graph<Localizacao, Integer> graph;
 
     /**
      * ClientProdutorEmpresa object
@@ -58,6 +59,8 @@ public class ReadCSVController {
         cpeStore = App.getInstance().getClienteProdutorEmpresaStore();
         localizacaoStore = App.getInstance().getLocalizacaoStore();
         graph = App.getInstance().getGraph();
+        cpeStore.clear();
+        localizacaoStore.clear();
     }
 
 

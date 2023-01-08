@@ -23,11 +23,10 @@ char* dailyCharValues(char* sens_vec, int sens_freq){
     return sens_daily_prt;
 }
 
-unsigned short* dailyUShortValues(unsigned short* sens_vec, int sens_freq){
+unsigned short* dailyUShortValues(unsigned short* sens_vec, int sens_size){
     unsigned short max=0;
     unsigned short min=USHRT_MAX;
     unsigned int sum=0;
-    int sens_size = 24 * 3600 / sens_freq;
     for(int i=0;i<sens_size;i++){
         if (*sens_vec>max)
             max=*sens_vec;
