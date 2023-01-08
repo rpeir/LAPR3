@@ -205,22 +205,28 @@ INSERT INTO Producoes (codTempo, codProduto, codSetorAgricola, producaoToneladas
 INSERT INTO Producoes (codTempo, codProduto, codSetorAgricola, producaoToneladas) VALUES (72, 1, 1, 12);
 INSERT INTO Producoes (codTempo, codProduto, codSetorAgricola, producaoToneladas) VALUES (73, 1, 1, 1);
 
-
 -- insert values into Vendas table
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (1, 1, 1, 1, 1);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (2, 1, 2, 2, 2);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (3, 1, 3, 3, 3);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (4, 1, 4, 4, 4);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (5, 1, 5, 5, 5);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (6, 1, 6, 6, 1);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (7, 1, 7, 7, 2);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (8, 1, 8, 8, 3);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (9, 1, 9, 9, 4);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (10, 1, 10, 10, 5);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (11, 1, 1, 11, 1);
-INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros, codHub) VALUES (12, 1, 2, 12, 2);
-
-
-
-
-
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (1, 1, 1, 1);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (2, 1, 2, 2);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (3, 1, 3, 3);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (4, 1, 4, 4);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (5, 1, 5, 5);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (6, 1, 6, 6);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (7, 1, 7, 7);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (8, 1, 8, 8);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (9, 1, 9, 9);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (10, 1, 10, 10);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (11, 1, 1, 11);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (12, 1, 2, 12);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (13, 1, 3, 1);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (14, 1, 4, 2);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (15, 1, 5, 3);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (16, 1, 6, 4);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (17, 1, 7, 100);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (18, 1, 8, 8);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (19, 1, 9, 9);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (20, 1, 10, 10);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (21, 1, 1, 11);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (22, 1, 2, 12);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (23, 1, 3, 1);
+INSERT INTO Vendas (codTempo, codProduto, codCliente, vendasMilharesEuros) VALUES (24, 1, 4, 2);
