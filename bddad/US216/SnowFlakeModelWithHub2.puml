@@ -61,7 +61,6 @@ table( Tempo ) {
 
 table( Hub ) {
     primary_key( codHub ): INTEGER
-    column( nomeHub ): VARCHAR
     column( tipoHub ): VARCHAR
 }
 
