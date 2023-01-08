@@ -74,6 +74,7 @@ void consult_sensors(TipoSensor *tp)
         Sensor *sensores = tp->sensores;
         for (int i = 0; i < nr; i++)
         {
+            //print index do sensor no array
             printf("Sensor: %d\n", i);
             printf("ID: %d\n", sensores[i].id);
             printf("Tipo: %c\n", sensores[i].sensor_type);
@@ -81,6 +82,15 @@ void consult_sensors(TipoSensor *tp)
             printf("Limite maximo: %hu\n", sensores[i].max_limit);
             printf("Limite minimo: %hd\n", (short)sensores[i].min_limit);
             printf("Tamanho do array de leituras: %lu\n", sensores[i].readings_size);
+            printf("Array de leituras:\n");
+            for (int j = 0; j < sensores[i].readings_size; j++)
+            {
+                //print index
+                printf("Valor: %d ", j);
+                //print value
+                printf("%d \n", sensores[i].readings[j]);
+
+            }
             printf("\n");
         }
     }
@@ -131,7 +141,6 @@ void add_sensor_to_list(Sensor *sensor, TipoSensor *tp)
 
 void parse_sensor_line(char *line, Sensor *sensor, int ID, int n, TipoSensor *tpTemps, TipoSensor *tpVelVents, TipoSensor *tpDirVents, TipoSensor *tpPluvios, TipoSensor *tpHumAtms, TipoSensor *tpHumSolos)
 {
-    char *token;
         char *line_copy = strdup(line);
 
         sscanf(line_copy, "%c,%lu", &sensor->sensor_type, &sensor->frequency);
@@ -313,7 +322,7 @@ int main()
         }
         else if (choice == 1)
         {
-            FILE *file = fopen("../input_sensores.csv", "r");
+            FILE *file = fopen("input_sensores.csv", "r");
             if (file == NULL)
             {
                 perror("Error opening file");
@@ -360,6 +369,13 @@ int main()
                         ID++;
                         createArrayTemp(&sensor, n);
                         add_sensor_to_list(&sensor, &tpTemps);
+                        //print da info dos sensores
+                        printf("Tipo de sensor: %c\n", sensor.sensor_type);
+                        printf("Frequencia: %lu\n", sensor.frequency);
+                        printf("Valor maximo: %hu\n", sensor.max_limit);
+                        printf("Valor minimo: %hu\n", sensor.min_limit);
+                        printf("ID: %d\n", sensor.id);
+                        printf("Tamanho do array de leituras: %lu\n", sensor.readings_size);
                         break;
                     case 'H':
                         // pedir o index do sensor a usar
@@ -379,6 +395,18 @@ int main()
                             ID++;
                             createArrayHumAtm(&sensor, &chosenSensor, n);
                             add_sensor_to_list(&sensor, &tpHumAtms);
+                            //print da info dos sensores
+                            printf("Tipo de sensor: %c\n", sensor.sensor_type);
+                            printf("Frequencia: %lu\n", sensor.frequency);
+                            printf("Valor maximo: %hu\n", sensor.max_limit);
+                            printf("Valor minimo: %hu\n", sensor.min_limit);
+                            printf("ID: %d\n", sensor.id);
+                            printf("Tamanho do array de leituras: %lu\n", sensor.readings_size);
+                            //print dos valores do array
+                            for (int i = 0; i < sensor.readings_size; i++)
+                            {
+                                printf("Valor %d: %hu\n", i, sensor.readings[i]);
+                            }
                         }
                         else
                         {
@@ -403,6 +431,18 @@ int main()
                             ID++;
                             createArrayPluvio(&sensor, &chosenSensor, n);
                             add_sensor_to_list(&sensor, &tpPluvios);
+                            //print da info dos sensores
+                            printf("Tipo de sensor: %c\n", sensor.sensor_type);
+                            printf("Frequencia: %lu\n", sensor.frequency);
+                            printf("Valor maximo: %hu\n", sensor.max_limit);
+                            printf("Valor minimo: %hu\n", sensor.min_limit);
+                            printf("ID: %d\n", sensor.id);
+                            printf("Tamanho do array de leituras: %lu\n", sensor.readings_size);
+                            //print dos valores do array
+                            for (int i = 0; i < sensor.readings_size; i++)
+                            {
+                                printf("Valor %d: %hu\n", i, sensor.readings[i]);
+                            }
                         }
                         else
                         {
