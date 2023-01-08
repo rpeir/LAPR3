@@ -12,8 +12,9 @@ select COUNT(*) into numberRegists from Operacoes where codCalendarioOperacoes=t
 
 -- Caso existam registos, cria uma view com os resultados
 if (numberRegists>=1) then
-create or replace View "Calendario" As
+create or replace View "v_Calendario" As
 select Operacoes.codOperacao, Operacoes.dataOperacao, Operacoes.tipoOperacao
+from Operacoes
 where operacoes.codCalendarioOperacoes=temp_cod;
 -- para usar a view select* from "Calendario"
 

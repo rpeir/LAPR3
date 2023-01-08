@@ -1,18 +1,46 @@
-Create or Replace Function fnc_restrictions_date_sector(dataIns Restricoes.dataInicio%type, codZG SetorAgricola.codZonaGeografica%type) return sys_refcursor 
-is
-v_result sys_refcursor;
-declare
-restricao_ex Exception;
+create of replace Procedure prc_restrictions_date_sector(dataIns date, codSA SetorAgricola.codSetorAgricola%type)
+as
+dataEx exception;
+codSAEx exception;
+exEx exception;
 BEGIN
-open v_result for
-select Restricao.designacao
-from Restricoes 
-inner join SetoresAgricolas ON SetoresAgricolas.codZonageografica = Restricoes.codZonaGeografica
-where codZonaGeografica = codZG and dataInicio <= dataIns and dataInicio + duracao >= dataIns;
-return (v_result);
+if(dataIns is null) then
+raise dataEx;
+end if;
+
+if(codSA is null) then
+raise codSAEx;
+end if;
+
+select codZonaGeografica INTO temp_codZG
+from SetoresAgricolas
+where codSetorAgricola=codSA;
+
+-- obtem o numero de restricoes com o codigo de zona geografica encontrado em cima
+select COUNT(*) into numberRegists from Restricoes where codZonaGeografica=temp_codZG;
+
+
+-- Caso existam registos, cria uma view com os resultados
+if (numberRegists>=1) then
+create or replace View "v_Restricoes_Setor_Data" As
+select designacaoRestricao,codZonaGeografica,codFatorProducao
+from Restricoes
+where codZonaGeografica=temp_codZG and Restricoes.dataInicio <=dataIns and dataIns <= Restricoes.dataInicio+Restricoes.duracao;
+
+
+else
+raise exEx;
+END IF;
+
+exception
+when exEx then
+RAISE_APPLICATION_ERROR(-20037,'There are no restriction for the inserted date and sector ');
+
+when dataEx then
+RAISE_APPLICATION_ERROR(-20038,'The inserted date is null ');
+
+when codSAEx then 
+RAISE_APPLICATION_ERROR(-20039,'The inserted sector is null ');
+
 END;
---if v_result != null then
---Return Restricoes.designacao;
---else
---RAISE_APPLICATION_ERROR(-20023,'There is no restriction for this date and sector');
---END IF;
+
