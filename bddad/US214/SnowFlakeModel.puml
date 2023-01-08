@@ -9,20 +9,21 @@
 ' Zero or Many	}o--
 ' One or Many	}|--
 
+'tabela de facto
 table( Vendas ) {
     foreign_key(primary_key( codCliente )): INTEGER
     foreign_key(primary_key( codProduto )): INTEGER
     foreign_key(primary_key( codTempo )): INTEGER
     column( vendasMilharesEuros ): INTEGER
 }
-
+'tabela de facto
 table( Producoes ) {
     foreign_key(primary_key( codProduto )): INTEGER
     foreign_key(primary_key( codSetorAgricola )): INTEGER
     foreign_key(primary_key( codTempo )): INTEGER
     column( producaoToneladas ): INTEGER
 }
-
+'tabela de dimensão
 table( Produto ) {
     primary_key( codProduto ): INTEGER
     foreign_key( codCultura ): INTEGER
@@ -51,25 +52,30 @@ table( SetorAgricola_Cultura ) {
     foreign_key(primary_key( codSetorAgricola )): INTEGER
     foreign_key(primary_key( codCultura )): INTEGER
 }
-
+'tabela de dimensão
 table( Tempo ) {
     primary_key( codTempo ): INTEGER
     column( ano ): INTEGER
     column( mes ): INTEGER
 }
 
-' nao fazer tabela tipoHub nem ClientesProdutores porque gasta espaco na base dados
-' quando para obter todos os clientes produtores basta fazer um select distinct
-' ou constraint
-
 Vendas }|--|| Cliente
+'múltiplas vendas para um cliente
 Vendas }|--|| Produto
+'múltiplas vendas com um produto
 Producoes }|--|| Produto
+'múltiplas produções com um produto
 Producoes }|--|| SetorAgricola
+'múltiplas produções com um setor agrícola
 Vendas }|--|| Tempo
+'múltiplas vendas num tempo
 Producoes }|--|| Tempo
+'múltiplas produções num tempo
 Produto }|--|| Cultura
+'múltiplos produtos pertencentes a uma cultura
 Cultura ||--|{ SetorAgricola_Cultura
+'múltiplas culturas pertencentes a um setor agrícola
 SetorAgricola_Cultura }|--|| SetorAgricola
+'múltiplos setores agrícolas com uma cultura
 
 @enduml
