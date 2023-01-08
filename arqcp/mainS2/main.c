@@ -495,77 +495,116 @@ int main()
             //     }
             // }
         }
+        
         else if (choice == 6){
-            unsigned short temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
-            for ( int i = 0; i< tpTemps.nrSensores; i++){
-                write_sensor_file(&tpTemps.sensores[i]);
-                for ( int j = 0; j< tpTemps.sensores[i].readings_size; j++){
-                    unsigned short *temp = tpTemps.sensores[i].readings;
-                    unsigned short reading = temp[j];
-                    temps[i*tpTemps.sensores[i].readings_size + j] = reading;
+            char temps[tpTemps.nrSensores*tpTemps.sensores[0].readings_size];
+            char* tempsDaily;
+            if (tpTemps.nrSensores != 0){
+                for ( int i = 0; i< tpTemps.nrSensores; i++){
+                    write_sensor_file(&tpTemps.sensores[i]);
+                    for ( int j = 0; j< tpTemps.sensores[i].readings_size; j++){
+                        char *temp = tpTemps.sensores[i].readings;
+                        char reading = temp[j];
+                        temps[i*tpTemps.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                tempsDaily = dailyCharValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
             }
-            unsigned short humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
-            for ( int i = 0; i< tpHumAtms.nrSensores; i++){
-                write_sensor_file(&tpHumAtms.sensores[i]);
-                for ( int j = 0; j< tpHumAtms.sensores[i].readings_size; j++){
-                    unsigned short *hum = tpHumAtms.sensores[i].readings;
-                    unsigned short reading = hum[j];
-                    humAtms[i*tpHumAtms.sensores[i].readings_size + j] = reading;
+            unsigned char* velVentsDaily;
+            if (tpVelVents.nrSensores != 0){
+                unsigned char velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
+                for ( int i = 0; i< tpVelVents.nrSensores; i++){
+                    write_sensor_file(&tpVelVents.sensores[i]);
+                    for ( int j = 0; j< tpVelVents.sensores[i].readings_size; j++){
+                        unsigned char *vel = tpVelVents.sensores[i].readings;
+                        unsigned char reading = vel[j];
+                        velVents[i*tpVelVents.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                velVentsDaily = dailyUCharValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
             }
-            unsigned short pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
-            for ( int i = 0; i< tpPluvios.nrSensores; i++){
-                write_sensor_file(&tpPluvios.sensores[i]);
-                for ( int j = 0; j< tpPluvios.sensores[i].readings_size; j++){
-                    unsigned short *pluv = tpPluvios.sensores[i].readings;
-                    unsigned short reading = pluv[j];
-                    pluvios[i*tpPluvios.sensores[i].readings_size + j] = reading;
+            
+            unsigned short* dirVentsDaily;
+            if (tpDirVents.nrSensores != 0){
+                unsigned short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
+                for ( int i = 0; i< tpDirVents.nrSensores; i++){
+                    write_sensor_file(&tpDirVents.sensores[i]);
+                    for ( int j = 0; j< tpDirVents.sensores[i].readings_size; j++){
+                        unsigned short *dir = tpDirVents.sensores[i].readings;
+                        unsigned short reading = dir[j];
+                        dirVents[i*tpDirVents.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
             }
-            unsigned short velVents[tpVelVents.nrSensores*tpVelVents.sensores[0].readings_size];
-            for ( int i = 0; i< tpVelVents.nrSensores; i++){
-                write_sensor_file(&tpVelVents.sensores[i]);
-                for ( int j = 0; j< tpVelVents.sensores[i].readings_size; j++){
-                    unsigned short *vel = tpVelVents.sensores[i].readings;
-                    unsigned short reading = vel[j];
-                    velVents[i*tpVelVents.sensores[i].readings_size + j] = reading;
+            
+            unsigned char* pluviosDaily;
+            if (tpPluvios.nrSensores != 0){
+                unsigned char pluvios[tpPluvios.nrSensores*tpPluvios.sensores[0].readings_size];
+                for ( int i = 0; i< tpPluvios.nrSensores; i++){
+                    write_sensor_file(&tpPluvios.sensores[i]);
+                    for ( int j = 0; j< tpPluvios.sensores[i].readings_size; j++){
+                        unsigned char *pluv = tpPluvios.sensores[i].readings;
+                        unsigned char reading = pluv[j];
+                        pluvios[i*tpPluvios.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                pluviosDaily = dailyUCharValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
             }
-            unsigned short dirVents[tpDirVents.nrSensores*tpDirVents.sensores[0].readings_size];
-            for ( int i = 0; i< tpDirVents.nrSensores; i++){
-                write_sensor_file(&tpDirVents.sensores[i]);
-                for ( int j = 0; j< tpDirVents.sensores[i].readings_size; j++){
-                    unsigned short *dir = tpDirVents.sensores[i].readings;
-                    unsigned short reading = dir[j];
-                    dirVents[i*tpDirVents.sensores[i].readings_size + j] = reading;
+            
+            unsigned char* humAtmsDaily;
+            if (tpHumAtms.nrSensores != 0){
+                unsigned char humAtms[tpHumAtms.nrSensores*tpHumAtms.sensores[0].readings_size];
+                for ( int i = 0; i< tpHumAtms.nrSensores; i++){
+                    write_sensor_file(&tpHumAtms.sensores[i]);
+                    for ( int j = 0; j< tpHumAtms.sensores[i].readings_size; j++){
+                        unsigned char *hum = tpHumAtms.sensores[i].readings;
+                        unsigned char reading = hum[j];
+                        humAtms[i*tpHumAtms.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                humAtmsDaily = dailyUCharValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
             }
-            unsigned short humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
-            for ( int i = 0; i< tpHumSolos.nrSensores; i++){
-                write_sensor_file(&tpHumSolos.sensores[i]);
-                for ( int j = 0; j< tpHumSolos.sensores[i].readings_size; j++){
-                    unsigned short *hum = tpHumSolos.sensores[i].readings;
-                    unsigned short reading = hum[j];
-                    humSolos[i*tpHumSolos.sensores[i].readings_size + j] = reading;
+            
+            unsigned char* humSolosDaily;
+            if (tpHumSolos.nrSensores != 0){
+                unsigned char humSolos[tpHumSolos.nrSensores*tpHumSolos.sensores[0].readings_size];
+                for ( int i = 0; i< tpHumSolos.nrSensores; i++){
+                    write_sensor_file(&tpHumSolos.sensores[i]);
+                    for ( int j = 0; j< tpHumSolos.sensores[i].readings_size; j++){
+                        unsigned char *hum = tpHumSolos.sensores[i].readings;
+                        unsigned char reading = hum[j];
+                        humSolos[i*tpHumSolos.sensores[i].readings_size + j] = reading;
+                    }
                 }
+                humSolosDaily = dailyUCharValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
             }
-            if (tpTemps.nrSensores == 0 || tpHumAtms.nrSensores == 0 || tpPluvios.nrSensores == 0 || tpVelVents.nrSensores == 0 || tpDirVents.nrSensores == 0 || tpHumSolos.nrSensores == 0){
-                printf("Nao existem dados suficientes para gerar o relatorio.\n");
-                
+            if (tpTemps.nrSensores == 0) {
+                char zeroTemps[] = {0,0,0};
+                tempsDaily = zeroTemps;
             }
-            else{
-                printf("Gerando relatorio...\n");
-                unsigned short* tempsDaily = dailyUShortValues(temps, tpTemps.sensores[0].readings_size*tpTemps.nrSensores);
-                unsigned short* humAtmsDaily = dailyUShortValues(humAtms, tpHumAtms.sensores[0].readings_size*tpHumAtms.nrSensores);
-                unsigned short* pluviosDaily = dailyUShortValues(pluvios, tpPluvios.sensores[0].readings_size*tpPluvios.nrSensores);
-                unsigned short* velVentsDaily = dailyUShortValues(velVents, tpVelVents.sensores[0].readings_size*tpVelVents.nrSensores);
-                unsigned short* dirVentsDaily = dailyUShortValues(dirVents, tpDirVents.sensores[0].readings_size*tpDirVents.nrSensores);
-                unsigned short* humSolosDaily = dailyUShortValues(humSolos, tpHumSolos.sensores[0].readings_size*tpHumSolos.nrSensores);
-                short** matrix = createMatrix(tempsDaily, velVentsDaily, dirVentsDaily, humAtmsDaily, humSolosDaily, pluviosDaily);
-                write_matrix_file(matrix);
-                //creating matrix*/
+            if (tpVelVents.nrSensores == 0) {
+                unsigned char zeroVelVents[] = {0,0,0};
+                velVentsDaily = zeroVelVents;
             }
+            if (tpDirVents.nrSensores == 0) {
+                unsigned short zeroDirVents[] = {0,0,0};
+                dirVentsDaily = zeroDirVents;
+            }
+            if (tpPluvios.nrSensores == 0) {
+                unsigned char zeroPluvios[] = {0,0,0};
+                pluviosDaily = zeroPluvios;
+            }
+            if (tpHumAtms.nrSensores == 0) {
+                unsigned char zeroHumAtms[] = {0,0,0};
+                humAtmsDaily = zeroHumAtms;
+            }
+            if (tpHumSolos.nrSensores == 0) {
+                unsigned char zeroHumSolos[] = {0,0,0};
+                humSolosDaily = zeroHumSolos;
+            }
+            short** matrix = createMatrix(tempsDaily, velVentsDaily, dirVentsDaily, humAtmsDaily, humSolosDaily, pluviosDaily);
+            write_matrix_file(matrix);
             
         }else{
             printf("Invalid choice\n");

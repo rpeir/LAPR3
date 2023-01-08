@@ -9,7 +9,7 @@ typedef struct
     unsigned short min_limit;
     unsigned long frequency; // frequency de leituras (em segundos)
     unsigned long readings_size; // tamanho do array de leituras
-    unsigned short *readings; // array de leituras diárias
+    void *readings; // array de leituras diárias
     // ... adicionar o que acharem conveniente
 } Sensor;
 
