@@ -36,3 +36,17 @@ CREATE TABLE input_hub(
                           input_string VARCHAR(25),
                           constraint pkInput_hub primary key (input_string)
 );
+
+drop table Pedidos;
+create table Pedidos(
+                        codPedido integer,
+                        codInterno integer,
+                        valorTotal float constraint nnValorTotal NOT NULL,
+                        dataPedido date constraint nnDataPedido NOT NULL,
+                        dataVencimento date constraint nnDataVencimento NOT NULL,
+                        codhub varchar(5),
+                        constraint pk_codPedido PRIMARY KEY (codPedido)
+);
+alter table Pedidos add constraint fk_pedidos_codInterno FOREIGN KEY (codInterno) references Clientes (codInterno);
+alter table Pedidos add constraint ck_valorTotal CHECK(valorTotal>0);
+alter table Pedidos add constraint fk_pedidos_codHub FOREIGN KEy (codHub) references Hub (codHub);
