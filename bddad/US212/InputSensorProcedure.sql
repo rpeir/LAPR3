@@ -10,7 +10,14 @@ AS
     nrSucessos int := 0;
     nrInvalidos number := 0;
     nrRegistoLidos number:= 0;
-    currentDate Date;
+    erroHS int := 0;
+    erroPI int := 0;
+    erroTS int := 0;
+    erroVV int := 0;
+    erroTA int := 0;
+    erroPA int := 0;
+    erroHA int := 0;
+
 
     Cursor c_idSensor is
         Select substr(input_string,1,5) as substring from input_sensor;
@@ -37,8 +44,8 @@ Begin
         Fetch c_valorReferencia into v_valorReferencia;
         Fetch c_instanteLeitura into v_instanteLeitura;
         Exit when c_idsensor%notfound or c_tiposensor%notfound or
-                   c_valorLido%notfound or c_valorReferencia%notfound or
-                    c_instanteLeitura%notfound;
+                           c_valorLido%notfound or c_valorReferencia%notfound or
+                            c_instanteLeitura%notfound;
 
             nrRegistoLidos := nrRegistoLidos + 1;
             If validateCodTipoSensor(v_tipoSensor) > 0 and validateNumber(v_valorLido) > 0 and validateNumber(v_valorReferencia) > 0 and validaDate(v_instanteLeitura) > 0 then
@@ -49,25 +56,54 @@ Begin
 
                 codLeitura := codLeitura + 1;
                 INSERT INTO Leituras(codLeitura, idSensor, instanteLeitura, valorLido) values
-                                 (codLeitura, v_idSensor, TO_DATE(v_instanteLeitura,'DDMMYYYYHH24:MI'),TO_NUMBER(v_valorLido));
+                    (codLeitura, v_idSensor, TO_DATE(v_instanteLeitura,'DDMMYYYYHH24:MI'),TO_NUMBER(v_valorLido));
 
-                    delete from input_sensor where input_string like (Select concat(
-                                                                 v_idSensor,(Select concat(
-                                                                                            v_tipoSensor,(Select concat (
-                                                                                                                         v_valorLido,(Select concat(v_valorReferencia,v_instanteLeitura) from dual)
-                                                                                                                         ) from dual)
-                                                                                            ) from dual)
-                                                                 ) from dual);
+                delete from input_sensor where input_string like (Select concat(
+                                                                                 v_idSensor,(Select concat(
+                                                                                                            v_tipoSensor,(Select concat (
+                                                                                                                                         v_valorLido,(Select concat(v_valorReferencia,v_instanteLeitura) from dual)
+                                                                                                                                     ) from dual)
+                                                                                                        ) from dual)
+                                                                             ) from dual);
                 nrSucessos := nrSucessos + 1;
             Else
                 nrInvalidos := nrInvalidos + 1;
+                IF v_tipoSensor LIKE 'HS' THEN
+                    erroHS := erroHS + 1;
+                end if;
+                IF v_tipoSensor LIKE 'PI' THEN
+                    erroPI := erroPI + 1;
+                end if;
+                IF v_tipoSensor LIKE 'TS' THEN
+                    erroTS := erroTS + 1;
+                end if;
+                IF v_tipoSensor LIKE 'VV' THEN
+                    erroVV := erroVV + 1;
+                end if;
+                IF v_tipoSensor LIKE 'TA' THEN
+                    erroTA := erroTA + 1;
+                End if;
+                IF v_tipoSensor LIKE 'HA' THEN
+                    erroHA := erroHA + 1;
+                end if;
+                IF v_tipoSensor LIKE 'PA' THEN
+                    erroPA := erroPA + 1;
+                end if;
             end if;
-    End Loop;
-    Close c_idSensor;
-    Close c_tipoSensor;
-    Close c_valorLido;
-    Close c_valorReferencia;
-    Close c_instanteLeitura;
-    Select current_date into currentDate from dual;
-    dbms_output.put_line('Nr de Registos lidos: '|| nrRegistoLidos || '     Nr de Sucessos: '|| nrSucessos || '     Nr de Registos Inválidos: ' || nrInvalidos || '     Hora de Execução: ' || currentDate);
+        End Loop;
+        Close c_idSensor;
+        Close c_tipoSensor;
+        Close c_valorLido;
+        Close c_valorReferencia;
+        Close c_instanteLeitura;
+        dbms_output.put_line('Nr de Registos lidos: '|| nrRegistoLidos);
+        dbms_output.put_line('Nr de Sucessos: '|| nrSucessos);
+        dbms_output.put_line('Nr de Registos Inválidos: ' || nrInvalidos);
+        dbms_output.put_line('Erros no sensor do tipo HS: ' || erroHS);
+        dbms_output.put_line('Erros no sensor do tipo PI: ' || erroPI);
+        dbms_output.put_line('Erros no sensor do tipo TS: ' || erroTS);
+        dbms_output.put_line('Erros no sensor do tipo VV: ' || erroVV);
+        dbms_output.put_line('Erros no sensor do tipo TA: ' || erroTA);
+        dbms_output.put_line('Erros no sensor do tipo HA: ' || erroHA);
+        dbms_output.put_line('Erros no sensor do tipo PA: ' || erroPA);
 End;

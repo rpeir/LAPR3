@@ -194,7 +194,124 @@ class CreateExpeditionListTest {
             assertEquals(expectedProdutosC3P2,result.get(C3).getProdutorProdutos().get(P2));
             assertEquals(expectedProdutosC3P3,result.get(C3).getProdutorProdutos().get(P3));
     }
-
+    @Test
+    void createDailyExpeditionListTest() {
+        Map<ClienteProdutorEmpresa, Cabaz> result = createExpeditionList.createDailyExpeditionList(2);
+        Set<ClienteProdutorEmpresa> expectedClientesKeySet = new HashSet<>();
+        ClienteProdutorEmpresa C4 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("C4");
+        ClienteProdutorEmpresa C7 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("C7");
+        ClienteProdutorEmpresa C9 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("C9");
+        ClienteProdutorEmpresa E1 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("E1");
+        ClienteProdutorEmpresa C1 =  App.getInstance().getClienteProdutorEmpresaStore().getCPE("C1");
+        ClienteProdutorEmpresa C2 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("C2");
+        ClienteProdutorEmpresa C3 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("C3");
+        ClienteProdutorEmpresa P1 =  App.getInstance().getClienteProdutorEmpresaStore().getCPE("P1");
+        ClienteProdutorEmpresa P2 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P2");
+        ClienteProdutorEmpresa P3 = App.getInstance().getClienteProdutorEmpresaStore().getCPE("P3");
+        expectedClientesKeySet.add(C4);
+        expectedClientesKeySet.add(C7);
+        expectedClientesKeySet.add(C9);
+        expectedClientesKeySet.add(E1);
+        expectedClientesKeySet.add(C1);
+        expectedClientesKeySet.add(C2);
+        expectedClientesKeySet.add(C3);
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetC4 = new HashSet<>();
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetC7 = new HashSet<>();
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetC9 = new HashSet<>();
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetE1 = new HashSet<>();
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetC1 = new HashSet<>();
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetC2 = new HashSet<>();
+        Set<ClienteProdutorEmpresa> expectedProdutoresKeySetC3 = new HashSet<>();
+        expectedProdutoresKeySetC4.add(P2);
+        expectedProdutoresKeySetC4.add(P3);
+        expectedProdutoresKeySetC7.add(P1);
+        expectedProdutoresKeySetC7.add(P2);
+        expectedProdutoresKeySetC7.add(P3);
+        expectedProdutoresKeySetC9.add(P2);
+        expectedProdutoresKeySetC9.add(P3);
+        expectedProdutoresKeySetE1.add(P3);
+        expectedProdutoresKeySetC1.add(P1);
+        expectedProdutoresKeySetC1.add(P2);
+        expectedProdutoresKeySetC1.add(P3);
+        expectedProdutoresKeySetC2.add(P1);
+        expectedProdutoresKeySetC2.add(P2);
+        expectedProdutoresKeySetC2.add(P3);
+        expectedProdutoresKeySetC3.add(P2);
+        expectedProdutoresKeySetC3.add(P3);
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC4P2 = new ArrayList<>();
+        expectedProdutosC4P2.add(new AbstractMap.SimpleEntry<>("Produto12: ",(float) 3));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC4P3 = new ArrayList<>();
+        expectedProdutosC4P3.add(new AbstractMap.SimpleEntry<>("Produto9: ",(float) 2));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC7P1 = new ArrayList<>();
+        expectedProdutosC7P1.add(new AbstractMap.SimpleEntry<>("Produto6: ",(float) 4));
+        expectedProdutosC7P1.add(new AbstractMap.SimpleEntry<>("Produto8: ",(float) 1));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC7P2 = new ArrayList<>();
+        expectedProdutosC7P2.add(new AbstractMap.SimpleEntry<>("Produto6: ",(float) 3));
+        expectedProdutosC7P2.add(new AbstractMap.SimpleEntry<>("Produto12: ",(float) 1.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC7P3 = new ArrayList<>();
+        expectedProdutosC7P3.add(new AbstractMap.SimpleEntry<>("Produto3: ",(float) 3.5));
+        expectedProdutosC7P3.add(new AbstractMap.SimpleEntry<>("Produto9: ",(float) 1.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC9P2 = new ArrayList<>();
+        expectedProdutosC9P2.add(new AbstractMap.SimpleEntry<>("Produto6: ",(float) 4.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC9P3 = new ArrayList<>();
+        expectedProdutosC9P3.add(new AbstractMap.SimpleEntry<>("Produto9: ",(float) 0.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosE1P3 = new ArrayList<>();
+        expectedProdutosE1P3.add(new AbstractMap.SimpleEntry<>("Produto4: ",(float) 3));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC1P1 = new ArrayList<>();
+        expectedProdutosC1P1.add(new AbstractMap.SimpleEntry<>("Produto1: ",(float) 3));
+        expectedProdutosC1P1.add(new AbstractMap.SimpleEntry<>("Produto5: ",(float) 4));
+        expectedProdutosC1P1.add(new AbstractMap.SimpleEntry<>("Produto8: ",(float) 3));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC1P2 = new ArrayList<>();
+        expectedProdutosC1P2.add(new AbstractMap.SimpleEntry<>("Produto3: ",(float) 2.5));
+        expectedProdutosC1P2.add(new AbstractMap.SimpleEntry<>("Produto7: ",(float) 8.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC1P3 = new ArrayList<>();
+        expectedProdutosC1P3.add(new AbstractMap.SimpleEntry<>("Produto1: ",(float) 1.5));
+        expectedProdutosC1P3.add(new AbstractMap.SimpleEntry<>("Produto3: ",(float) 1));
+        expectedProdutosC1P3.add(new AbstractMap.SimpleEntry<>("Produto10: ",(float) 5.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC2P1 = new ArrayList<>();
+        expectedProdutosC2P1.add(new AbstractMap.SimpleEntry<>("Produto5: ",(float) 0.5));
+        expectedProdutosC2P1.add(new AbstractMap.SimpleEntry<>("Produto9: ",(float) 5));
+        expectedProdutosC2P1.add(new AbstractMap.SimpleEntry<>("Produto12: ",(float) 2.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC2P2 = new ArrayList<>();
+        expectedProdutosC2P2.add(new AbstractMap.SimpleEntry<>("Produto5: ",(float) 5));
+        expectedProdutosC2P2.add(new AbstractMap.SimpleEntry<>("Produto12: ",(float) 0.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC2P3 = new ArrayList<>();
+        expectedProdutosC2P3.add(new AbstractMap.SimpleEntry<>("Produto1: ",(float) 8));
+        expectedProdutosC2P3.add(new AbstractMap.SimpleEntry<>("Produto4: ",(float) 1.5));
+        expectedProdutosC2P3.add(new AbstractMap.SimpleEntry<>("Produto10: ",(float) 2));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC3P2 = new ArrayList<>();
+        expectedProdutosC3P2.add(new AbstractMap.SimpleEntry<>("Produto9: ",(float) 3));
+        expectedProdutosC3P2.add(new AbstractMap.SimpleEntry<>("Produto12: ",(float) 3.5));
+        List<AbstractMap.SimpleEntry<String, Float>> expectedProdutosC3P3 = new ArrayList<>();
+        expectedProdutosC3P3.add(new AbstractMap.SimpleEntry<>("Produto9: ",(float) 4.5));
+        //Testar os clientes
+        assertEquals(expectedClientesKeySet, result.keySet());
+        //Testar os Produtores
+        //Testar Produtos
+        assertEquals(expectedProdutoresKeySetC4, result.get(C4).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosC4P2,result.get(C4).getProdutorProdutos().get(P2));
+        assertEquals(expectedProdutosC4P3,result.get(C4).getProdutorProdutos().get(P3));
+        assertEquals(expectedProdutoresKeySetC7, result.get(C7).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosC7P1,result.get(C7).getProdutorProdutos().get(P1));
+        assertEquals(expectedProdutosC7P2,result.get(C7).getProdutorProdutos().get(P2));
+        assertEquals(expectedProdutosC7P3,result.get(C7).getProdutorProdutos().get(P3));
+        assertEquals(expectedProdutoresKeySetC9, result.get(C9).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosC9P2,result.get(C9).getProdutorProdutos().get(P2));
+        assertEquals(expectedProdutosC9P3,result.get(C9).getProdutorProdutos().get(P3));
+        assertEquals(expectedProdutoresKeySetE1, result.get(E1).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosE1P3,result.get(E1).getProdutorProdutos().get(P3));
+        assertEquals(expectedProdutoresKeySetC1, result.get(C1).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosC1P1,result.get(C1).getProdutorProdutos().get(P1));
+        assertEquals(expectedProdutosC1P2,result.get(C1).getProdutorProdutos().get(P2));
+        assertEquals(expectedProdutosC1P3,result.get(C1).getProdutorProdutos().get(P3));
+        assertEquals(expectedProdutoresKeySetC2, result.get(C2).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosC2P1,result.get(C2).getProdutorProdutos().get(P1));
+        assertEquals(expectedProdutosC2P2,result.get(C2).getProdutorProdutos().get(P2));
+        assertEquals(expectedProdutosC2P3,result.get(C2).getProdutorProdutos().get(P3));
+        assertEquals(expectedProdutoresKeySetC3, result.get(C3).getProdutorProdutos().keySet());
+        assertEquals(expectedProdutosC3P2,result.get(C3).getProdutorProdutos().get(P2));
+        assertEquals(expectedProdutosC3P3,result.get(C3).getProdutorProdutos().get(P3));
+    }
 
 
 

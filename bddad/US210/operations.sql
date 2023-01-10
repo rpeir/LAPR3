@@ -1,1 +1,0 @@
--- Funcao "compiladora" de operacoes
