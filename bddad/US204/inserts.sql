@@ -212,11 +212,11 @@ INSERT INTO CalendariosOperacoes (codCalendarioOperacoes, anoCalendarioOperacoes
 INSERT INTO CalendariosOperacoes (codCalendarioOperacoes, anoCalendarioOperacoes) VALUES (4, 2022);
 
 --Tabela Operacoes
-INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao) VALUES (1, 2021,3, TO_DATE('22/Abril/2021','DD/MON/YY'), TO_DATE('22/Abril/2021','DD/MON/YY'), 'FR', 'M');
-INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao) VALUES (2, 2021,3, TO_DATE('25/Abril/2021','DD/MON/YY'), TO_DATE('25/Abril/2021','DD/MON/YY'), 'F', 'M');
-INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao) VALUES (3, 2021,3, TO_DATE('26/Abril/2021','DD/MON/YY'), TO_DATE('26/Abril/2021','DD/MON/YY'), 'FR', 'M');
-INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao) VALUES (4, 2021,3, TO_DATE('27/Abril/2021','DD/MON/YY'), TO_DATE('27/Abril/2021','DD/MON/YY'), 'S', 'C');
-INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao) VALUES (5, 2021,3, TO_DATE('28/Abril/2021','DD/MON/YY'), TO_DATE('28/Abril/2021','DD/MON/YY'), 'S', 'C');
+INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao, tipoOperacao) VALUES (1, 2021,3, TO_DATE('22/Abril/2021','DD/MON/YY'), TO_DATE('22/Abril/2021','DD/MON/YY'), 'FR', 'M', 'A');
+INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao, tipoOperacao) VALUES (2, 2021,3, TO_DATE('25/Abril/2021','DD/MON/YY'), TO_DATE('25/Abril/2021','DD/MON/YY'), 'F', 'M', 'I');
+INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao, tipoOperacao) VALUES (3, 2021,3, TO_DATE('26/Abril/2021','DD/MON/YY'), TO_DATE('26/Abril/2021','DD/MON/YY'), 'FR', 'M', 'FP');
+INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao, tipoOperacao) VALUES (4, 2021,3, TO_DATE('27/Abril/2021','DD/MON/YY'), TO_DATE('27/Abril/2021','DD/MON/YY'), 'S', 'C', 'A');
+INSERT INTO operacoes( codOperacao, anoPlanoAnual, codCalendarioOperacoes, dataPrevistaPlano, dataOperacao, formaAplicacao, estadoOperacao, tipoOperacao) VALUES (5, 2021,3, TO_DATE('28/Abril/2021','DD/MON/YY'), TO_DATE('28/Abril/2021','DD/MON/YY'), 'S', 'C', 'I');
 
 --Tabela Regas
 INSERT INTO regas(codRega, codOperacao, tempoRega) VALUES (1,1,60);
